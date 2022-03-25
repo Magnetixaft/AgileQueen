@@ -1,0 +1,26 @@
+Personal reflections for Ole Fjeldså, week 12, 2022-03-25 
+
+This week I had the flu. As a consequence of this I was asleep from sunday last week to and including wednesday this week.
+I have not been able to participate in much of the teams work and this is reflected in the answers below.
+
+- what do I want to learn or understand better?
+
+	How the team wants to work, and what types of projects the team is most interested in doing.
+	The set of tools the team want to use for the project.
+	
+	I have been sent the resources to catch up with the groups work over the weekend, starting next week strong.
+
+- how can I help someone else, or the entire team, to learn something new?
+
+	I have experience with object-oriented programming, UML diagrams and sequence diagrams.
+	All useful skills for most software projects.
+
+	I have worked with scrum earlier.
+
+- what is my contribution towards the team’s use of Scrum?
+
+	We have not used scrum this week.
+
+- what is my contribution towards the team’s deliveries?
+
+	none this week.
