@@ -1,0 +1,22 @@
+Personal reflections for Ole Fjeldså, week 13, 2022-04-01 
+
+
+- what do I want to learn or understand better?
+
+	How to get started with Dart and Flutter? 
+	How does package handling work in Dart?
+
+- how can I help someone else, or the entire team, to learn something new?
+
+	I have experience with object-oriented programming, UML diagrams and sequence diagrams.
+	All useful skills for most software projects.
+
+- what is my contribution towards the team’s use of Scrum?
+
+	Small "test sprint" this week with the mockup, buisness model and project description. Marked project description as done.
+	We did a scrum exercise (elephant carpacchio) during the lecture on tuesday. 
+
+- what is my contribution towards the team’s deliveries?
+
+	Set up, and had initial meeting with Alex from Garveriet. 
+	Helped write the project description.
