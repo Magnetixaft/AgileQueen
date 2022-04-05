@@ -10,10 +10,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Garveriet',
+      title: 'Room Booking',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Garveriet'),
+          title: const Text('Room Booking'),
         ),
         body: const Center(
           child: Text('Goodbye Gruesome World!'),
