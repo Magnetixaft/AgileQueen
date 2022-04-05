@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // Replace with actual values
+    // Firebase options related to FirebaseDB
     options: FirebaseOptions(
         apiKey: "AIzaSyD71VJDiqwq5e2y7gpaszs4um91jR6tN1g",
         authDomain: "agilequeen-82096.firebaseapp.com",
@@ -26,15 +26,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Garveriet',
       home: FutureBuilder(
+        //Initializes Firenase
         future: Firebase.initializeApp(),
         builder: (context, snapshot) {
+          //If Connection with Firebase failed
           if(snapshot.hasError){
             print("Error");
           }
+          //Checks connection to Firebase and when done loads HomePage
           if(snapshot.connectionState == ConnectionState.done){
             print("Det funkarde");
             return MyHomePage(title: "Testuing");
           }
+          //Waiting for connection with Firebase
           return CircularProgressIndicator();
         },
       ),
@@ -50,6 +54,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 class _MyHomePageState extends State<MyHomePage> {
+  //Controllers for input fields
   TextEditingController firstController = TextEditingController();
   TextEditingController secondController = TextEditingController();
 
@@ -109,12 +114,14 @@ class _MyHomePageState extends State<MyHomePage> {
       )
     );
   }
+  //Push data generated from inputfields.
   Future pushData(String first, String second) async {
     await FirebaseFirestore.instance.collection("Test").doc("test").set({
       'test1': first,
       'test2': second
     });
   }
+  //Gets all docs under "Test" and prints data from every doc.
   Future getDoc() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("Test").get();
     for(int i= 0; i < querySnapshot.docs.length; i++) {
@@ -122,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
       print(a.data());
     }
 
-    /* Kollar om en path finns
+    /* Checks if path exists.
 
     var documentPath = FirebaseFirestore.instance.collection('Test').doc(
         "test");
