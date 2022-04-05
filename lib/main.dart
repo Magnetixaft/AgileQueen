@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:flutter_application_1/tabs/bookingsview.dart';
+import 'package:flutter_application_1/tabs/changebooking.dart';
+import 'package:flutter_application_1/tabs/createbooking.dart';
+
+import 'colors.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     // Firebase options related to FirebaseDB
-    options: FirebaseOptions(
+    options: const FirebaseOptions(
         apiKey: "AIzaSyD71VJDiqwq5e2y7gpaszs4um91jR6tN1g",
         authDomain: "agilequeen-82096.firebaseapp.com",
         projectId: "agilequeen-82096",
@@ -18,28 +23,35 @@ void main() async {
   runApp(MyApp());
 }
 
+
+
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Garveriet',
+      title: 'Room Bookings',
+      theme: ThemeData(
+        primarySwatch: Colors.blue, // TODO Custom Swatch
+      ),
       home: FutureBuilder(
-        //Initializes Firenase
+        //Initializes Firebase
         future: Firebase.initializeApp(),
         builder: (context, snapshot) {
           //If Connection with Firebase failed
           if(snapshot.hasError){
-            print("Error");
+            print("Firebase initialization error");
           }
           //Checks connection to Firebase and when done loads HomePage
           if(snapshot.connectionState == ConnectionState.done){
-            print("Det funkarde");
-            return MyHomePage(title: "Testuing");
+            print("Firebase initialized correctly");
+            return const MyHomePage(
+              title: "Room Bookings",
+            );
           }
           //Waiting for connection with Firebase
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
     );
@@ -53,101 +65,68 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
+
 class _MyHomePageState extends State<MyHomePage> {
   //Controllers for input fields
-  TextEditingController firstController = TextEditingController();
-  TextEditingController secondController = TextEditingController();
+
+
+
+  int _selectedIndex = 0;
+
+  final List<Widget> _buildTabViews = [
+    BookingsView(),
+    const CreateBookingView(),
+    const ChangeBookingView(),
+  ];
+
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Test"),
+      body: Row(
+        children: <Widget>[
+          NavigationRail(
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            backgroundColor: elicitGreen,
+            groupAlignment: 0.0,
+            labelType: NavigationRailLabelType.selected,
+            destinations: <NavigationRailDestination>[
+              NavigationRailDestination(
+                icon: Icon(Icons.calendar_month_outlined, color: elicitWhite, size: 40,),
+                selectedIcon: Icon(Icons.calendar_month, color: elicitWhite, size: 40,),
+                label: Text('View Bookings', style: TextStyle(color: elicitWhite),),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.create_outlined, color: elicitWhite, size: 40,),
+                selectedIcon: Icon(Icons.create, color: elicitWhite, size: 40,),
+                label: Text('Create Booking', style: TextStyle(color: elicitWhite),),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.cancel_outlined, color: elicitWhite, size: 40,),
+                selectedIcon: Icon(Icons.cancel, color: elicitWhite, size: 40,),
+                label: Text('Change Booking', style: TextStyle(color: elicitWhite),),
+              ),
+            ],
+          ),
+          const VerticalDivider(thickness: 1, width: 1),
+          // This is the main content.
+          Expanded(
+            child: Center(
+              child: _buildTabViews[_selectedIndex],
+            ),
+          )
+        ],
       ),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget> [
-              Container(
-                width: 200,
-                child: TextField(
-                  controller: firstController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter first',
-                  ),
-                ),
-
-              ),
-              Container(
-                width: 200,
-                child: TextField(
-                  controller: secondController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter second',
-                  ),
-                ),
-              ),
-
-              ElevatedButton(
-                onPressed: () {
-                  pushData(firstController.text, secondController.text);
-                }, child: Text("Submitta datan"),
-              ),
-
-              ElevatedButton(
-                onPressed: () {
-                  print(getDoc());
-                }, child: Text("Kolla datan"),
-              ),
-            ]
-        ),
-      )
     );
   }
-  //Push data generated from inputfields.
-  Future pushData(String first, String second) async {
-    await FirebaseFirestore.instance.collection("Test").doc("test").set({
-      'test1': first,
-      'test2': second
-    });
-  }
-  //Gets all docs under "Test" and prints data from every doc.
-  Future getDoc() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection("Test").get();
-    for(int i= 0; i < querySnapshot.docs.length; i++) {
-      var a = querySnapshot.docs[i];
-      print(a.data());
-    }
 
-    /* Checks if path exists.
 
-    var documentPath = FirebaseFirestore.instance.collection('Test').doc(
-        "test");
-    var docTest = await documentPath.get();
-    if (docTest.exists) {
-      print('Exists');
-      print(docTest
-          .data()
-          ?.keys);
-      await docTest;
-    }
-    if (!docTest.exists) {
-      print('Not exists');
-      return null;
-    }
-
-     */
-  }
 }
 
 
