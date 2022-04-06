@@ -17,7 +17,7 @@ class BookingsView extends StatelessWidget {
             onPressed: () {
               incrementBookings();
             },
-            child: const Text("Book now"),
+            child: const Text("Book room 1"),
           ),
         ),
       ),
