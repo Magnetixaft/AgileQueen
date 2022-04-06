@@ -1,41 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/colors.dart';
 
 class BookingsView extends StatelessWidget {
-  const BookingsView({Key? key}) : super(key: key);
+  BookingsView({Key? key}) : super(key: key);
+
+  
 
   @override
   Widget build(BuildContext context) {
-    // TODO fetch data from firebase
-    return Column(
-      children: [
-        Card(
-          color: elicitGreen,
-          child: InkWell(
-            onTap: () {
-              print("tapped");
-            },
-            child: const SizedBox(
-              height: 100,
-              width: 300,
-              child: Text("Room 1"),
+    return Container(
+      alignment: Alignment.center,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                pushData();
+              },
+              child: const Text("Book now"),
             ),
-          ),
-        ),
-        Card(
-          color: elicitGreen,
-          child: InkWell(
-            onTap: () {
-              print("tapped");
-            },
-            child: const SizedBox(
-              height: 100,
-              width: 300,
-              child: Text("Room 2"),
-            ),
-          ),
-        ),
-      ],
+          ]),
     );
   }
+
+  //Push data generated from inputfields.
+  Future pushData() async {
+    await FirebaseFirestore.instance.collection("Test").doc("andreas")
+        .update({'numberOfBookings': FieldValue.increment(1)});
+  }
+
 }

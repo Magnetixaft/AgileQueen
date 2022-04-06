@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _buildTabViews = [
     FirebaseDemoView(),
-    const BookingsView(),
+    BookingsView(),
     const CreateBookingView(),
     const ChangeBookingView(),
   ];
