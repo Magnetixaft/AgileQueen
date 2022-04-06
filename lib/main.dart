@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/tabs/bookingsview.dart';
 import 'package:flutter_application_1/tabs/changebooking.dart';
 import 'package:flutter_application_1/tabs/createbooking.dart';
-import 'package:flutter_application_1/tabs/firebadedemoview.dart';
+import 'package:flutter_application_1/tabs/firebasedemoview.dart';
 
 import 'colors.dart';
 
