@@ -68,10 +68,6 @@ class MyHomePage extends StatefulWidget {
 
 
 class _MyHomePageState extends State<MyHomePage> {
-  //Controllers for input fields
-
-
-
   int _selectedIndex = 0;
 
   final List<Widget> _buildTabViews = [
