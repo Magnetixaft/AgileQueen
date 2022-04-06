@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/tabs/bookingsview.dart';
 import 'package:flutter_application_1/tabs/changebooking.dart';
 import 'package:flutter_application_1/tabs/createbooking.dart';
+import 'package:flutter_application_1/tabs/firebadedemoview.dart';
 
 import 'colors.dart';
 
@@ -71,7 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _buildTabViews = [
-    BookingsView(),
+    FirebaseDemoView(),
+    const BookingsView(),
     const CreateBookingView(),
     const ChangeBookingView(),
   ];
@@ -93,6 +95,11 @@ class _MyHomePageState extends State<MyHomePage> {
             groupAlignment: 0.0,
             labelType: NavigationRailLabelType.selected,
             destinations: <NavigationRailDestination>[
+              NavigationRailDestination(
+                icon: Icon(Icons.fire_extinguisher_outlined, color: elicitWhite, size: 40,),
+                selectedIcon: Icon(Icons.fire_extinguisher, color: elicitWhite, size: 40,),
+                label: Text('Firebase Demo', style: TextStyle(color: elicitWhite),),
+              ),
               NavigationRailDestination(
                 icon: Icon(Icons.calendar_month_outlined, color: elicitWhite, size: 40,),
                 selectedIcon: Icon(Icons.calendar_month, color: elicitWhite, size: 40,),
