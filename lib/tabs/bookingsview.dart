@@ -15,7 +15,7 @@ class BookingsView extends StatelessWidget {
           width: 400,
           child: ElevatedButton(
             onPressed: () {
-              pushData();
+              incrementBookings();
             },
             child: const Text("Book now"),
           ),
@@ -25,7 +25,8 @@ class BookingsView extends StatelessWidget {
   }
 
   //Push data generated from inputfields.
-  Future pushData() async {
+  Future incrementBookings() async {
+    // TODO, check that maximum capacity has not been exceeded
     await FirebaseFirestore.instance
         .collection("Test")
         .doc("andreas")
