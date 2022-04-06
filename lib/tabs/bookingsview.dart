@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 class BookingsView extends StatelessWidget {
   BookingsView({Key? key}) : super(key: key);
+  
+  //Controllers for input fields
   TextEditingController firstController = TextEditingController();
   TextEditingController secondController = TextEditingController();
 
