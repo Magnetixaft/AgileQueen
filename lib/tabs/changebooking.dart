@@ -7,7 +7,7 @@ class ChangeBookingView extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return const Center(
-      child: Text("Hello World! Here we should change bookings."),
+      child: Text("Please enter your username first"),
     );
   }
 }
