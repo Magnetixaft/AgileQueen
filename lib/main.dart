@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_application_1/FirebaseHandler.dart';
+import 'package:flutter_application_1/tabs/booking_view.dart';
 
-import 'package:flutter_application_1/tabs/bookingsview.dart';
 import 'package:flutter_application_1/tabs/changebooking.dart';
-import 'package:flutter_application_1/tabs/createbooking.dart';
+import 'package:flutter_application_1/tabs/current_booking_view.dart';
 import 'package:flutter_application_1/tabs/firebasedemoview.dart';
+import 'package:flutter_application_1/tabs/login_screen.dart';
 
 import 'colors.dart';
 
@@ -21,6 +23,7 @@ void main() async {
         messagingSenderId: "883336254219",
         appId: "1:883336254219:web:7d2de78527260bb27e080e")
     );
+
   runApp(MyApp());
 }
 
@@ -68,15 +71,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> implements LoginListener{
   int _selectedIndex = 0;
+  List<Widget> _buildTabViews = <Widget>[];
 
-  final List<Widget> _buildTabViews = [
-    FirebaseDemoView(),
-    BookingsView(),
-    const CreateBookingView(),
-    const ChangeBookingView(),
-  ];
+  _MyHomePageState() {
+    updateState();
+  }
+
+  void updateState() {
+    if (!FirebaseHandler.isInitialized()) {
+      _buildTabViews = [
+        LoginView(this),
+        const ChangeBookingView(),
+      ];
+    }
+    else {
+      _buildTabViews = [
+        const BookingView(),
+        const CurrentBookingView(),
+        FirebaseDemoView(),
+        LoginView(this),
+      ];
+    }
+  }
 
 
   @override
@@ -94,28 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: elicitGreen,
             groupAlignment: 0.0,
             labelType: NavigationRailLabelType.selected,
-            destinations: <NavigationRailDestination>[
-              NavigationRailDestination(
-                icon: Icon(Icons.fire_extinguisher_outlined, color: elicitWhite, size: 40,),
-                selectedIcon: Icon(Icons.fire_extinguisher, color: elicitWhite, size: 40,),
-                label: Text('Firebase Demo', style: TextStyle(color: elicitWhite),),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.calendar_month_outlined, color: elicitWhite, size: 40,),
-                selectedIcon: Icon(Icons.calendar_month, color: elicitWhite, size: 40,),
-                label: Text('View Bookings', style: TextStyle(color: elicitWhite),),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.create_outlined, color: elicitWhite, size: 40,),
-                selectedIcon: Icon(Icons.create, color: elicitWhite, size: 40,),
-                label: Text('Create Booking', style: TextStyle(color: elicitWhite),),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.cancel_outlined, color: elicitWhite, size: 40,),
-                selectedIcon: Icon(Icons.cancel, color: elicitWhite, size: 40,),
-                label: Text('Change Booking', style: TextStyle(color: elicitWhite),),
-              ),
-            ],
+            destinations: getNavigatorRailItems()
           ),
           const VerticalDivider(thickness: 1, width: 1),
           // This is the main content.
@@ -129,8 +126,61 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  List<NavigationRailDestination> getNavigatorRailItems() {
 
+    if (FirebaseHandler.isInitialized()) {
+      return <NavigationRailDestination>[
+        NavigationRailDestination(
+          icon: Icon(Icons.calendar_month_outlined, color: elicitWhite, size: 40,),
+          selectedIcon: Icon(Icons.calendar_month, color: elicitWhite, size: 40,),
+          label: Text('Create Bookings', style: TextStyle(color: elicitWhite),),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.save_outlined, color: elicitWhite, size: 40,),
+          selectedIcon: Icon(Icons.create, color: elicitWhite, size: 40,),
+          label: Text('View Booking', style: TextStyle(color: elicitWhite),),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.fire_extinguisher_outlined, color: elicitWhite, size: 40,),
+          selectedIcon: Icon(Icons.fire_extinguisher, color: elicitWhite, size: 40,),
+          label: Text('Firebase Demo', style: TextStyle(color: elicitWhite),),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.lock_open_outlined, color: elicitWhite, size: 40,),
+          selectedIcon: Icon(Icons.cancel, color: elicitWhite, size: 40,),
+          label: Text('Change User', style: TextStyle(color: elicitWhite),),
+        ),
+      ];
+    }
+    else {
+      return [
+        NavigationRailDestination(
+          icon: Icon(Icons.lock_open_outlined, color: elicitWhite, size: 40,),
+          selectedIcon: Icon(Icons.cancel, color: elicitWhite, size: 40,),
+          label: Text('Login', style: TextStyle(color: elicitWhite),),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.lock_outline, color: elicitWhite, size: 40,),
+          selectedIcon: Icon(Icons.cancel, color: elicitWhite, size: 40,),
+          label: Text('Unavailable', style: TextStyle(color: elicitWhite),),
+        ),];
+    }
+  }
+
+
+  @override
+  void alert() {
+    updateState();
+    setState(() {
+      _selectedIndex = 0;
+    });
+  }
 }
+
+abstract class LoginListener {
+  void alert();
+}
+
 
 
 
