@@ -24,8 +24,6 @@ void main() async {
         appId: "1:883336254219:web:7d2de78527260bb27e080e")
     );
 
-
-
   runApp(MyApp());
 }
 

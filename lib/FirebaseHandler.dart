@@ -93,11 +93,23 @@ class FirebaseHandler {
     var docString =
         'Room ${roomNr.toString()} Day ${day.toString()} Timeslot ${timeslot.toString()}'; //just the file address in firestore
 
-    await FirebaseFirestore.instance // uploads the new array to firebase
+    await FirebaseFirestore.instance // update the array in firebase
         .collection('OfficeData')
         .doc('Bookings')
         .update({
       docString: FieldValue.arrayUnion([_username])
+    });
+  }
+
+  Future<void> removeBooking(int roomNr, int day, int timeslot) async{
+    var docString =
+        'Room ${roomNr.toString()} Day ${day.toString()} Timeslot ${timeslot.toString()}'; //just the file address in firestore
+
+    await FirebaseFirestore.instance // update the array in firebase
+        .collection('OfficeData')
+        .doc('Bookings')
+        .update({
+      docString: FieldValue.arrayRemove([_username])
     });
   }
 

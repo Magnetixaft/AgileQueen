@@ -28,16 +28,22 @@ class _CurrentBookingViewState extends State<CurrentBookingView> {
 
   List<Widget> getBookedTiles() {
     var bookedTiles = <Widget>[];
+    var bookings = FirebaseHandler.getInstance().getUserBookings();
+    bookings.sort();
 
-    for (String booking in FirebaseHandler.getInstance().getUserBookings()) {
-      var roomDayTimeslot = booking.split(' ');
+    for (String booking in bookings) {
+      var roomDayTimeslotStrings = booking.split(' ');
+      var roomNr = int.parse(roomDayTimeslotStrings[1]);
+      var dayNr = int.parse(roomDayTimeslotStrings[3]);
+      var timeslot = int.parse(roomDayTimeslotStrings[5]);
       bookedTiles.add(ListTile(
         title: Text(booking),
         trailing: ElevatedButton(
             child: const Text('Remove (not functional)'),
             onPressed: () {
+              FirebaseHandler.getInstance().removeBooking(roomNr, dayNr, timeslot);
+              FirebaseHandler.getInstance().getData();
               setState(() {
-                print('not supported yet');
               });
             }),
       ));
