@@ -39,7 +39,7 @@ class _CurrentBookingViewState extends State<CurrentBookingView> {
       bookedTiles.add(ListTile(
         title: Text(booking),
         trailing: ElevatedButton(
-            child: const Text('Remove (not functional)'),
+            child: const Text('Remove'),
             onPressed: () {
               FirebaseHandler.getInstance().removeBooking(roomNr, dayNr, timeslot);
               FirebaseHandler.getInstance().getData();
