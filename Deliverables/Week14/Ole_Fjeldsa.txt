@@ -1,0 +1,22 @@
+Personal reflections for Ole Fjeldså, week 13, 2022-04-01 
+
+
+- what do I want to learn or understand better?
+
+	Integration testing in dart.
+	
+- how can I help someone else, or the entire team, to learn something new?
+
+	I have experience with object-oriented programming, UML diagrams and sequence diagrams.
+	All useful skills for most software projects.
+	I have used Git for a few years, can help some of my teammates with their use of it.
+
+- what is my contribution towards the team’s use of Scrum?
+	
+	Wrote all new user stories for the new project that we switched to on Tuesday.
+	
+- what is my contribution towards the team’s deliveries?
+
+	Wrote the draft for Definition of Done.
+	Spent time installing and understanding the different tools neeed for the project (Dart, Flutter, Android Studio)
+	
