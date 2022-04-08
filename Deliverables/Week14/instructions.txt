@@ -1,0 +1,10 @@
+Individual reflections should be submitted to your teams source code repository.
+
+Each team member submits an individual reflection each week (starting week 1). In the individual reflection, please address the following questions, using the A, B, A -> B reflective loop as described (https://chalmers.instructure.com/courses/18176/pages/course-pm-team-reflections):
+
+- what do I want to learn or understand better?
+- how can I help someone else, or the entire team, to learn something new?
+- what is my contribution towards the team’s use of Scrum?
+- what is my contribution towards the team’s deliveries?
+
+That means that for the personal learning objective you will each sprint write down what you have achieved in relation to last sprint's ambition (technologies, concepts and skills learnt as well as how this was achieved), what you would like to achieve for the next sprint and how to make the change happen. The first week of the course you describe the current situation by motivating a learning objective. It is perfectly fine to change objective/s each sprint as long as you can motivate the change and you evaluate the outcome of the previous sprint (e.g. describing the current situation). Please make sure to be concrete about your goals and how to achieve them and remember that the learning objectives in this course are about working with a process and not individual technologies.
