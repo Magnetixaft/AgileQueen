@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/FirebaseHandler.dart';
 
-import '../main.dart';
-
 class LoginView extends StatefulWidget {
   final LoginListener loginListener;
   const LoginView(this.loginListener, {Key? key}) : super(key: key);
@@ -63,4 +61,8 @@ class _LoginViewState extends State<LoginView> {
       });
     }
   }
+}
+
+abstract class LoginListener {
+  void alert();
 }
