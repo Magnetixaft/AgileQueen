@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/FirebaseHandler.dart';
+import 'package:flutter_application_1/firebase_handler.dart';
+import '../colors.dart';
 
 class BookingView extends StatefulWidget {
   const BookingView({Key? key}) : super(key: key);
@@ -8,230 +9,244 @@ class BookingView extends StatefulWidget {
   State<BookingView> createState() => _BookingViewState();
 }
 
-class _BookingViewState extends State<BookingView> implements SelectorListener {
-  int stepNr = 1;
-  int dayNr = -1;
-  int roomNr = -1;
+//Widget for selecting office, picking day, picking room and then booking a timeslot
+class _BookingViewState extends State<BookingView> {
+  bool isLocationSelected = false;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: getContent());
+      children: [
+        Container(
+          //This is just the title text
+          width: MediaQuery.of(context).size.width - 50,
+          alignment: Alignment.topLeft,
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Text(
+              'Select Office',
+              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: 20),
+            ),
+          ),
+        ),
+        // this is either showing the selected office or showing the office selector
+        isLocationSelected ? showSelectedOffice() : showOfficeSelector(),
+        const Spacer(
+          flex: 2,
+        ),
+        //CalendarDatePicker is a built in class. It would look more like the mockup if the conditional was removed, but I prefer it this way
+        if (isLocationSelected)
+          CalendarDatePicker(
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().add(const Duration(days: 1000)),
+              onDateChanged: (selected) {
+                setState(() {
+                  Navigator.push(
+                      // changes scene to where the user can select room in the given office.
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RoomSelector(selected),
+                      ));
+                });
+              })
+      ],
+    );
   }
 
-  List<Widget> getContent() {
-    var content = <Widget>[];
+  //shows the selected office and when clicked it switches the view to showOfficeSelector widget
+  Widget showSelectedOffice() {
+    return SizedBox(
+        height: 50,
+        width: MediaQuery.of(context).size.width - 50,
+        child: ElevatedButton(
+          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(elicitGreen)),
+          onPressed: () {
+            setState(() {
+              isLocationSelected = false;
+            });
+          },
+          child: Text(
+            '${FirebaseHandler.getInstance().getSelectedOffice()} - tap to change',
+            style: TextStyle(color: elicitWhite),
+          ),
+        ));
+  }
 
-    content.add(Container(
-      height: 50,
-    ));
+  //Shows a list of all offices from Firebase. When clicked it sets the office in FirebaseHandler and closes this widget
+  Widget showOfficeSelector() {
+    return FutureBuilder<List<String>>(
+      future: FirebaseHandler.getInstance().getOffices(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Expanded(
+              flex: 10,
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 50,
+                  child: ListView(
+                    //maps the names of offices to clickable Listtiles.
+                    children: snapshot.data?.map((office) {
+                          return ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: SizedBox(
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      FirebaseHandler.getInstance().selectOffice(office);
+                                      isLocationSelected = true;
+                                    });
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(elicitGreen),
+                                  ),
+                                  child: Text(
+                                    office,
+                                    style: TextStyle(color: elicitWhite),
+                                  ),
+                                )),
+                          );
+                        }).toList() ??
+                        [const Text('No offices found')],
+                  )));
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+}
 
-    if (stepNr == 1) {
-      content.add(Text('Hello ${FirebaseHandler.getInstance().getName()}. Please choose a day'));
+//This appears when the user has selected an office and a day. It lets the user view and select the rooms.
+class RoomSelector extends StatefulWidget {
+  final DateTime dateTime;
+  final future = FirebaseHandler.getInstance().getRooms();
+  RoomSelector(this.dateTime, {Key? key}) : super(key: key);
+
+  @override
+  State<RoomSelector> createState() => _RoomSelectorState();
+}
+
+class _RoomSelectorState extends State<RoomSelector> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Space>>(
+      future: widget.future, //this refers to the FirebaseHandler getRooms future
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: elicitWhite,
+              title: const Text('Back'),
+            ),
+            body: Center(
+                child: Column(
+              children: [
+                const Spacer(
+                  flex: 1,
+                ),
+                //This is just non-interactive information text
+                SizedBox(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width - 50,
+                    child: Text(
+                      'Select work area in ${FirebaseHandler.getInstance().getSelectedOffice()} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: 20),
+                    )),
+                const Spacer(
+                  flex: 1,
+                ),
+                //This is a list of all the rooms in that office. The user can tap top view, and then book, timeslots.
+                Expanded(
+                    flex: 10,
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 50,
+                        child: ListView(
+                          children: snapshot.data?.map((workSpace) {
+                                return ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  title: SizedBox(
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                //This shows a pop-up where the user can view and book timeslots.
+                                                return AlertDialog(
+                                                  content: Column(
+                                                    children: generateTimeSlotTiles(workSpace, widget.dateTime),
+                                                  ),
+                                                );
+                                              },
+                                              barrierColor: Colors.transparent);
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(elicitGreen),
+                                        ),
+                                        child: Text(
+                                          'Room number ${workSpace.roomNr} - ${workSpace.description}',
+                                          style: TextStyle(color: elicitWhite),
+                                        ),
+                                      )),
+                                );
+                              }).toList() ??
+                              [const Text('No Rooms found')],
+                        )))
+              ],
+            )),
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  //This provides the content for the timeslot-selector pop-up in the RoomSelector
+  List<Widget> generateTimeSlotTiles(Space workSpace, DateTime dateTime) {
+    List<Widget> widgetList = [
+      Text('Room number ${workSpace.roomNr} - ${workSpace.description}'),
+      const Divider(
+        height: 20,
+      )
+    ];
+    for (int i = 1; i <= workSpace.nrOfTimeslots; i++) {
+      widgetList.add(FutureBuilder(
+          future: FirebaseHandler.getInstance().getRemainingSeats(workSpace.roomNr, dateTime, i),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Row(
+                children: [
+                  Text('Timeslot: $i\n${snapshot.data} seats remaining'),
+                  const Spacer(
+                    flex: 10,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          FirebaseHandler.getInstance().addBooking(workSpace.roomNr, dateTime, i);
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: const Text('booking successful'),
+                            backgroundColor: elicitGreen,
+                          ));
+                        });
+                      },
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(elicitGreen)),
+                      child: const Text('Book')),
+                ],
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          }));
     }
-    content.add(const Divider(
+    widgetList.add(const Divider(
       height: 20,
     ));
-
-    if (stepNr == 1) {
-      content.add(DaySelector(this));
-    } else if(stepNr > 1){
-      content.add(GestureDetector(
-        child: Text(
-          '${dayNrToWeekAndDay(dayNr)} chosen. Tap to change day',
-          style: const TextStyle(fontSize: 20),
-        ),
-        onTap: () {
-          setState(() {
-            stepNr = 1;
-          });
+    widgetList.add(ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).pop();
         },
-      ));
-    }
-
-    if (stepNr == 2) {
-      content.add(RoomSelector(this));
-    } else if (stepNr > 2) {
-      content.add(const Divider(height: 10));
-      content.add(GestureDetector(
-        child: Text(
-          'Room number $roomNr chosen. Tap to change room',
-          style: const TextStyle(fontSize: 20),
-        ),
-        onTap: () {
-          setState(() {
-            stepNr = 2;
-          });
-        },
-      ));
-    }
-
-    if(stepNr == 3) {
-      content.add(TimeslotSelector(this, dayNr, roomNr));
-    }
-
-    return content;
-  }
-
-  @override
-  void dayChosen(int dayNr) {
-    setState(() {
-      this.dayNr = dayNr;
-      stepNr = 2;
-    });
-  }
-
-  @override
-  void roomChosen(int roomNr) {
-    setState(() {
-      this.roomNr = roomNr;
-      stepNr = 3;
-    });
-  }
-
-  @override
-  void timeslotChosen(int timeslot) {
-    setState(() {
-      stepNr = 1;
-      FirebaseHandler.getInstance().addBooking(roomNr, dayNr, timeslot);
-      FirebaseHandler.getInstance().getData();
-    });
-  }
-
-  String dayNrToWeekAndDay(int dayNr) {
-    var weekdays = <String>[
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday'
-    ];
-    return '${weekdays[(dayNr - 1) % 7]} Week ${((dayNr - 1) / 7 + 1).truncate()}';
-  }
-
-}
-
-abstract class SelectorListener {
-  void dayChosen(int day);
-  void roomChosen(int room);
-  void timeslotChosen(int timeslot);
-}
-
-class DaySelector extends StatelessWidget {
-  final SelectorListener daySelectorListener;
-  const DaySelector(this.daySelectorListener, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Expanded(
-        child: ListView.builder(
-          itemBuilder: (context, week) {
-            return ListTile(
-              title: SizedBox(
-                height: 150,
-                child: Column(
-                  children: [
-                    Text(
-                      'Week ${week + 1}',
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    const Divider(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: getDayButtons(week, daySelectorListener),
-                    )
-                  ],
-                ),
-              ),
-            );
-          },
-        ));
-  }
-
-  List<Widget> getDayButtons(int week, SelectorListener daySelectorListener) {
-    var days = <String>['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    var dayButtons = <Widget>[];
-    for (var day = 0; day <= 6; day++) {
-      dayButtons.add(ElevatedButton(
-          onPressed: () {
-            daySelectorListener.dayChosen(week * 7 + day + 1);
-          },
-          child: Text(days[day])));
-      if (day < 6) {
-        dayButtons.add(const Spacer(flex: 1));
-      }
-    }
-    return dayButtons;
+        child: const Text('Cancel')));
+    return widgetList;
   }
 }
-
-class RoomSelector extends StatelessWidget {
-  final SelectorListener selectorListener;
-  const RoomSelector(this.selectorListener, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        child: ListView(
-          children: getRoomTiles(selectorListener),
-        ));
-  }
-
-  List<Widget> getRoomTiles(SelectorListener selectorListener) {
-    var rooms = <Widget>[];
-    for (var room in FirebaseHandler.getInstance().getSpaces().values) {
-      rooms.add(ListTile(
-        leading: Text('Room Nr:${room.roomNr.toString()}'),
-        title: Text(room.description),
-        trailing: ElevatedButton(
-          child: const Text('View'),
-          onPressed: () {
-            selectorListener.roomChosen(room.roomNr);
-          },
-        ),
-      ));
-    }
-
-    return rooms;
-  }
-}
-
-class TimeslotSelector extends StatelessWidget {
-  final SelectorListener selectorListener;
-  final int roomNr;
-  final int dayNr;
-  const TimeslotSelector(this.selectorListener, this.dayNr, this.roomNr, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        child: ListView(
-          children: getTimeslotTiles(selectorListener,dayNr, roomNr),
-        ));
-  }
-
-  List<Widget> getTimeslotTiles(SelectorListener selectorListener,int dayNr,  int roomNr, ) {
-    var timeslots = <Widget>[];
-    int nrOfTimeSlots = FirebaseHandler.getInstance().getSpace(roomNr).nrOfTimeslots;
-    for(var timeslot = 1; timeslot <= nrOfTimeSlots; timeslot++) {
-      int seatsRemaining = FirebaseHandler.getInstance().remainingSeats(roomNr, dayNr, timeslot);
-      timeslots.add(ListTile(
-        leading: Text('TimeSlot $timeslot'),
-        title: Text('$seatsRemaining seats remaining'),
-        trailing: ElevatedButton(
-          child: const Text('Book'),
-          onPressed: () {
-            selectorListener.timeslotChosen(timeslot);
-          },
-        ),
-      ));
-    }
-    return timeslots;
-  }
-}
-
