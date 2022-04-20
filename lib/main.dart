@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_application_1/FirebaseHandler.dart';
-import 'package:flutter_application_1/tabs/booking_view.dart';
-
-import 'package:flutter_application_1/tabs/changebooking.dart';
+import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/home.dart';
-import 'package:flutter_application_1/tabs/current_booking_view.dart';
-import 'package:flutter_application_1/tabs/firebasedemoview.dart';
 
 import 'colors.dart';
 
@@ -67,6 +62,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final focusNodePassword = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,16 +87,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Email or phone number',
                       ),
+                      controller: userNameController,
+                      onSubmitted: (_) {
+                        // This moves the focus to the password field when the user presses "enter".
+                        FocusScope.of(context).requestFocus(focusNodePassword);
+                      },
                     ),
                     TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Password',
                       ),
+                      controller: passwordController,
+                      onSubmitted: (_) {
+                        continueLogin();
+                      },
+                      focusNode: focusNodePassword,
                     ),
                     Align(
                       alignment: Alignment.centerRight,
@@ -112,17 +121,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  elicitGreen)),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(elicitGreen)),
                           onPressed: () => {
-                                print("TODO Login using Firebase Auth"), // TODO Add text controllers for above fields an loding using firebase auth
-                                Navigator.push(
-                                    // TODO use pushReplacement when login has been implemented. That way, the uswer will not be able to return to this page by pressing the back arrow
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Home()))
+                                print("TODO Login using Firebase Auth"), // TODO Add text controllers for above fields an loading using firebase auth
+                                continueLogin()
                               },
                           child: Text(
                             "Login",
@@ -141,5 +143,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ));
+  }
+
+  void continueLogin() {
+    // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
+    var username = userNameController.text;
+    FirebaseHandler.initialize(username);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
   }
 }
