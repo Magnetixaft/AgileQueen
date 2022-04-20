@@ -62,9 +62,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final userNameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final focusNodePassword = FocusNode();
+  final userIdTextController = TextEditingController();
+  final userPasswordTextController = TextEditingController();
+//  final focusNodePassword = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -91,52 +91,51 @@ class _MyHomePageState extends State<MyHomePage> {
                         border: OutlineInputBorder(),
                         hintText: 'Email or phone number',
                       ),
-                      controller: userNameController,
-                      onSubmitted: (_) {
-                        // This moves the focus to the password field when the user presses "enter".
-                        FocusScope.of(context).requestFocus(focusNodePassword);
-                      },
+                      controller: userIdTextController,
+//                      onSubmitted: (_) {
+//                        // This moves the focus to the password field when the user presses "enter".
+//                        FocusScope.of(context).requestFocus(focusNodePassword);
+//                      },
                     ),
                     TextField(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Password',
                       ),
-                      controller: passwordController,
-                      onSubmitted: (_) {
-                        continueLogin();
-                      },
-                      focusNode: focusNodePassword,
+                      controller: userPasswordTextController,
+//                      onSubmitted: (_) {
+//                        login();
+//                      },
+//                      focusNode: focusNodePassword,
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => {
-                          print("Todo, Show modal"),
-                        },
-                        child: const Text("Forgot Password?"),
-                      ),
-                    ),
+//                    Align(
+//                      alignment: Alignment.centerRight,
+//                      child: TextButton(
+//                        onPressed: () => {
+//                          print("Todo, Show modal"),
+//                        },
+//                        child: const Text("Forgot Password?"),
+//                      ),
+//                    ),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(elicitGreen)),
-                          onPressed: () => {
-                                print("TODO Login using Firebase Auth"), // TODO Add text controllers for above fields an loading using firebase auth
-                                continueLogin()
-                              },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  elicitGreen)),
+                          onPressed: () => {login()},
                           child: Text(
                             "Login",
                             style: TextStyle(color: elicitWhite),
                           )),
                     ),
-                    TextButton(
-                      onPressed: () => {
-                        print("Todo, Show modal"),
-                      },
-                      child: const Text("Create an account"),
-                    ),
+//                    TextButton(
+//                      onPressed: () => {
+//                        print("Todo, Show modal"),
+//                      },
+//                      child: const Text("Create an account"),
+//                    ),
                   ],
                 ),
               ),
@@ -145,10 +144,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
-  void continueLogin() {
-    // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
-    var username = userNameController.text;
-    FirebaseHandler.initialize(username);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+  void login() {
+    // TODO login using Firebase Auth
+    String userId = userIdTextController.text;
+    FirebaseHandler.initialize(userId);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
   }
 }
