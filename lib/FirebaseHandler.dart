@@ -120,24 +120,17 @@ class FirebaseHandler {
     return nrOfSeats - booked > 0 ? nrOfSeats - booked : 0;
   }
 
-  static bool isInitialized(){
-    return _instance._username != 'init';
-  }
+  static bool isInitialized() => _instance._username != 'init';
 
   Space getSpace(int roomNr) =>
       _spaces[roomNr] ?? Space(0, 1, 'errorSpace', 10);
 
-  List<String> getUserBookings() {
-    return _userBookings;
-  }
+  List<String> getUserBookings() => _userBookings;
 
-  Map<int, Space> getSpaces() {
-    return _spaces;
-  }
+  Map<int, Space> getSpaces() => _spaces;
 
-  String getName() {
-    return _username;
-  }
+  String getName() => _username;
+
 }
 
 class Space {
@@ -149,7 +142,5 @@ class Space {
   Space(this.roomNr, this.nrOfSeats, this.description, this.nrOfTimeslots);
 
   @override
-  String toString() {
-    return 'RoomNr: $roomNr. $description with $nrOfSeats seats divided into $nrOfTimeslots timeslots';
-  }
+  String toString() => 'RoomNr: $roomNr. $description with $nrOfSeats seats divided into $nrOfTimeslots timeslots';
 }
