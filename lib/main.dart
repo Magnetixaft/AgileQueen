@@ -1,8 +1,10 @@
+import 'package:firebase_auth_oauth/firebase_auth_oauth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application_1/AuthenticationHandler.dart';
 import 'package:flutter_application_1/FirebaseHandler.dart';
 import 'package:flutter_application_1/tabs/booking_view.dart';
-
 import 'package:flutter_application_1/tabs/changebooking.dart';
 import 'package:flutter_application_1/home.dart';
 import 'package:flutter_application_1/tabs/current_booking_view.dart';
@@ -62,11 +64,14 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var authentication = AuthenticationHandler.getInstance();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +92,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    ElevatedButton(
+                    onPressed: () async {
+                      authentication.login();
+                    }, child: Text("Sign in With Azure"),
+                    ),
+
                     TextField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
