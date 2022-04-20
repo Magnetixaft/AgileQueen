@@ -30,24 +30,37 @@ class FirebaseHandler {
 
   //Returns a list of all rooms in the currently selected office as Space objects.
   Future<List<Space>> getRooms() async {
-    var data = await FirebaseFirestore.instance.collection('Rooms').where('office', isEqualTo: _office).get();
+    var data = await FirebaseFirestore.instance
+        .collection('Rooms')
+        .where('office', isEqualTo: _office)
+        .get();
     return data.docs.map((roomSnapshot) => roomSnapshot.data()).map((room) {
-      return Space(room['roomNr'], room['size'], room['description'], room['timeslots'], room['office']);
+      return Space(room['roomNr'], room['size'], room['description'],
+          room['timeslots'], room['office']);
     }).toList();
   }
 
   //Adds rooms to Firebase
-  Future<void> saveSpaceData(String office, int roomNr, String description, int size, int nrOfTimeslots) async {
-    FirebaseFirestore.instance
-        .collection("Rooms")
-        .doc(roomNr.toString())
-        .set({'office': office, 'roomNr': roomNr, 'description': description, 'size': size, 'timeslots': nrOfTimeslots});
+  Future<void> saveSpaceData(String office, int roomNr, String description,
+      int size, int nrOfTimeslots) async {
+    FirebaseFirestore.instance.collection("Rooms").doc(roomNr.toString()).set({
+      'office': office,
+      'roomNr': roomNr,
+      'description': description,
+      'size': size,
+      'timeslots': nrOfTimeslots
+    });
   }
 
   //Adds bookings to Firebase.
   Future<void> addBooking(int roomNr, DateTime day, int timeslot) async {
     if (_username != "") {
-      FirebaseFirestore.instance.collection('Bookings').add({'day': day, 'roomNr': roomNr, 'personID': _username, 'timeslot': timeslot});
+      FirebaseFirestore.instance.collection('Bookings').add({
+        'day': day,
+        'roomNr': roomNr,
+        'personID': _username,
+        'timeslot': timeslot
+      });
     }
   }
 
@@ -68,12 +81,19 @@ class FirebaseHandler {
 
   //Returns a list of all bookings made by the current user in Booking objects.
   Future<List<Booking>> getUserBookings() async {
-    var data = await FirebaseFirestore.instance.collection('Bookings').where('personID', isEqualTo: _username).get();
+    var data = await FirebaseFirestore.instance
+        .collection('Bookings')
+        .where('personID', isEqualTo: _username)
+        .get();
     List<Booking> bookingList = [];
     for (var doc in data.docs) {
       var docData = doc.data();
       bookingList.add(Booking(
-          DateTime.fromMicrosecondsSinceEpoch(docData['day'].microsecondsSinceEpoch), docData['personID'], docData['roomNr'], docData['timeslot']));
+          DateTime.fromMicrosecondsSinceEpoch(
+              docData['day'].microsecondsSinceEpoch),
+          docData['personID'],
+          docData['roomNr'],
+          docData['timeslot']));
     }
     bookingList.sort((a, b) {
       if (a.day.compareTo(b.day) == 0) {
@@ -86,7 +106,10 @@ class FirebaseHandler {
 
   Future<int> getRemainingSeats(int roomNr, DateTime day, int timeslot) async {
     //gets the entry for the appropriate room from Firebase.
-    var nrRooms = await FirebaseFirestore.instance.collection('Rooms').where('roomNr', isEqualTo: roomNr).get();
+    var nrRooms = await FirebaseFirestore.instance
+        .collection('Rooms')
+        .where('roomNr', isEqualTo: roomNr)
+        .get();
 
     //Gets all appropriate bookings for this room at this day and timeslot from Firebase
     var nrBooked = await FirebaseFirestore.instance
@@ -121,7 +144,8 @@ class Space {
   final int nrOfTimeslots;
   final String office;
 
-  Space(this.roomNr, this.nrOfSeats, this.description, this.nrOfTimeslots, this.office);
+  Space(this.roomNr, this.nrOfSeats, this.description, this.nrOfTimeslots,
+      this.office);
 
   @override
   String toString() {
