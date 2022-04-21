@@ -47,12 +47,12 @@ class _CurrentBookingViewState extends State<CurrentBookingView> {
     for (Booking booking in bookings) {
       bookedTiles.add(const Divider(height: 20,));
       bookedTiles.add(ListTile(
-        title: Text('${booking.day.month} - ${booking.day.day}\ntimeslot: ${booking.timeslot}'),
+        title: Text('${booking.day.month} - ${booking.day.day}'),
         trailing: ElevatedButton(
             child: const Text('Remove'),
             onPressed: () {
               setState(() {
-                FirebaseHandler.getInstance().removeBooking(booking.roomNr, booking.day, booking.timeslot);
+                FirebaseHandler.getInstance().removeBooking(booking.roomNr, booking.day);
               });
             }),
       ));
