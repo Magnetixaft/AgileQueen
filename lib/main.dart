@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //                        },
 //                        child: const Text("Forgot Password?"),
 //                      ),
-//                    ),
+//                    ), 
                     SizedBox(
                       width: double.infinity,
                       height: 50,
