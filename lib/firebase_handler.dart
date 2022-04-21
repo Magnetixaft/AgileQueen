@@ -38,42 +38,38 @@ class FirebaseHandler {
         .where('office', isEqualTo: _office)
         .get();
     return data.docs.map((roomSnapshot) => roomSnapshot.data()).map((room) {
-      return Space(room['roomNr'], room['size'], room['description'],
-          room['timeslots'], room['office']);
+      return Space(room['roomNr'], room['size'], room['description'], room['office']);
     }).toList();
   }
 
   //Adds rooms to Firebase
   Future<void> saveSpaceData(String office, int roomNr, String description,
-      int size, int nrOfTimeslots) async {
+      int size) async {
     FirebaseFirestore.instance.collection("Rooms").doc(roomNr.toString()).set({
       'office': office,
       'roomNr': roomNr,
       'description': description,
-      'size': size,
-      'timeslots': nrOfTimeslots
+      'size': size
     });
   }
 
   //Adds bookings to Firebase.
-  Future<void> addBooking(int roomNr, DateTime day, int timeslot) async {
+  Future<void> addBooking(int roomNr, DateTime day) async {
     if (_username != "") {
       FirebaseFirestore.instance.collection('Bookings').add({
         'day': day,
         'roomNr': roomNr,
-        'personID': _username,
-        'timeslot': timeslot
+        'personID': _username
       });
     }
   }
 
-  Future<void> removeBooking(int roomNr, DateTime day, int timeslot) async {
+  Future<void> removeBooking(int roomNr, DateTime day) async {
     FirebaseFirestore.instance
         .collection('Bookings')
         .where('personID', isEqualTo: _username)
         .where('roomNr', isEqualTo: roomNr)
         .where('day', isEqualTo: day)
-        .where('timeslot', isEqualTo: timeslot)
         .get()
         .then((value) {
       for (var document in value.docs) {
@@ -95,31 +91,27 @@ class FirebaseHandler {
           DateTime.fromMicrosecondsSinceEpoch(
               docData['day'].microsecondsSinceEpoch),
           docData['personID'],
-          docData['roomNr'],
-          docData['timeslot']));
+          docData['roomNr']
+          ));
     }
     bookingList.sort((a, b) {
-      if (a.day.compareTo(b.day) == 0) {
-        return a.timeslot - b.timeslot;
-      }
       return a.day.compareTo(b.day);
     });
     return bookingList;
   }
 
-  Future<int> getRemainingSeats(int roomNr, DateTime day, int timeslot) async {
+  Future<int> getRemainingSeats(int roomNr, DateTime day) async {
     //gets the entry for the appropriate room from Firebase.
     var nrRooms = await FirebaseFirestore.instance
         .collection('Rooms')
         .where('roomNr', isEqualTo: roomNr)
         .get();
 
-    //Gets all appropriate bookings for this room at this day and timeslot from Firebase
+    //Gets all appropriate bookings for this room at this day from Firebase
     var nrBooked = await FirebaseFirestore.instance
         .collection('Bookings')
         .where('roomNr', isEqualTo: roomNr)
         .where('day', isEqualTo: day)
-        .where('timeslot', isEqualTo: timeslot)
         .get();
 
     // Compares the size of the room with the number of bookings.
