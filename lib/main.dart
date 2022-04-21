@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/home.dart';
-
-import 'colors.dart';
+import 'package:flutter_application_1/theme_elicit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,9 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Room Bookings',
-      theme: ThemeData(
-        primarySwatch: Colors.grey, // TODO Custom Swatch
-      ),
+      theme: elicitTheme(),
       home: FutureBuilder(
         //Initializes Firebase
         future: Firebase.initializeApp(),
@@ -69,7 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: elicitWhite,
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
@@ -116,18 +112,14 @@ class _MyHomePageState extends State<MyHomePage> {
 //                        },
 //                        child: const Text("Forgot Password?"),
 //                      ),
-//                    ), 
+//                    ),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  elicitGreen)),
                           onPressed: () => {login()},
-                          child: Text(
+                          child: const Text(
                             "Login",
-                            style: TextStyle(color: elicitWhite),
                           )),
                     ),
 //                    TextButton(
