@@ -18,12 +18,11 @@ class _BookingViewState extends State<BookingView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        const Align(
           //This is just the title text
-          width: MediaQuery.of(context).size.width - 50,
           alignment: Alignment.topLeft,
-          child: const Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
             child: Text(
               'Select Office',
               style: TextStyle(
@@ -86,9 +85,8 @@ class _BookingViewState extends State<BookingView> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Expanded(
-              flex: 10,
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width - 50,
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                   child: ListView(
                     //maps the names of offices to clickable Listtiles.
                     children: snapshot.data?.map((office) {
@@ -97,6 +95,7 @@ class _BookingViewState extends State<BookingView> {
                             title: SizedBox(
                                 height: 50,
                                 child: ElevatedButton(
+                                  // TODO consider changing these buttons to Cards when we include description/images etc.
                                   onPressed: () {
                                     setState(() {
                                       FirebaseHandler.getInstance()
