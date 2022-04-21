@@ -20,10 +20,12 @@ class BookingItem extends StatelessWidget {
             color: elicitGreen,
             borderRadius: const BorderRadius.all(Radius.circular(6))),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const SizedBox(width: 10),
-            _buildColumn(),
-            const SizedBox(width: 190),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: _buildColumn(),
+            ),
             const Icon(
               Icons.arrow_forward_ios,
               color: Colors.white,

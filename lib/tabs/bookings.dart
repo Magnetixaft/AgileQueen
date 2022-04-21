@@ -14,6 +14,8 @@ class _BookingsState extends State<Bookings> {
 
   @override
   Widget build(BuildContext context) {
+    
+    // Generating tiles and adding to our BookingList
     for (var i = 0; i < 1000; i++) {
       if (i % 13 == 0) {
         bookingList.add(const SizedBox(height: 10));
@@ -29,6 +31,8 @@ class _BookingsState extends State<Bookings> {
         bookingList.add(const BookingItem());
       }
     }
+
+    // Building our actual widget
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
