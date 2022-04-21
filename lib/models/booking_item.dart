@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/tabs/detailed_view.dart';
+import 'package:flutter_application_1/bookings_views/detailed_view.dart';
 
 //This class represents an item that populates the bookingList in the 
 //Bookings class. 
