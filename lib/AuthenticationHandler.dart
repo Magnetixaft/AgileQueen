@@ -35,8 +35,8 @@ class AuthenticationHandler {
     print('Logged out');
   }
 
-  Future<String?> getUserName() async{
-    return await oauth.getIdToken().toString();
+  String dummyLogin() {
+    return"test@gmail.com";
   }
 
 }
