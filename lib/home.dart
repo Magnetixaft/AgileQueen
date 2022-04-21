@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/colors.dart';
 import 'package:flutter_application_1/tabs/booking_view.dart';
 import 'package:flutter_application_1/tabs/bookings.dart';
 
@@ -28,9 +27,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: elicitWhite,
       appBar: AppBar(
-        backgroundColor: elicitWhite,
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(10,0,0,0),
           child: Image.asset('assets/images/elicit_logo.png'),
@@ -55,7 +52,7 @@ class _HomeState extends State<Home> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: elicitGreen,
+        //selectedItemColor: elicitGreen,
         onTap: _onItemTapped,
       ),
     );

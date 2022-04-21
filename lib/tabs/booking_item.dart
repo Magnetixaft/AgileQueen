@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/tabs/detailed_view.dart';
-import 'package:flutter_application_1/colors.dart';
 
 //This class represents an item that populates the bookingList in the
 //Bookings class.
@@ -17,7 +16,7 @@ class BookingItem extends StatelessWidget {
         margin: const EdgeInsets.all(10.0),
         height: 48.0,
         decoration: BoxDecoration(
-            color: elicitGreen,
+            color: Theme.of(context).primaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(6))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

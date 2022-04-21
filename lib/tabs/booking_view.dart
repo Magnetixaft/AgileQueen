@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
-import '../colors.dart';
 import '../models/space.dart';
 
 class BookingView extends StatefulWidget {
@@ -64,8 +63,6 @@ class _BookingViewState extends State<BookingView> {
         height: 50,
         width: MediaQuery.of(context).size.width - 50,
         child: ElevatedButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(elicitGreen)),
           onPressed: () {
             setState(() {
               isLocationSelected = false;
@@ -73,7 +70,6 @@ class _BookingViewState extends State<BookingView> {
           },
           child: Text(
             '${FirebaseHandler.getInstance().getSelectedOffice()} - tap to change',
-            style: TextStyle(color: elicitWhite),
           ),
         ));
   }
@@ -103,14 +99,8 @@ class _BookingViewState extends State<BookingView> {
                                       isLocationSelected = true;
                                     });
                                   },
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            elicitGreen),
-                                  ),
                                   child: Text(
                                     office,
-                                    style: TextStyle(color: elicitWhite),
                                   ),
                                 )),
                           );
@@ -144,7 +134,6 @@ class _RoomSelectorState extends State<RoomSelector> {
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: elicitWhite,
               title: const Text('Back'),
             ),
             body: Center(
@@ -205,28 +194,18 @@ class _RoomSelectorState extends State<RoomSelector> {
                                                               content: const Text(
                                                                   'booking successful'),
                                                               backgroundColor:
-                                                                  elicitGreen,
+                                                                  Theme.of(context).primaryColor,
                                                             ));
                                                           });
                                                         },
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all<Color>(
-                                                                        elicitGreen)),
                                                         child: const Text(
                                                             'Book')));
                                               },
                                               barrierColor: Colors.transparent);
                                         },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  elicitGreen),
-                                        ),
+
                                         child: Text(
                                           'Room number ${workSpace.roomNr} - ${workSpace.description} - Seats left ${5} of total ${workSpace.nrOfSeats}', // TODO fetch number of booked seats
-                                          style: TextStyle(color: elicitWhite),
                                         ),
                                       )),
                                 );
