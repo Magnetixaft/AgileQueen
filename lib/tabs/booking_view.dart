@@ -26,7 +26,10 @@ class _BookingViewState extends State<BookingView> {
             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
             child: Text(
               'Select Office',
-              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: 20),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Roboto',
+                  fontSize: 20),
             ),
           ),
         ),
@@ -61,7 +64,8 @@ class _BookingViewState extends State<BookingView> {
         height: 50,
         width: MediaQuery.of(context).size.width - 50,
         child: ElevatedButton(
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(elicitGreen)),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(elicitGreen)),
           onPressed: () {
             setState(() {
               isLocationSelected = false;
@@ -94,12 +98,15 @@ class _BookingViewState extends State<BookingView> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      FirebaseHandler.getInstance().selectOffice(office);
+                                      FirebaseHandler.getInstance()
+                                          .selectOffice(office);
                                       isLocationSelected = true;
                                     });
                                   },
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(elicitGreen),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            elicitGreen),
                                   ),
                                   child: Text(
                                     office,
@@ -131,7 +138,8 @@ class _RoomSelectorState extends State<RoomSelector> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Space>>(
-      future: widget.future, //this refers to the FirebaseHandler getRooms future
+      future:
+          widget.future, //this refers to the FirebaseHandler getRooms future
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
@@ -151,7 +159,10 @@ class _RoomSelectorState extends State<RoomSelector> {
                     width: MediaQuery.of(context).size.width - 50,
                     child: Text(
                       'Select work area in ${FirebaseHandler.getInstance().getSelectedOffice()} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: 20),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Roboto',
+                          fontSize: 20),
                     )),
                 const Spacer(
                   flex: 1,
@@ -174,18 +185,47 @@ class _RoomSelectorState extends State<RoomSelector> {
                                               builder: (context) {
                                                 //This shows a pop-up where the user can view and book timeslots.
                                                 return AlertDialog(
-                                                  content: Column(
-                                                    children: generateTimeSlotTiles(workSpace, widget.dateTime),
-                                                  ),
-                                                );
+                                                    content: ElevatedButton(
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            FirebaseHandler
+                                                                    .getInstance()
+                                                                .addBooking(
+                                                                    workSpace
+                                                                        .roomNr,
+                                                                    widget
+                                                                        .dateTime);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                                    SnackBar(
+                                                              content: const Text(
+                                                                  'booking successful'),
+                                                              backgroundColor:
+                                                                  elicitGreen,
+                                                            ));
+                                                          });
+                                                        },
+                                                        style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all<Color>(
+                                                                        elicitGreen)),
+                                                        child: const Text(
+                                                            'Book')));
                                               },
                                               barrierColor: Colors.transparent);
                                         },
                                         style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all<Color>(elicitGreen),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  elicitGreen),
                                         ),
                                         child: Text(
-                                          'Room number ${workSpace.roomNr} - ${workSpace.description}',
+                                          'Room number ${workSpace.roomNr} - ${workSpace.description} - Seats left ${workSpace.nrOfSeats} of ${5 + 5}', // TODO
                                           style: TextStyle(color: elicitWhite),
                                         ),
                                       )),
@@ -200,54 +240,5 @@ class _RoomSelectorState extends State<RoomSelector> {
         return const Center(child: CircularProgressIndicator());
       },
     );
-  }
-
-  //This provides the content for the timeslot-selector pop-up in the RoomSelector
-  List<Widget> generateTimeSlotTiles(Space workSpace, DateTime dateTime) {
-    List<Widget> widgetList = [
-      Text('Room number ${workSpace.roomNr} - ${workSpace.description}'),
-      const Divider(
-        height: 20,
-      )
-    ];
-    for (int i = 1; i <= workSpace.nrOfTimeslots; i++) {
-      widgetList.add(FutureBuilder(
-          future: FirebaseHandler.getInstance().getRemainingSeats(workSpace.roomNr, dateTime, i),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Row(
-                children: [
-                  Text('Timeslot: $i\n${snapshot.data} seats remaining'),
-                  const Spacer(
-                    flex: 10,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          FirebaseHandler.getInstance().addBooking(workSpace.roomNr, dateTime, i);
-                          Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: const Text('booking successful'),
-                            backgroundColor: elicitGreen,
-                          ));
-                        });
-                      },
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(elicitGreen)),
-                      child: const Text('Book')),
-                ],
-              );
-            }
-            return const Center(child: CircularProgressIndicator());
-          }));
-    }
-    widgetList.add(const Divider(
-      height: 20,
-    ));
-    widgetList.add(ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        child: const Text('Cancel')));
-    return widgetList;
   }
 }
