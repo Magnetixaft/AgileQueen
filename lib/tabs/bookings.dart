@@ -18,15 +18,15 @@ class _BookingsState extends State<Bookings> {
     // Generating tiles and adding to our BookingList
     for (var i = 0; i < 1000; i++) {
       if (i % 13 == 0) {
-        bookingList.add(const SizedBox(height: 10));
-        bookingList.add(const Text(
-          "Today",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold),
-          ), 
+        bookingList.add(
+          const Padding(
+            padding: EdgeInsets.fromLTRB(8, 10, 0, 5),
+            child: Text(
+              "Today", // TODO Change this to "Today"/"Tomorrow" etc. dynamically
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
         );
-        bookingList.add(const SizedBox(height: 5));
       } else {
         bookingList.add(const BookingItem());
       }
