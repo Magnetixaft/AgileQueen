@@ -225,7 +225,7 @@ class _RoomSelectorState extends State<RoomSelector> {
                                                   elicitGreen),
                                         ),
                                         child: Text(
-                                          'Room number ${workSpace.roomNr} - ${workSpace.description} - Seats left ${workSpace.nrOfSeats} of ${5 + 5}', // TODO
+                                          'Room number ${workSpace.roomNr} - ${workSpace.description} - Seats left ${5} of total ${workSpace.nrOfSeats}', // TODO fetch number of booked seats
                                           style: TextStyle(color: elicitWhite),
                                         ),
                                       )),
