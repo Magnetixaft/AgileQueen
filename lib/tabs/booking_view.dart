@@ -40,6 +40,7 @@ class _BookingViewState extends State<BookingView> {
         ),
         //CalendarDatePicker is a built in class. It would look more like the mockup if the conditional was removed, but I prefer it this way
         if (isLocationSelected)
+          // TODO Change the locale of our app in order to get the CalendarDatePicker to start weeks on Monday https://stackoverflow.com/questions/57975312/flutter-showdatepicker-set-first-day-of-week-to-monday
           CalendarDatePicker(
               initialDate: DateTime.now(),
               firstDate: DateTime.now(),
