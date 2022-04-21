@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/colors.dart';
 import 'package:flutter_application_1/tabs/booking_view.dart';
-import 'package:flutter_application_1/tabs/current_booking_view.dart';
+import 'package:flutter_application_1/bookings_views/current_booking_view.dart';
 import 'package:flutter_application_1/tabs/bookings.dart';
+import 'package:flutter_application_1/tabs/johansbookingview.dart';
 
 
 class Home extends StatefulWidget {
@@ -17,7 +18,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _widgetOptions = <Widget>[
     const BookingView(),
     const Bookings(), // TODO Replace with tab
-    const Text("Index 2: Menu"), // TODO Replace with tab
+    const JohansBookingView(), // TODO Replace with tab
   ];
 
   void _onItemTapped(int index) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/tabs/booking_item.dart';
+import 'package:flutter_application_1/models/booking_item.dart';
 
 //This class is really just a list that contains BookingItems
 class Bookings extends StatefulWidget {
