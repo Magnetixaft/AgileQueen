@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 
+import '../models/booking.dart';
+
 class CurrentBookingView extends StatefulWidget {
   const CurrentBookingView({Key? key}) : super(key: key);
 
