@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/colors.dart';
 import 'package:flutter_application_1/tabs/booking_view.dart';
-import 'package:flutter_application_1/tabs/current_booking_view.dart';
 import 'package:flutter_application_1/tabs/bookings.dart';
 
 
