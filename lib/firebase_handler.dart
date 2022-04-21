@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'models/booking.dart';
+import 'models/space.dart';
+
 class FirebaseHandler {
   // A singleton class which can keep track of rooms and bookings, both in general and for one user. Must be initialized
   var _username = 'init';
@@ -137,32 +140,3 @@ class FirebaseHandler {
   }
 }
 
-class Space {
-  final int roomNr;
-  final int nrOfSeats;
-  final String description;
-  final int nrOfTimeslots;
-  final String office;
-
-  Space(this.roomNr, this.nrOfSeats, this.description, this.nrOfTimeslots,
-      this.office);
-
-  @override
-  String toString() {
-    return 'RoomNr: $roomNr. $description with $nrOfSeats seats divided into $nrOfTimeslots timeslots';
-  }
-}
-
-class Booking {
-  final DateTime day;
-  final String personID;
-  final int roomNr;
-  final int timeslot;
-
-  Booking(this.day, this.personID, this.roomNr, this.timeslot);
-
-  @override
-  String toString() {
-    return 'Booking{day: $day, personID: $personID, roomNr: $roomNr, timeslot: $timeslot}';
-  }
-}
