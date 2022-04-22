@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/AuthenticationHandler.dart';
-import 'package:flutter_application_1/FirebaseHandler.dart';
 import 'package:flutter_application_1/tabs/booking_view.dart';
 import 'package:flutter_application_1/tabs/changebooking.dart';
+import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/home.dart';
-import 'package:flutter_application_1/tabs/current_booking_view.dart';
-import 'package:flutter_application_1/tabs/firebasedemoview.dart';
-
-import 'colors.dart';
+import 'package:flutter_application_1/theme_elicit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,9 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Room Bookings',
-      theme: ThemeData(
-        primarySwatch: Colors.grey, // TODO Custom Swatch
-      ),
+      theme: elicitTheme(),
       home: FutureBuilder(
         //Initializes Firebase
         future: Firebase.initializeApp(),
@@ -70,12 +65,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   var authentication = AuthenticationHandler.getInstance();
+  final userIdTextController = TextEditingController();
+  final userPasswordTextController = TextEditingController();
+//  final focusNodePassword = FocusNode();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: elicitWhite,
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
@@ -99,58 +98,67 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
 
                     TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Email or phone number',
                       ),
+                      controller: userIdTextController,
+//                      onSubmitted: (_) {
+//                        // This moves the focus to the password field when the user presses "enter".
+//                        FocusScope.of(context).requestFocus(focusNodePassword);
+//                      },
                     ),
                     TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Password',
                       ),
+                      controller: userPasswordTextController,
+//                      onSubmitted: (_) {
+//                        login();
+//                      },
+//                      focusNode: focusNodePassword,
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => {
-                          print("Todo, Show modal"),
-                        },
-                        child: const Text("Forgot Password?"),
-                      ),
-                    ),
+//                    Align(
+//                      alignment: Alignment.centerRight,
+//                      child: TextButton(
+//                        onPressed: () => {
+//                          print("Todo, Show modal"),
+//                        },
+//                        child: const Text("Forgot Password?"),
+//                      ),
+//                    ),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  elicitGreen)),
-                          onPressed: () => {
-                                print("TODO Login using Firebase Auth"), // TODO Add text controllers for above fields an loding using firebase auth
-                                Navigator.push(
-                                    // TODO use pushReplacement when login has been implemented. That way, the uswer will not be able to return to this page by pressing the back arrow
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Home()))
-                              },
-                          child: Text(
+                          onPressed: () => {login()},
+                          child: const Text(
                             "Login",
-                            style: TextStyle(color: elicitWhite),
                           )),
                     ),
-                    TextButton(
-                      onPressed: () => {
-                        print("Todo, Show modal"),
-                      },
-                      child: const Text("Create an account"),
-                    ),
+//                    TextButton(
+//                      onPressed: () => {
+//                        print("Todo, Show modal"),
+//                      },
+//                      child: const Text("Create an account"),
+//                    ),
                   ],
                 ),
               ),
             ),
           ],
         ));
+  }
+
+  void login() {
+    // TODO login using Firebase Auth
+    String userId = userIdTextController.text;
+    FirebaseHandler.initialize(userId);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
   }
 }

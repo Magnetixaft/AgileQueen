@@ -1,0 +1,23 @@
+Personal reflections for Ole Fjeldså, week 16, 2022-04-22 
+
+
+- what do I want to learn or understand better?
+
+	Azure AD
+	Firebase 
+	
+- how can I help someone else, or the entire team, to learn something new?
+
+	After learning how to implement Azure AD properly, 
+	I can help explaining it to the group and help with integrating the user information we get bacs so it works with firebase.
+
+- what is my contribution towards the team’s use of Scrum?
+	
+	Added acceptance criteria to some user stories.
+	
+- what is my contribution towards the team’s deliveries?
+
+	Spent a lot of time finding out how to combine Azure AD with flutter as there is no built in support.
+	Implemented Azure login with Johan Sandberg, still needs access to Elicit's Azure AD to start testing.
+	
+	

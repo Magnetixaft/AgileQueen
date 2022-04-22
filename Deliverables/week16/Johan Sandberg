@@ -1,0 +1,12 @@
+- what do I want to learn or understand better?
+Learn more about Azure and the setup of a organization.
+
+- how can I help someone else, or the entire team, to learn something new?
+Be available to answer questions regarding code and Firebase.
+
+- what is my contribution towards the team’s use of Scrum?
+Attending our team's meetings and participated in the process. Written acceptence criterias and worked on the assigned tasks.
+
+- what is my contribution towards the team’s deliveries?
+Created AuthenticationHandler with Ole Fjeldså that connects to Azure Active Directory to handle all users login and authentication. Researched a lot on how 
+Azure AD works and what weneed do to implement it.

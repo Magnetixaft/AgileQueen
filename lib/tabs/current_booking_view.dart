@@ -1,54 +1,63 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_application_1/FirebaseHandler.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_application_1/firebase_handler.dart';
 
-class CurrentBookingView extends StatefulWidget {
-  const CurrentBookingView({Key? key}) : super(key: key);
+// import '../models/booking.dart';
 
-  @override
-  State<CurrentBookingView> createState() => _CurrentBookingViewState();
-}
+// class CurrentBookingView extends StatefulWidget {
+//   const CurrentBookingView({Key? key}) : super(key: key);
 
-class _CurrentBookingViewState extends State<CurrentBookingView> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 50,
-          child: Center(child: Text('Current bookings for ${FirebaseHandler.getInstance().getName()}'),),
-        ),
-        Expanded(
-            child: ListView(
-          children: getBookedTiles(),
-        ))
-      ],
-    );
+//   @override
+//   State<CurrentBookingView> createState() => _CurrentBookingViewState();
+// }
 
-  }
+// //Widget to view and un-book timeslots.
+// class _CurrentBookingViewState extends State<CurrentBookingView> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder<List<Booking>>(
+//       future: FirebaseHandler.getInstance().getUserBookings(),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.done) {
+//           return Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               SizedBox(
+//                 height: 50,
+//                 child: Center(
+//                   child: Text('Current bookings for ${FirebaseHandler.getInstance().getName()}'),
+//                 ),
+//               ),
+//               Expanded(
+//                   child: ListView(
+//                     children: getBookedTiles(snapshot.data))
+//               )
+//             ],
+//           );
+//         }
+//         return const Center(child: CircularProgressIndicator());
+//       }
+//     );
+//   }
 
-  List<Widget> getBookedTiles() {
-    var bookedTiles = <Widget>[];
-    var bookings = FirebaseHandler.getInstance().getUserBookings();
-    bookings.sort();
+//   List<Widget> getBookedTiles(List<Booking>? bookings) {
+//     if (bookings == null) {
+//       return [const Text('No bookings found')];
+//     }
+//     var bookedTiles = <Widget>[];
+//     for (Booking booking in bookings) {
+//       bookedTiles.add(const Divider(height: 20,));
+//       bookedTiles.add(ListTile(
+//         title: Text('${booking.day.month} - ${booking.day.day}'),
+//         trailing: ElevatedButton(
+//             child: const Text('Remove'),
+//             onPressed: () {
+//               setState(() {
+//                 FirebaseHandler.getInstance().removeBooking(booking.roomNr, booking.day);
+//               });
+//             }),
+//       ));
+//     }
 
-    for (String booking in bookings) {
-      var roomDayTimeslotStrings = booking.split(' ');
-      var roomNr = int.parse(roomDayTimeslotStrings[1]);
-      var dayNr = int.parse(roomDayTimeslotStrings[3]);
-      var timeslot = int.parse(roomDayTimeslotStrings[5]);
-      bookedTiles.add(ListTile(
-        title: Text(booking),
-        trailing: ElevatedButton(
-            child: const Text('Remove'),
-            onPressed: () {
-              FirebaseHandler.getInstance().removeBooking(roomNr, dayNr, timeslot);
-              FirebaseHandler.getInstance().getData();
-              setState(() {
-              });
-            }),
-      ));
-    }
-
-    return bookedTiles;
-  }
-}
+//     return bookedTiles;
+//   }
+// }
