@@ -21,6 +21,12 @@ ThemeData elicitTheme() {
       elevation: 0.0, // To match mockup
     ),
 
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        fixedSize: const Size(double.maxFinite, 50),
+      ),
+    ),
+
     // fontFamily: 'Georgia', // TODO choose font
 
     //textTheme: const TextTheme(

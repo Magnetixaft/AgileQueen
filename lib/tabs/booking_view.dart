@@ -59,19 +59,19 @@ class _BookingViewState extends State<BookingView> {
 
   //shows the selected office and when clicked it switches the view to showOfficeSelector widget
   Widget showSelectedOffice() {
-    return SizedBox(
-        height: 50,
-        width: MediaQuery.of(context).size.width - 50,
-        child: ElevatedButton(
-          onPressed: () {
-            setState(() {
-              isLocationSelected = false;
-            });
-          },
-          child: Text(
-            '${FirebaseHandler.getInstance().getSelectedOffice()} - tap to change',
-          ),
-        ));
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+      child: ElevatedButton(
+        onPressed: () {
+          setState(() {
+            isLocationSelected = false;
+          });
+        },
+        child: Text(
+          '${FirebaseHandler.getInstance().getSelectedOffice()} - tap to change',
+        ),
+      ),
+    );
   }
 
   //Shows a list of all offices from Firebase. When clicked it sets the office in FirebaseHandler and closes this widget
@@ -88,21 +88,19 @@ class _BookingViewState extends State<BookingView> {
                     children: snapshot.data?.map((office) {
                           return ListTile(
                             contentPadding: EdgeInsets.zero,
-                            title: SizedBox(
-                                height: 50,
-                                child: ElevatedButton(
-                                  // TODO consider changing these buttons to Cards when we include description/images etc.
-                                  onPressed: () {
-                                    setState(() {
-                                      FirebaseHandler.getInstance()
-                                          .selectOffice(office);
-                                      isLocationSelected = true;
-                                    });
-                                  },
-                                  child: Text(
-                                    office,
-                                  ),
-                                )),
+                            title: ElevatedButton(
+                              // TODO consider changing these buttons to Cards when we include description/images etc.
+                              onPressed: () {
+                                setState(() {
+                                  FirebaseHandler.getInstance()
+                                      .selectOffice(office);
+                                  isLocationSelected = true;
+                                });
+                              },
+                              child: Text(
+                                office,
+                              ),
+                            ),
                           );
                         }).toList() ??
                         [const Text('No offices found')],
@@ -136,84 +134,68 @@ class _RoomSelectorState extends State<RoomSelector> {
             appBar: AppBar(
               title: const Text('Back'),
             ),
-            body: Center(
-                child: Column(
-              children: [
-                const Spacer(
-                  flex: 1,
-                ),
-                //This is just non-interactive information text
-                SizedBox(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width - 50,
-                    child: Text(
-                      'Select work area in ${FirebaseHandler.getInstance().getSelectedOffice()} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Roboto',
-                          fontSize: 20),
-                    )),
-                const Spacer(
-                  flex: 1,
-                ),
-                //This is a list of all the rooms in that office. The user can tap top view, and then book, timeslots.
-                Expanded(
-                    flex: 10,
-                    child: SizedBox(
-                        width: MediaQuery.of(context).size.width - 50,
-                        child: ListView(
-                          children: snapshot.data?.map((workSpace) {
-                                return ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  title: SizedBox(
-                                      height: 50,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                //This shows a pop-up where the user can view and book timeslots.
-                                                return AlertDialog(
-                                                    content: ElevatedButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            FirebaseHandler
-                                                                    .getInstance()
-                                                                .addBooking(
-                                                                    workSpace
-                                                                        .roomNr,
-                                                                    widget
-                                                                        .dateTime);
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                                    SnackBar(
-                                                              content: const Text(
-                                                                  'booking successful'),
-                                                              backgroundColor:
-                                                                  Theme.of(context).primaryColor,
-                                                            ));
-                                                          });
-                                                        },
-                                                        child: const Text(
-                                                            'Book')));
-                                              },
-                                              barrierColor: Colors.transparent);
+            body: Padding(
+              padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Spacer(
+                    flex: 1,
+                  ),
+                  //This is just non-interactive information text
+                  Text(
+                    'Select work area in ${FirebaseHandler.getInstance().getSelectedOffice()} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto',
+                      fontSize: 20,
+                    ), // TODO remove this style when text styles has been added to the theme
+                  ),
+                  const Spacer(
+                    flex: 1,
+                  ),
+                  //This is a list of all the rooms in that office. The user can tap top view, and then book, timeslots.
+                  Expanded(
+                      flex: 10,
+                      child: ListView(
+                        children: snapshot.data?.map((workSpace) {
+                              return ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          //This shows a pop-up where the user can view and book timeslots.
+                                          return AlertDialog(
+                                              content: ElevatedButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      FirebaseHandler.getInstance().addBooking(workSpace.roomNr,widget.dateTime);
+                                                      Navigator.of(context).pop();
+                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                        SnackBar(
+                                                        content: const Text('booking successful'),
+                                                        backgroundColor: Theme.of(context).primaryColor,
+                                                        ),
+                                                      );
+                                                    });
+                                                  },
+                                                  child: const Text('Book')));
                                         },
-
-                                        child: Text(
-                                          'Room number ${workSpace.roomNr} - ${workSpace.description} - Seats left ${5} of total ${workSpace.nrOfSeats}', // TODO fetch number of booked seats
-                                        ),
-                                      )),
-                                );
-                              }).toList() ??
-                              [const Text('No Rooms found')],
-                        )))
-              ],
-            )),
+                                        barrierColor: Colors.transparent);
+                                  },
+                                  child: Text(
+                                    'Room number ${workSpace.roomNr} - ${workSpace.description} - Seats left ${5} of total ${workSpace.nrOfSeats}', // TODO fetch number of booked seats
+                                  ),
+                                ),
+                              );
+                            }).toList() ??
+                            [const Text('No Rooms found')],
+                      ))
+                ],
+              ),
+            ),
           );
         }
         return const Center(child: CircularProgressIndicator());
