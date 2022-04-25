@@ -15,8 +15,8 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     const BookingView(),
-    const Bookings(), // TODO Replace with tab
-    const Profile() // TODO Replace with tab
+    const Bookings(),
+    const Profile()
   ];
 
   void _onItemTapped(int index) {
