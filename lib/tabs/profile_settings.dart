@@ -73,19 +73,19 @@ class Profile extends StatelessWidget {
 
 
         /// Calls the builder method to build each item.
-        buildSettingItem(context, 'My Account', 'Make changes to my profile'),
+        _buildSettingItem(context, 'My Account', 'Make changes to my profile'),
         const Divider(height: 0, indent: 20, endIndent: 20),
 
-        buildSettingItem(context, 'Notifications', 'Adjust notificaton settings'),
+        _buildSettingItem(context, 'Notifications', 'Adjust notificaton settings'),
         const Divider(height: 0, indent: 20, endIndent: 20),
 
-        buildSettingItem(context, 'Help', 'Read FAQ'),
+        _buildSettingItem(context, 'Help', 'Read FAQ'),
         const Divider(height: 0, indent: 20, endIndent: 20),
 
-        buildSettingItem(context, 'About Elli', 'Read more about Elli'),
+        _buildSettingItem(context, 'About Elli', 'Read more about Elli'),
         const Divider(height: 0, indent: 20, endIndent: 20),
 
-        buildSettingItem(context, 'Log Out', 'Leave the application'),
+        _buildSettingItem(context, 'Log Out', 'Leave the application'),
         const Divider(height: 0, indent: 20, endIndent: 20),
       ],
     );
@@ -93,10 +93,11 @@ class Profile extends StatelessWidget {
   }
 
   /// Builder method which creates a setting item with title and subtitle.
-  GestureDetector buildSettingItem(BuildContext context, String title, String subtitle) {
+  GestureDetector _buildSettingItem(BuildContext context, String title, String subtitle) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
-        // TODO add action
+        print('Item Tapped');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
@@ -127,4 +128,5 @@ class Profile extends StatelessWidget {
       ),
     );
   }
+
 }
