@@ -50,6 +50,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// The login page
+///
+/// A login page that navigates to [Home] when login is succesful.
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
