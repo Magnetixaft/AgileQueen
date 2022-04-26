@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/tabs/booking_view.dart';
 import 'package:flutter_application_1/tabs/bookings.dart';
+import 'package:flutter_application_1/tabs/profile_settings.dart';
 
 
 class Home extends StatefulWidget {
@@ -14,8 +15,8 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     const BookingView(),
-    const Bookings(), // TODO Replace with tab
-    const Text("Index 2: Menu"), // TODO Replace with tab
+    const Bookings(),
+    const Profile()
   ];
 
   void _onItemTapped(int index) {
@@ -47,8 +48,8 @@ class _HomeState extends State<Home> {
             label: 'My Bookings',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'Menu',
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
