@@ -5,6 +5,8 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    /// Builds the header.
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -17,6 +19,8 @@ class Profile extends StatelessWidget {
         ),
         const SizedBox(height: 20),
 
+
+        /// Builds a profile box with a name, email and user icon.
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
           child: Container(
@@ -45,7 +49,7 @@ class Profile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const <Widget>[
                     Text(
-                      'Albert Wickman',
+                      'Albert Wickman', // TODO get name
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -54,7 +58,7 @@ class Profile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'albert.wickman@hotmail.se',
+                      'albert.wickman@hotmail.se', // TODO get email
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -66,6 +70,9 @@ class Profile extends StatelessWidget {
             ),
           ),
         ),
+
+
+        /// Calls the builder method to build each item.
         buildSettingItem(context, 'My Account', 'Make changes to my profile'),
         const Divider(height: 0, indent: 20, endIndent: 20),
 
@@ -85,10 +92,11 @@ class Profile extends StatelessWidget {
 
   }
 
+  /// Builder method which creates a setting item with title and subtitle.
   GestureDetector buildSettingItem(BuildContext context, String title, String subtitle) {
     return GestureDetector(
       onTap: () {
-
+        // TODO add action
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
