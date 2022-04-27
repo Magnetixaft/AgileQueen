@@ -6,54 +6,58 @@ import 'package:flutter_application_1/tabs/detailed_view.dart';
 //Currently, it is a list of random test objects. The idea is to get a booking
 //object from Firebase.
 class BookingItem extends StatelessWidget {
-  const BookingItem({Key? key}) : super(key: key);
+  final String _roomName;
+  final String _place;
+  final String _address;
+  final String _date; 
+
+  //const BookingItem({Key? key}) : super(key: key);
+  const BookingItem(this._roomName, this._place, this._address, this._date,
+   {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _openDetailedView(context),
-      child: Container(
-        margin: const EdgeInsets.all(10.0),
-        height: 48.0,
-        decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: const BorderRadius.all(Radius.circular(6))),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: _buildColumn(),
-            ),
-            const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.white,
-            ),
-          ],
-        ),
-      )
-    );
+        onTap: () => _openDetailedView(context),
+        child: Container(
+          margin: const EdgeInsets.all(10.0),
+          height: 48.0,
+          decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: const BorderRadius.all(Radius.circular(6))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: _buildColumn(),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget _buildColumn() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const <Widget>[
-        SizedBox(height: 5),
+      children: <Widget>[
+        const SizedBox(height: 5),
         Text(
-          "[Rumsnamn], [Plats]",
-          style: TextStyle(
+          _roomName + ', ' + _place,
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 5),
-        Text(
-          "Drottningtorget 5, 411 03 Göteborg",
-          style: TextStyle(
-            color: Colors.white,
-          )
-        ),
+        const SizedBox(height: 5),
+        Text(_address,
+            style: const TextStyle(
+              color: Colors.white,
+            )),
       ],
     );
   }
@@ -64,8 +68,9 @@ class BookingItem extends StatelessWidget {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("[Rumsnamn]"), //booking.getRoomName or something.
-          content: const DetailedView(),
+          title: Text(_roomName), //booking.getRoomName or something.
+          content: DetailedView(
+            "Centralen", _address, _date, "Description"),
           elevation: 24.0,
           actions: <Widget>[
             TextButton(
