@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
-//This class represents the detailed my bookings view. 
+//This class represents the detailed my bookings view.
 class DetailedView extends StatelessWidget {
-  const DetailedView({Key? key}) : super(key: key);
+  final String office;
+  final String address;
+  final String date;
+  final String description; 
+
+  const DetailedView(this.office, this.address,
+    this.date, this.description, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,27 +20,26 @@ class DetailedView extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: 
-              ListView(
+            child: ListView(
               scrollDirection: Axis.vertical,
-              children: const <Widget>[
+              children: <Widget>[
                 Text(
-                  "Kontor",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                  office,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 Text(
-                  "Adress",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                SizedBox(height: 10),
-                Text("Datum"),
-                SizedBox(height: 10),
-                Text("Rumsbeskrivning, med lorem ipsum Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
-                SizedBox(height: 10),
-                Text("[Attribut]"),
-                SizedBox(height: 10),
-                Text("Seats remaining: 10"),
-                SizedBox(height: 10),
+                  address,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Text(date),
+                const SizedBox(height: 10),
+                Text(description),
+                const SizedBox(height: 10),
+                const Text("[Attribut]"), //TODO ska vi har kvar detta?
+                const SizedBox(height: 10),
+                const Text("Seats remaining: 10"), //TODO ska vi har kvar detta?
+                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -43,5 +48,4 @@ class DetailedView extends StatelessWidget {
       ),
     );
   }
-
 }

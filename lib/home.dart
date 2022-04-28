@@ -3,7 +3,9 @@ import 'package:flutter_application_1/tabs/booking_view.dart';
 import 'package:flutter_application_1/tabs/bookings.dart';
 import 'package:flutter_application_1/tabs/profile_settings.dart';
 
-
+/// A tab-based view that acts as the apps top most page
+///
+/// This page is navigated to when a user has logged in.
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -12,8 +14,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  
+  /// The index currently selected in the BottomNavigationBar
   int _selectedIndex = 0;
-  final List<Widget> _widgetOptions = <Widget>[
+  
+  /// The list of tabs/pages selectable using the BottomNavigationBar
+  final List<Widget> _tabs = <Widget>[
     const BookingView(),
     const Bookings(),
     const Profile()
@@ -35,7 +41,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _tabs.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -48,8 +54,8 @@ class _HomeState extends State<Home> {
             label: 'My Bookings',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.menu),
+            label: 'Menu',
           ),
         ],
         currentIndex: _selectedIndex,

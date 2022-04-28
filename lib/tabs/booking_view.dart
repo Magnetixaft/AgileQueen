@@ -1,7 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import '../models/space.dart';
 
+
+/// View for bookings
+///
+/// Contains elements for selecting office, selecting day,
+/// picking room and booking that room for a timeslot
 class BookingView extends StatefulWidget {
   const BookingView({Key? key}) : super(key: key);
 
@@ -9,8 +15,8 @@ class BookingView extends StatefulWidget {
   State<BookingView> createState() => _BookingViewState();
 }
 
-//Widget for selecting office, picking day, picking room and then booking a timeslot
 class _BookingViewState extends State<BookingView> {
+  /// Determines if the office selector is visible
   bool isLocationSelected = false;
 
   @override
@@ -36,7 +42,7 @@ class _BookingViewState extends State<BookingView> {
         const Spacer(
           flex: 2,
         ),
-        //CalendarDatePicker is a built in class. It would look more like the mockup if the conditional was removed, but I prefer it this way
+        //CalendarDatePicker is a built in class
         if (isLocationSelected)
           // TODO Change the locale of our app in order to get the CalendarDatePicker to start weeks on Monday https://stackoverflow.com/questions/57975312/flutter-showdatepicker-set-first-day-of-week-to-monday
           CalendarDatePicker(
@@ -57,7 +63,9 @@ class _BookingViewState extends State<BookingView> {
     );
   }
 
-  //shows the selected office and when clicked it switches the view to showOfficeSelector widget
+  /// View that shows the currently selected office.
+  ///
+  /// Click to show [showOfficeSelector] widget instead.
   Widget showSelectedOffice() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
@@ -74,7 +82,10 @@ class _BookingViewState extends State<BookingView> {
     );
   }
 
-  //Shows a list of all offices from Firebase. When clicked it sets the office in FirebaseHandler and closes this widget
+  /// View for selecting offices
+  ///
+  /// Loads a list of offices from Firebase via [FirebaseHandler].
+  /// When office is selected the [showSelectedOffice] widget is shown instead
   Widget showOfficeSelector() {
     return FutureBuilder<List<String>>(
       future: FirebaseHandler.getInstance().getOffices(),
@@ -112,8 +123,12 @@ class _BookingViewState extends State<BookingView> {
   }
 }
 
-//This appears when the user has selected an office and a day. It lets the user view and select the rooms.
+/// View for selecting a room and booking a timeslot
+///
+/// Displays rooms as tiles in a certain office via [FirebaseHandler].
+/// When a tile is clicked, it shows an [AlertDialog] with bookable timeslots.
 class RoomSelector extends StatefulWidget {
+  /// The day that the user selected in [BookingView]
   final DateTime dateTime;
   final future = FirebaseHandler.getInstance().getRooms();
   RoomSelector(this.dateTime, {Key? key}) : super(key: key);
