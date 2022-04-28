@@ -27,6 +27,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Room Bookings',
       theme: elicitTheme(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       home: FutureBuilder(
         //Initializes Firebase
         future: Firebase.initializeApp(),

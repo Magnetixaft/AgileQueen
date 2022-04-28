@@ -54,8 +54,8 @@ class _HomeState extends State<Home> {
             label: 'My Bookings',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.menu),
+            label: 'Menu',
           ),
         ],
         currentIndex: _selectedIndex,
