@@ -40,4 +40,36 @@ class AuthenticationHandler {
     print('Logged out');
   }
 
+  void testing() async {
+    User test = await fetchUser() as User;
+    print(test.id);
+  }
+
+  Future<User> fetchUser() async {
+    final response = await http
+        .get(Uri.parse('https://graph.microsoft.com/'),headers: { "Authorization": "Bearer $accessToken", "Content-Type": "application/json"});
+    print(response.toString());
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response, then parse the JSON.
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      throw Exception('Failed');
+    }
+  }
+
+}
+class User {
+  final String id;
+
+  const User({
+    required this.id,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['displayName'],
+    );
+  }
 }
