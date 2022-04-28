@@ -1,7 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import '../models/space.dart';
 
+
+/// View for bookings
+///
+/// Contains elements for selecting office, selecting day,
+/// picking room and booking that room for a timeslot
 class BookingView extends StatefulWidget {
   const BookingView({Key? key}) : super(key: key);
 
@@ -9,8 +15,8 @@ class BookingView extends StatefulWidget {
   State<BookingView> createState() => _BookingViewState();
 }
 
-//Widget for selecting office, picking day, picking room and then booking a timeslot
 class _BookingViewState extends State<BookingView> {
+  /// Determines if the office selector is visible
   bool isLocationSelected = false;
 
   @override
@@ -36,7 +42,7 @@ class _BookingViewState extends State<BookingView> {
         const Spacer(
           flex: 2,
         ),
-        //CalendarDatePicker is a built in class. It would look more like the mockup if the conditional was removed, but I prefer it this way
+        //CalendarDatePicker is a built in class
         if (isLocationSelected)
           // TODO Change the locale of our app in order to get the CalendarDatePicker to start weeks on Monday https://stackoverflow.com/questions/57975312/flutter-showdatepicker-set-first-day-of-week-to-monday
           CalendarDatePicker(
@@ -57,24 +63,29 @@ class _BookingViewState extends State<BookingView> {
     );
   }
 
-  //shows the selected office and when clicked it switches the view to showOfficeSelector widget
+  /// View that shows the currently selected office.
+  ///
+  /// Click to show [showOfficeSelector] widget instead.
   Widget showSelectedOffice() {
-    return SizedBox(
-        height: 50,
-        width: MediaQuery.of(context).size.width - 50,
-        child: ElevatedButton(
-          onPressed: () {
-            setState(() {
-              isLocationSelected = false;
-            });
-          },
-          child: Text(
-            '${FirebaseHandler.getInstance().getSelectedOffice()} - tap to change',
-          ),
-        ));
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+      child: ElevatedButton(
+        onPressed: () {
+          setState(() {
+            isLocationSelected = false;
+          });
+        },
+        child: Text(
+          '${FirebaseHandler.getInstance().getSelectedOffice()} - tap to change',
+        ),
+      ),
+    );
   }
 
-  //Shows a list of all offices from Firebase. When clicked it sets the office in FirebaseHandler and closes this widget
+  /// View for selecting offices
+  ///
+  /// Loads a list of offices from Firebase via [FirebaseHandler].
+  /// When office is selected the [showSelectedOffice] widget is shown instead
   Widget showOfficeSelector() {
     return FutureBuilder<List<String>>(
       future: FirebaseHandler.getInstance().getOffices(),
@@ -88,21 +99,19 @@ class _BookingViewState extends State<BookingView> {
                     children: snapshot.data?.map((office) {
                           return ListTile(
                             contentPadding: EdgeInsets.zero,
-                            title: SizedBox(
-                                height: 50,
-                                child: ElevatedButton(
-                                  // TODO consider changing these buttons to Cards when we include description/images etc.
-                                  onPressed: () {
-                                    setState(() {
-                                      FirebaseHandler.getInstance()
-                                          .selectOffice(office);
-                                      isLocationSelected = true;
-                                    });
-                                  },
-                                  child: Text(
-                                    office,
-                                  ),
-                                )),
+                            title: ElevatedButton(
+                              // TODO consider changing these buttons to Cards when we include description/images etc.
+                              onPressed: () {
+                                setState(() {
+                                  FirebaseHandler.getInstance()
+                                      .selectOffice(office);
+                                  isLocationSelected = true;
+                                });
+                              },
+                              child: Text(
+                                office,
+                              ),
+                            ),
                           );
                         }).toList() ??
                         [const Text('No offices found')],
@@ -114,8 +123,12 @@ class _BookingViewState extends State<BookingView> {
   }
 }
 
-//This appears when the user has selected an office and a day. It lets the user view and select the rooms.
+/// View for selecting a room and booking a timeslot
+///
+/// Displays rooms as tiles in a certain office via [FirebaseHandler].
+/// When a tile is clicked, it shows an [AlertDialog] with bookable timeslots.
 class RoomSelector extends StatefulWidget {
+  /// The day that the user selected in [BookingView]
   final DateTime dateTime;
   final future = FirebaseHandler.getInstance().getRooms();
   RoomSelector(this.dateTime, {Key? key}) : super(key: key);
@@ -136,84 +149,68 @@ class _RoomSelectorState extends State<RoomSelector> {
             appBar: AppBar(
               title: const Text('Back'),
             ),
-            body: Center(
-                child: Column(
-              children: [
-                const Spacer(
-                  flex: 1,
-                ),
-                //This is just non-interactive information text
-                SizedBox(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width - 50,
-                    child: Text(
-                      'Select work area in ${FirebaseHandler.getInstance().getSelectedOffice()} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Roboto',
-                          fontSize: 20),
-                    )),
-                const Spacer(
-                  flex: 1,
-                ),
-                //This is a list of all the rooms in that office. The user can tap top view, and then book, timeslots.
-                Expanded(
-                    flex: 10,
-                    child: SizedBox(
-                        width: MediaQuery.of(context).size.width - 50,
-                        child: ListView(
-                          children: snapshot.data?.map((workSpace) {
-                                return ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  title: SizedBox(
-                                      height: 50,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                //This shows a pop-up where the user can view and book timeslots.
-                                                return AlertDialog(
-                                                    content: ElevatedButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            FirebaseHandler
-                                                                    .getInstance()
-                                                                .addBooking(
-                                                                    workSpace
-                                                                        .roomNr,
-                                                                    widget
-                                                                        .dateTime);
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                                    SnackBar(
-                                                              content: const Text(
-                                                                  'booking successful'),
-                                                              backgroundColor:
-                                                                  Theme.of(context).primaryColor,
-                                                            ));
-                                                          });
-                                                        },
-                                                        child: const Text(
-                                                            'Book')));
-                                              },
-                                              barrierColor: Colors.transparent);
+            body: Padding(
+              padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Spacer(
+                    flex: 1,
+                  ),
+                  //This is just non-interactive information text
+                  Text(
+                    'Select work area in ${FirebaseHandler.getInstance().getSelectedOffice()} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto',
+                      fontSize: 20,
+                    ), // TODO remove this style when text styles has been added to the theme
+                  ),
+                  const Spacer(
+                    flex: 1,
+                  ),
+                  //This is a list of all the rooms in that office. The user can tap top view, and then book, timeslots.
+                  Expanded(
+                      flex: 10,
+                      child: ListView(
+                        children: snapshot.data?.map((workSpace) {
+                              return ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          //This shows a pop-up where the user can view and book timeslots.
+                                          return AlertDialog(
+                                              content: ElevatedButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      FirebaseHandler.getInstance().addBooking(workSpace.roomNr,widget.dateTime);
+                                                      Navigator.of(context).pop();
+                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                        SnackBar(
+                                                        content: const Text('booking successful'),
+                                                        backgroundColor: Theme.of(context).primaryColor,
+                                                        ),
+                                                      );
+                                                    });
+                                                  },
+                                                  child: const Text('Book')));
                                         },
-
-                                        child: Text(
-                                          'Room number ${workSpace.roomNr} - ${workSpace.description} - Seats left ${5} of total ${workSpace.nrOfSeats}', // TODO fetch number of booked seats
-                                        ),
-                                      )),
-                                );
-                              }).toList() ??
-                              [const Text('No Rooms found')],
-                        )))
-              ],
-            )),
+                                        barrierColor: Colors.transparent);
+                                  },
+                                  child: Text(
+                                    'Room number ${workSpace.roomNr} - ${workSpace.description} - Seats left ${5} of total ${workSpace.nrOfSeats}', // TODO fetch number of booked seats
+                                  ),
+                                ),
+                              );
+                            }).toList() ??
+                            [const Text('No Rooms found')],
+                      ))
+                ],
+              ),
+            ),
           );
         }
         return const Center(child: CircularProgressIndicator());

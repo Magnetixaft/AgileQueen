@@ -52,6 +52,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// The login page
+///
+/// A login page that navigates to [Home] when login is succesful.
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -138,6 +141,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
+  /// Logs the user in using Azure
+  ///
+  /// Navigates to [Home] when login is succesful. Initalizes the [FirebaseHandler] using the input from [userIdTextController]
   void login() {
     // TODO login using Firebase Auth
     String userId = userIdTextController.text;

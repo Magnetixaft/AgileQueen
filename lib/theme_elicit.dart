@@ -15,7 +15,17 @@ ThemeData elicitTheme() {
     scaffoldBackgroundColor: elicitWhite,
 
     // Appbar theme
-    appBarTheme: AppBarTheme(backgroundColor: elicitWhite),
+    appBarTheme: AppBarTheme(
+      backgroundColor: elicitWhite,
+      foregroundColor: Colors.black,
+      elevation: 0.0, // To match mockup
+    ),
+
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        fixedSize: const Size(double.maxFinite, 50),
+      ),
+    ),
 
     // fontFamily: 'Georgia', // TODO choose font
 

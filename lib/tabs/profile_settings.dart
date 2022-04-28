@@ -9,13 +9,14 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  bool valNotify = false;
+  /*bool valNotify = false;
 
   onChangeFunction(bool newValue) {
     setState(() {
       valNotify = newValue;
     });
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +87,7 @@ class _ProfileState extends State<Profile> {
         ),
 
 
+
         /// Calls the builder method to build each item.
 
         _buildSettingItem(context, 'Help', 'Read FAQ'),
@@ -140,6 +142,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+/*
   GestureDetector _buildToggleItem(BuildContext context, String title, String subtitle, bool value, Function onChangeMethod) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -179,4 +182,5 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+*/
 }
