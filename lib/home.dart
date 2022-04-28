@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/colors.dart';
-import 'package:flutter_application_1/tabs/bookingsview.dart';
+import 'package:flutter_application_1/tabs/booking_view.dart';
+import 'package:flutter_application_1/tabs/bookings.dart';
+
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -11,10 +12,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text("Index 0: Book"), // TODO Replace with tab
-    Text("Index 1: Bookings"), // TODO Replace with tab
-    Text("Index 2: Menu"), // TODO Replace with tab
+  final List<Widget> _widgetOptions = <Widget>[
+    const BookingView(),
+    const Bookings(), // TODO Replace with tab
+    const Text("Index 2: Menu"), // TODO Replace with tab
   ];
 
   void _onItemTapped(int index) {
@@ -26,9 +27,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: elicitWhite,
       appBar: AppBar(
-        backgroundColor: elicitWhite,
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(10,0,0,0),
           child: Image.asset('assets/images/elicit_logo.png'),
@@ -53,7 +52,7 @@ class _HomeState extends State<Home> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: elicitGreen,
+        //selectedItemColor: elicitGreen,
         onTap: _onItemTapped,
       ),
     );

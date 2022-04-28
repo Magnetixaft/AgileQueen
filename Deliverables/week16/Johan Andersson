@@ -1,0 +1,18 @@
+- what do I want to learn or understand better?
+I want to be better able to use Firebase. I want to learn how to make a Flutter web interface and how to use it to configure a system.
+
+
+- how can I help someone else, or the entire team, to learn something new?
+I understand a bit about Flutter futureBuilders and can help others work with it. 
+
+
+- what is my contribution towards the team’s use of Scrum?
+I have done my part in creating user stories, setting acceptance criteria and such.
+
+
+- what is my contribution towards the team’s deliveries?
+I have done a new working firebase structure. 
+I have made most of the booking interface. 
+I have updated the FirebaseHandler singleton. 
+I have made a working implementation of viewing booked timeslots and unbooking them.
+
