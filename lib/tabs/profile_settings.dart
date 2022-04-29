@@ -110,7 +110,6 @@ class _ProfileState extends State<Profile> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        print('Item Tapped');
         showDialog(
             context: context,
             builder: (context) {
