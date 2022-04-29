@@ -110,34 +110,34 @@ class _Date {
 
   @override
   String toString() {
-    return _getMonth(month) + ' ' + day.toString() + ' ' + year.toString();
+    return _getMonth(month) + ' ' + day.toString() + ', ' + year.toString();
   }
 
   String _getMonth(var month) {
     switch (month) {
-      case 0:
-        return 'January';
       case 1:
-        return 'February';
+        return 'January';
       case 2:
-        return 'March';
+        return 'February';
       case 3:
-        return 'April';
+        return 'March';
       case 4:
-        return 'May';
+        return 'April';
       case 5:
-        return 'June';
+        return 'May';
       case 6:
-        return 'July';
+        return 'June';
       case 7:
-        return 'August';
+        return 'July';
       case 8:
-        return 'September';
+        return 'August';
       case 9:
-        return 'October';
+        return 'September';
       case 10:
-        return 'November';
+        return 'October';
       case 11:
+        return 'November';
+      case 12:
         return 'December';
       default:
         return '';
