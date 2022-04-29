@@ -1,0 +1,19 @@
+Individual reflection for Gustaf Johansson week 17.
+
+- What do I want to learn or understand better?
+  - Flutter/Dart/Firebase/databases in general. This sprint I primarily worked on connected the frontend to the database. In order to finalise this process, I need to better
+  better understand how databases work. Especially seeing as I have never worked with databased before. 
+
+- How can I help someone else, or the entire team, to learn something new?
+  - I have worked with Scrum, UML and sequence diagrams before. As such, I can help my team with these things. I have also worked a bit with frontend
+  development in Java, and so I can help with this too. (Same as last week). As mentioned above, I dediciated this sprint to front end development in
+  Flutter. Because of this, I have learned quite a bit about front end development in Flutter, and I could potentially help my team with this. 
+
+- What is my contribution towards the team’s use of Scrum?
+  - Wrote user stories with my team, wrote acceptance criteria, had meetings. This week we had two meetings with our client. One was dedicated to 
+  discussing Azure sign in and databases, and the other was our weekly client meeting where we discuss this sprint's progress. 
+
+- What is my contribution towards the team’s deliveries?
+  - I dedicated this sprint to connecting the "my bookings" tab I made last sprint to our database. Further, since what I made last week was purely hard
+  coded, I created constructors for all the classes I made, and wrote logic so that the "my bookings" tab actually looks like the hard coded version, but
+  dynamic. 
