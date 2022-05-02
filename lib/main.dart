@@ -148,6 +148,53 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO login using Firebase Auth
     String userId = userIdTextController.text;
     FirebaseHandler.initialize(userId);
+
+    FirebaseHandler.getInstance().buildStaticModel().then((value) {
+
+      FirebaseHandler.getInstance().rooms.forEach((key, value) {print(value);});
+
+    });
+
+
+    // FirebaseFirestore.instance
+    //     .collection('Bookings_2')
+    //     .get()
+    //     .then((value) {
+    //   for(var value2 in value.docs) {
+    //     print(value2.data());
+    //   }
+    // });
+
+    // FirebaseFirestore.instance
+    //     .collection('Bookings_2')
+    //     .doc()
+    //     .set(<String, dynamic>{
+    //   'UserId': 'joha@student.chalmers.se',
+    //   'Timeslot': 0,
+    //   'Day': DateTime(2022, 05, 1),
+    //   'WorkspaceNr': 1,
+    //   'RoomNr': 1,
+    //   'RepeatedBooking': false
+    // });
+
+    // FirebaseFirestore.instance
+    //     .collection('Rooms_2')
+    //     .doc('14')
+    //     .set(<String, dynamic>{
+    //   'Office': 'Malmökontoret',
+    //   'Name': 'Standing room',
+    //   'Workspaces': {
+    //     '1': ['Mac computer'],
+    //     '2': ['Mac computer'],
+    //     '3': [''],
+    //     '4': [''],
+    //     '5': [''],
+    //     '6': ['Saddle chair'],
+    //   },
+    //   'Description': 'A standing room',
+    //   'Timeslots': ['06:30-12:00', '13:00-17:00']
+    // });
+
     Navigator.push(
         context,
         MaterialPageRoute(
