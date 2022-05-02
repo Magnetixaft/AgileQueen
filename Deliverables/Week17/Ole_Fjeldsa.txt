@@ -1,0 +1,26 @@
+Personal reflections for Ole Fjeldså, week 16, 2022-04-29 
+
+
+- what do I want to learn or understand better?
+
+	Azure AD
+	Firebase 
+	Planning burn rate
+	
+- how can I help someone else, or the entire team, to learn something new?
+
+	After learning how to implement Azure AD properly, 
+	I can help explaining it to the group and help with integrating the user information we get bacs so it works with firebase.
+
+- what is my contribution towards the team’s use of Scrum?
+	
+	Was scrum master this week. The team started using points system for the different user stories this week, 
+	and started describing what the main goals for the week is and why that is valuable.
+	Next week we should improve our understanding of the scope of stories with planning poker.
+	
+- what is my contribution towards the team’s deliveries?
+
+	Prepared for meeting with Daniel at Elicit regarding Azure AD
+	Designed parts of the admin page.
+	
+	
