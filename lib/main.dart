@@ -149,12 +149,22 @@ class _MyHomePageState extends State<MyHomePage> {
     String userId = userIdTextController.text;
     FirebaseHandler.initialize(userId);
 
+    // this is not optimal, but work in progress.
     FirebaseHandler.getInstance().buildStaticModel().then((value) {
 
-      FirebaseHandler.getInstance().rooms.forEach((key, value) {print(value);});
+      FirebaseHandler.getInstance().getUserBookings_2().then((value) {
+        for(var booking in value) {
+          print(booking);
+        }
+      },);
 
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
     });
-
 
     // FirebaseFirestore.instance
     //     .collection('Bookings_2')
@@ -194,11 +204,5 @@ class _MyHomePageState extends State<MyHomePage> {
     //   'Description': 'A standing room',
     //   'Timeslots': ['06:30-12:00', '13:00-17:00']
     // });
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
   }
 }
