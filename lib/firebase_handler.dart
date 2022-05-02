@@ -2,9 +2,6 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'models/booking.dart';
-import 'models/space.dart';
-
 /// Singleton class to communicate with Firebase.
 ///
 /// Must be initialized with a username to work. Stores a username and selected office during bookings.
@@ -106,31 +103,13 @@ class FirebaseHandler {
     return Map.fromEntries(_rooms.entries.where((entry) => entry.value.office == _office));
   }
 
-  ///Returns a list of all bookings made by the current user as Booking objects.
-  Future<List<Booking>> getUserBookings() async {
-    var data = await FirebaseFirestore.instance.collection('Bookings').where('personID', isEqualTo: _username).get();
+  /// Returns a list of all bookings made by the current user as Booking objects.
+  Future<List<Booking>> getUserBookings_2() async {
+    var data = await FirebaseFirestore.instance.collection('Bookings_2').where('UserId', isEqualTo: _username).get();
     List<Booking> bookingList = [];
     for (var doc in data.docs) {
       var docData = doc.data();
-      bookingList.add(Booking(
-          //TODO add timeslots again
-          DateTime.fromMicrosecondsSinceEpoch(docData['day'].microsecondsSinceEpoch),
-          docData['personID'],
-          docData['roomNr']));
-    }
-    bookingList.sort((a, b) {
-      return a.day.compareTo(b.day); //TODO Reimplement the sorting function that looked at timeslots too.
-    });
-    return bookingList;
-  }
-
-  /// Returns a list of all bookings made by the current user as Booking objects.
-  Future<List<Booking_2>> getUserBookings_2() async {
-    var data = await FirebaseFirestore.instance.collection('Bookings_2').where('UserId', isEqualTo: _username).get();
-    List<Booking_2> bookingList = [];
-    for (var doc in data.docs) {
-      var docData = doc.data();
-      bookingList.add(Booking_2(DateTime.fromMicrosecondsSinceEpoch(docData['Day'].microsecondsSinceEpoch), docData['UserId'], docData['RoomNr'],
+      bookingList.add(Booking(DateTime.fromMicrosecondsSinceEpoch(docData['Day'].microsecondsSinceEpoch), docData['UserId'], docData['RoomNr'],
           docData['WorkspaceNr'], docData['Timeslot'], docData['RepeatedBooking']));
     }
     bookingList.sort((a, b) {
@@ -232,6 +211,18 @@ class Room {
   String toString() {
     return 'Room{workspaces: $workspaces, timeslots: $timeslots, description: $description, office: $office, name: $name}';
   }
+
+  bool hasSpecialEquipment() {
+    var special = false;
+    for (var workspace in workspaces.entries) {
+      for (var item in workspace.value) {
+        if (item != "") {
+          special = true;
+        }
+      }
+    }
+    return special;
+  }
 }
 
 class Division {
@@ -257,7 +248,7 @@ class Office {
   }
 }
 
-class Booking_2 {
+class Booking {
   final DateTime day;
   final String personID;
   final int roomNr;
@@ -265,41 +256,10 @@ class Booking_2 {
   final int timeslot;
   final bool repeatedBooking;
 
-  Booking_2(this.day, this.personID, this.roomNr, this.workspaceNr, this.timeslot, this.repeatedBooking);
+  Booking(this.day, this.personID, this.roomNr, this.workspaceNr, this.timeslot, this.repeatedBooking);
 
   @override
   String toString() {
     return 'Booking_2{day: $day, personID: $personID, roomNr: $roomNr, workspaceNr: $workspaceNr, timeslot: $timeslot, repeatedBooking: $repeatedBooking}';
   }
 }
-
-// ///Returns a future with a list of the names of offices.
-// Future<List<String>> getOffices() async {
-//   var offices = await FirebaseFirestore.instance.collection('Offices').get();
-//   return offices.docs.map((e) {
-//     return e.id;
-//   }).toList();
-// }
-
-// ///Returns a future with a list of all rooms in the currently selected office as Space objects.
-// Future<List<Space>> getRooms() async {
-//   var data = await FirebaseFirestore.instance.collection('Rooms').where('office', isEqualTo: _office).get();
-//   return data.docs.map((roomSnapshot) => roomSnapshot.data()).map((room) {
-//     return Space(room['roomNr'], room['size'], room['description'], room['office']);
-//   }).toList();
-// }
-
-// ///Adds a booking to Firebase.
-// Future<void> addBooking(int roomNr, DateTime day) async {
-//   if (_username != "") {
-//     FirebaseFirestore.instance.collection('Bookings').add({'day': day, 'roomNr': roomNr, 'personID': _username});
-//   }
-// }
-
-// ///Adds rooms to Firebase.
-// Future<void> saveSpaceData(String office, int roomNr, String description, int size) async {
-//   FirebaseFirestore.instance
-//       .collection("Rooms")
-//       .doc(roomNr.toString())
-//       .set({'office': office, 'roomNr': roomNr, 'description': description, 'size': size});
-// }

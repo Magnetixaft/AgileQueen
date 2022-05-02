@@ -152,12 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // this is not optimal, but work in progress.
     FirebaseHandler.getInstance().buildStaticModel().then((value) {
 
-      FirebaseHandler.getInstance().getUserBookings_2().then((value) {
-        for(var booking in value) {
-          print(booking);
-        }
-      },);
 
+      FirebaseHandler.getInstance().selectOffice('Malmökontoret');
 
       Navigator.push(
           context,
@@ -165,44 +161,5 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (context) =>
                   const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
     });
-
-    // FirebaseFirestore.instance
-    //     .collection('Bookings_2')
-    //     .get()
-    //     .then((value) {
-    //   for(var value2 in value.docs) {
-    //     print(value2.data());
-    //   }
-    // });
-
-    // FirebaseFirestore.instance
-    //     .collection('Bookings_2')
-    //     .doc()
-    //     .set(<String, dynamic>{
-    //   'UserId': 'joha@student.chalmers.se',
-    //   'Timeslot': 0,
-    //   'Day': DateTime(2022, 05, 1),
-    //   'WorkspaceNr': 1,
-    //   'RoomNr': 1,
-    //   'RepeatedBooking': false
-    // });
-
-    // FirebaseFirestore.instance
-    //     .collection('Rooms_2')
-    //     .doc('14')
-    //     .set(<String, dynamic>{
-    //   'Office': 'Malmökontoret',
-    //   'Name': 'Standing room',
-    //   'Workspaces': {
-    //     '1': ['Mac computer'],
-    //     '2': ['Mac computer'],
-    //     '3': [''],
-    //     '4': [''],
-    //     '5': [''],
-    //     '6': ['Saddle chair'],
-    //   },
-    //   'Description': 'A standing room',
-    //   'Timeslots': ['06:30-12:00', '13:00-17:00']
-    // });
   }
 }

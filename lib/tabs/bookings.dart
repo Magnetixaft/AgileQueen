@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/tabs/booking_item.dart';
-import '../models/booking.dart';
 
 //This class is really just a list that contains BookingItems
 class Bookings extends StatefulWidget {
@@ -18,7 +17,7 @@ class _BookingsState extends State<Bookings> {
   Widget build(BuildContext context) {
     FirebaseHandler backend = FirebaseHandler.getInstance();
     return FutureBuilder<List<Booking>>(
-        future: backend.getUserBookings(),
+        future: backend.getUserBookings_2(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             bookingList = buildList(snapshot.data, backend);
