@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/tabs/detailed_view.dart';
+import 'package:add_2_calendar/add_2_calendar.dart';
 
 //This class represents an item that populates the bookingList in the
 //Bookings class.
@@ -9,11 +10,12 @@ class BookingItem extends StatelessWidget {
   final String _roomName;
   final String _place;
   final String _address;
-  final String _date; 
+  final String _date;
 
   //const BookingItem({Key? key}) : super(key: key);
   const BookingItem(this._roomName, this._place, this._address, this._date,
-   {Key? key}) : super(key: key);
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +71,7 @@ class BookingItem extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(_roomName), //booking.getRoomName or something.
-          content: DetailedView(
-            "Centralen", _address, _date, "Description"),
+          content: DetailedView("Centralen", _address, _date, "Description"),
           elevation: 24.0,
           actions: <Widget>[
             TextButton(
@@ -95,7 +96,19 @@ class BookingItem extends StatelessWidget {
                 backgroundColor: Colors.red[600],
                 onSurface: Colors.red[350],
               ),
-            )
+            ),
+            IconButton(
+              onPressed: () {
+                Add2Calendar.addEvent2Cal(Event(
+                  title: 'Event title', // TODO use firebase data
+                  description: 'Event description',
+                  location: 'Event location',
+                  startDate: DateTime(2022, 06, 06, 08, 00),
+                  endDate: DateTime(2022, 06, 06, 17, 00),
+                ));
+              },
+              icon: const Icon(Icons.share),
+            ),
           ],
           actionsAlignment: MainAxisAlignment.spaceEvenly,
         );
