@@ -37,6 +37,7 @@ dependencies:
   firebase_core: ^1.14.0
   cloud_firestore: ^3.1.11
   path_provider: ^2.0.9
+  add_2_calendar: ^2.1.2 # https://pub.dev/packages/add_2_calendar
 
 dev_dependencies:
   flutter_test:
