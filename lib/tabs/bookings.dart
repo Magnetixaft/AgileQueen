@@ -100,47 +100,46 @@ class _Date {
   final int day;
   const _Date(this.year, this.month, this.day);
 
+  static const List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+
   bool equals(_Date date2) {
     return year == date2.year && month == date2.month && day == date2.day;
   }
 
   bool lessThan(_Date date2) {
-    return year <= date2.year && month <= date2.month && day < date2.day;
+    if (year < date2.year) {
+      return true;
+    }
+    if (year > date2.year) {
+      return false;
+    }
+    if (month < date2.month) {
+      return true;
+    }
+    if (month > date2.month) {
+      return false;
+    }
+    if (day < date2.day) {
+      return true;
+    }
+    return false;
   }
 
   @override
   String toString() {
-    return _getMonth(month) + ' ' + day.toString() + ', ' + year.toString();
-  }
-
-  String _getMonth(var month) {
-    switch (month) {
-      case 1:
-        return 'January';
-      case 2:
-        return 'February';
-      case 3:
-        return 'March';
-      case 4:
-        return 'April';
-      case 5:
-        return 'May';
-      case 6:
-        return 'June';
-      case 7:
-        return 'July';
-      case 8:
-        return 'August';
-      case 9:
-        return 'September';
-      case 10:
-        return 'October';
-      case 11:
-        return 'November';
-      case 12:
-        return 'December';
-      default:
-        return '';
-    }
+    return months[month - 1] + ' ' + day.toString() + ', ' + year.toString();
   }
 }
