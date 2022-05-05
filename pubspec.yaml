@@ -37,6 +37,8 @@ dependencies:
   firebase_core: ^1.14.0
   cloud_firestore: ^3.1.11
   path_provider: ^2.0.9
+  aad_oauth: ^0.3.0
+  jwt_decode: ^0.3.1
 
 dev_dependencies:
   flutter_test:
