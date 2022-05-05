@@ -148,10 +148,14 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO login using Firebase Auth
     String userId = userIdTextController.text;
     FirebaseHandler.initialize(userId);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
+
+    // this is not optimal, but work in progress.
+    FirebaseHandler.getInstance().buildStaticModel().then((value) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
+    });
   }
 }
