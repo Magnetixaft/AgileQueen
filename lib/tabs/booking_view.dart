@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 
@@ -137,7 +138,7 @@ class _RoomSelectorState extends State<RoomSelector> {
             ),
             //This is just non-interactive information text
             Text(
-              'Select work area in ${FirebaseHandler.getInstance().getSelectedOffice()} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
+              'Select room in ${FirebaseHandler.getInstance().getSelectedOffice()} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Roboto',
@@ -156,30 +157,27 @@ class _RoomSelectorState extends State<RoomSelector> {
                     contentPadding: EdgeInsets.zero,
                     title: ElevatedButton(
                       onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              //This shows a pop-up where the user can view and book timeslots.
-                              return AlertDialog(
-                                  content: ElevatedButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          FirebaseHandler.getInstance().addBooking(entry.key, widget.dateTime, 0, 14); // TODO add workspace and timeslot
-                                          Navigator.of(context).pop();
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: const Text('booking successful'),
-                                              backgroundColor: Theme.of(context).primaryColor,
-                                            ),
-                                          );
-                                        });
-                                      },
-                                      child: const Text('Book')));
-                            },
-                            barrierColor: Colors.transparent);
+                        //loads booking information as soon as the user select room and day.
+                        var bookingsFuture = FirebaseHandler.getInstance().getRoomBookingInformation(entry.key, widget.dateTime);
+
+                        if (entry.value.hasSpecialEquipment()) {
+                          Navigator.push(
+                              // changes scene to where the user can select workspace in the given room.
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WorkspaceSelector(entry, widget.dateTime, bookingsFuture),
+                              ));
+                        } else {
+                          Navigator.push(
+                              // changes scene to where the user can select timeslot in the given room
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TimeslotSelector(entry, widget.dateTime, bookingsFuture),
+                              ));
+                        }
                       },
                       child: Text(
-                        'Room number ${entry.key} - ${entry.value.description} - Seats left ${5} of total ${entry.value.workspaces.length}', // TODO fetch number of booked seats
+                        'Room number ${entry.key} - ${entry.value.description}',
                       ),
                     ),
                   );
@@ -188,5 +186,164 @@ class _RoomSelectorState extends State<RoomSelector> {
         ),
       ),
     );
+  }
+}
+
+class WorkspaceSelector extends StatefulWidget {
+  MapEntry<int, Room> roomEntry;
+  DateTime dateTime;
+  Future<Map<int, Map<int, bool>>> bookingsFuture;
+  WorkspaceSelector(this.roomEntry, this.dateTime, this.bookingsFuture, {Key? key}) : super(key: key);
+
+  @override
+  State<WorkspaceSelector> createState() => _WorkspaceSelectorState();
+}
+
+class _WorkspaceSelectorState extends State<WorkspaceSelector> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Back'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Spacer(
+              flex: 1,
+            ),
+            //This is just non-interactive information text
+            Text(
+              'Select workspace in ${widget.roomEntry.value.name} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Roboto',
+                fontSize: 20,
+              ), // TODO remove this style when text styles has been added to the theme
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+            //This is a list of all the rooms in that office. The user can tap top view, and then book, timeslots.
+            Expanded(
+                flex: 10,
+                child: ListView(
+                    children: widget.roomEntry.value.workspaces.entries.map((entry) {
+                  return ListTile(
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                    leading: Text('Workspace number ${entry.key}'),
+                    title: Text(entry.value.reduce((value, element) => value + ", " + element)),
+                    onTap: () {
+                      Navigator.push(
+                          // changes scene to where the user can select room in the given office.
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TimeslotSelector(widget.roomEntry, widget.dateTime, widget.bookingsFuture, workspaceNr: entry.key),
+                          ));
+                    },
+                  );
+                }).toList())),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TimeslotSelector extends StatefulWidget {
+  final MapEntry<int, Room> roomEntry;
+  final int workspaceNr;
+  final DateTime dateTime;
+  final Future<Map<int, Map<int, bool>>> bookingsFuture;
+  const TimeslotSelector(this.roomEntry, this.dateTime, this.bookingsFuture, {Key? key, this.workspaceNr = 0}) : super(key: key);
+
+  @override
+  State<TimeslotSelector> createState() => _TimeslotSelectorState();
+}
+
+class _TimeslotSelectorState extends State<TimeslotSelector> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Back'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Spacer(
+              flex: 1,
+            ),
+            // This is just non-interactive information text
+            Text(
+              'Select timeslot in ${widget.roomEntry.value.name} \nDate ${widget.dateTime.year} - ${widget.dateTime.month} - ${widget.dateTime.day}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Roboto',
+                fontSize: 20,
+              ), // TODO remove this style when text styles has been added to the theme
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+            Expanded(
+                flex: 10,
+                child: FutureBuilder<Map<int, Map<int, bool>>>(
+                    future: widget.bookingsFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        Map<int, Map<int, bool>> data = snapshot.data ?? <int, Map<int, bool>>{};
+                        return ListView(
+                          children: generateTimeslotTiles(data),
+                        );
+                      }
+                      return const CircularProgressIndicator();
+                    })),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Map<int, Map<int, bool>> bookingInfo, int workspace
+  List<Widget> generateTimeslotTiles(Map<int, Map<int, bool>> bookingsData) {
+    var tilesList = <Widget>[];
+    for (var timeslotNr = 0; timeslotNr < widget.roomEntry.value.timeslots.length; timeslotNr++) {
+
+      var timeslot = widget.roomEntry.value.timeslots[timeslotNr];
+      var workspaceNr = widget.workspaceNr;
+
+      // Selects an available workspace at each timeslot if none was provided.
+      if (workspaceNr == 0) {
+        for(var bookingEntry in bookingsData.entries) {
+          if (bookingEntry.value[timeslotNr] == false) {
+            workspaceNr = bookingEntry.key;
+          }
+        }
+      }
+
+      var message = (bookingsData[workspaceNr]?[timeslotNr] ?? true) ? 'unavailable' : 'available';
+
+      tilesList.add(ListTile(
+        contentPadding: const EdgeInsets.symmetric(vertical: 10),
+        leading: Text('Timeslot number $timeslotNr   $message'),
+        title: Text('${timeslot['start']} - ${timeslot['end']}'),
+        onTap: () {
+          FirebaseHandler.getInstance().addBooking(widget.roomEntry.key, widget.dateTime, timeslotNr, workspaceNr);
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('booking successful'),
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+          );
+        },
+      ));
+    }
+    return tilesList;
   }
 }

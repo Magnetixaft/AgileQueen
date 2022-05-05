@@ -110,7 +110,7 @@ class FirebaseHandler {
     for (var doc in data.docs) {
       var docData = doc.data();
       bookingList.add(Booking(DateTime.fromMicrosecondsSinceEpoch(docData['Day'].microsecondsSinceEpoch), docData['UserId'], docData['RoomNr'],
-          docData['WorkspaceNr'], docData['Timeslot'], docData['RepeatedBooking']));
+          docData['WorkspaceNr'], docData['Timeslot'], docData['RepeatedBookingKey']));
     }
     bookingList.sort((a, b) {
       if (a.day.compareTo(b.day) == 0) {
@@ -121,19 +121,27 @@ class FirebaseHandler {
     return bookingList;
   }
 
-  // /// Returns a future with the number of remaining seats in a specific room on a specific day
-  // Future<int> getRemainingSeats(int roomNr, DateTime day) async {
-  //   //TODO add back timeslots
-  //   // gets the entry for the appropriate room from Firebase.
-  //   var nrRooms = await FirebaseFirestore.instance.collection('Rooms').where('roomNr', isEqualTo: roomNr).get();
-  //
-  //   //Gets all appropriate bookings for this room at this day from Firebase
-  //   var nrBooked = await FirebaseFirestore.instance.collection('Bookings').where('roomNr', isEqualTo: roomNr).where('day', isEqualTo: day).get();
-  //
-  //   // Compares the size of the room with the number of bookings.
-  //   var spaceLeft = nrRooms.docs.first.get('size') - nrBooked.docs.length;
-  //   return spaceLeft > 0 ? spaceLeft : 0;
-  // }
+  /// Returns information about bookings for a room on a certain day.
+  ///
+  /// Returns a map with workspace number as key and another map as value.
+  /// The inner map has timeslot number as key and boolean as value.
+  Future<Map<int, Map<int, bool>>> getRoomBookingInformation(int roomNr, DateTime day) async {
+    Map<int, Map<int, bool>> bookings = {};
+    //Generates a 2D map of appropriate size and populate it with false
+    _rooms[roomNr]?.workspaces.entries.forEach((workspace) {
+      bookings[workspace.key] = <int, bool>{};
+      for (var timeslot = 0; timeslot < (_rooms[roomNr]?.timeslots.length ?? 0); timeslot++) {
+        bookings[workspace.key]?[timeslot] = false;
+      }
+    });
+    //Gets the correct bookings data from Firebase
+    var bookingDocs = await FirebaseFirestore.instance.collection('Bookings_2').where('RoomNr', isEqualTo: roomNr).where('Day', isEqualTo: day).get();
+    //Changes bookings entries to true if there's a timeslot booked
+    for (var bookingDoc in bookingDocs.docs) {
+      bookings[bookingDoc['WorkspaceNr']]?[bookingDoc['Timeslot']] = true;
+    }
+    return bookings;
+  }
 
   /// Sets [_office] to the currently selected office.
   void selectOffice(String office) {
@@ -171,21 +179,28 @@ class FirebaseHandler {
   }
 
   ///Adds a booking to Firebase.
-  Future<void> addBooking(int roomNr, DateTime day, int timeslot, int workspaceNr) async {
+  ///
+  ///[repeatKey] will be used to identify different bookings made with the repeat bookings function when added.
+  Future<void> addBooking(int roomNr, DateTime day, int timeslot, int workspaceNr, [int repeatKey = 0]) async {
     if (_username != "") {
-      FirebaseFirestore.instance
-          .collection('Bookings_2')
-          .add({'UserId': _username, 'Timeslot': timeslot, 'Day': day, 'WorkspaceNr': workspaceNr, 'RoomNr': roomNr, 'RepeatedBooking': false});
+      FirebaseFirestore.instance.collection('Bookings_2').add(
+          {'UserId': _username, 'Timeslot': timeslot, 'Day': day, 'WorkspaceNr': workspaceNr, 'RoomNr': roomNr, 'RepeatedBookingKey': repeatKey});
     }
   }
 
+  //TODO implment repeat bookings
+
   /// Removes all matching bookings from Firebase.
-  Future<void> removeBooking(int roomNr, DateTime day) async {
+  Future<void> removeBooking(Booking booking) async {
+    // TODO add remove repeat when implemented
+
     FirebaseFirestore.instance
-        .collection('Bookings')
-        .where('personID', isEqualTo: _username)
-        .where('roomNr', isEqualTo: roomNr)
-        .where('day', isEqualTo: day)
+        .collection('Bookings_2')
+        .where('UserId', isEqualTo: booking.personID)
+        .where('RoomNr', isEqualTo: booking.roomNr)
+        .where('WorkspaceNr', isEqualTo: booking.workspaceNr)
+        .where('Timeslot', isEqualTo: booking.timeslot)
+        .where('Day', isEqualTo: booking.day)
         .get()
         .then((value) {
       for (var document in value.docs) {
@@ -254,12 +269,12 @@ class Booking {
   final int roomNr;
   final int workspaceNr;
   final int timeslot;
-  final bool repeatedBooking;
+  final int repeatedBookingKey;
 
-  Booking(this.day, this.personID, this.roomNr, this.workspaceNr, this.timeslot, this.repeatedBooking);
+  Booking(this.day, this.personID, this.roomNr, this.workspaceNr, this.timeslot, this.repeatedBookingKey);
 
   @override
   String toString() {
-    return 'Booking_2{day: $day, personID: $personID, roomNr: $roomNr, workspaceNr: $workspaceNr, timeslot: $timeslot, repeatedBooking: $repeatedBooking}';
+    return 'Booking_2{day: $day, personID: $personID, roomNr: $roomNr, workspaceNr: $workspaceNr, timeslot: $timeslot, repeatedBooking: $repeatedBookingKey}';
   }
 }
