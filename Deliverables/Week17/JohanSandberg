@@ -1,0 +1,14 @@
+- what do I want to learn or understand better?
+Learn more about Microsoft Graph api.
+
+- how can I help someone else, or the entire team, to learn something new?
+Be available to answer questions regarding code and Azure/Authentication/Microsoft Graph api.
+
+- what is my contribution towards the team’s use of Scrum?
+Attending our team's meetings and participated in the process. Done my tasks.
+
+- what is my contribution towards the team’s deliveries?
+Created a local storage handler to keep track of users prevoius choices.
+Created a new Repo for Admin and connected it to the same database. 
+Created AuthenticationHandler and got it to work with Test organization via Azure. 
+Started working on Api-calls via Azure and Microsoft Graph. 

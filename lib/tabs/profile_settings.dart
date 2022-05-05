@@ -110,7 +110,19 @@ class _ProfileState extends State<Profile> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        print('Item Tapped');
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(title),
+                content: Text(subtitle),
+                actions: <Widget>[
+                  ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('OK')),
+                ],
+              );
+            });
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
@@ -141,6 +153,8 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+
 
 /*
   GestureDetector _buildToggleItem(BuildContext context, String title, String subtitle, bool value, Function onChangeMethod) {
