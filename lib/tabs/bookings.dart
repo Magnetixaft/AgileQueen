@@ -3,7 +3,7 @@ import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/tabs/booking_item.dart';
 import '../models/booking.dart';
 
-//This class is really just a list that contains BookingItems
+/// Class that builds and displays a list of BookingItems and Strings.
 class Bookings extends StatefulWidget {
   const Bookings({Key? key}) : super(key: key);
 
@@ -13,6 +13,10 @@ class Bookings extends StatefulWidget {
 
 class _BookingsState extends State<Bookings> {
   List<Widget> bookingList = <Widget>[];
+
+  callback() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +49,12 @@ class _BookingsState extends State<Bookings> {
         });
   }
 
+  /// Builds and returns a list of Widgets.
   List<Widget> buildList(List<Booking>? bookings, FirebaseHandler backend) {
     if (bookings == null) {
       return [const Text('No bookings found')];
     }
+
     var myBookings = <Widget>[];
     _Date previousDay = const _Date(0, 0, 0);
 
@@ -63,10 +69,7 @@ class _BookingsState extends State<Bookings> {
         continue;
       }
 
-      if (currentDay.equals(previousDay)) {
-        myBookings.add(BookingItem(booking.roomNr.toString(), "[Plats]",
-            backend.getSelectedOffice(), currentDay.toString()));
-      } else {
+      if (currentDay.equals(previousDay) == false) {
         String date =
             currentDay.equals(today) ? "Today" : currentDay.toString();
         myBookings.add(
@@ -83,17 +86,27 @@ class _BookingsState extends State<Bookings> {
             ),
           ),
         );
-        myBookings.add(BookingItem(booking.roomNr.toString(), "[Plats]",
-            backend.getSelectedOffice(), currentDay.toString()));
       }
+      //room = backend.getRooms()[booking.roomNr];
+      myBookings.add(BookingItem(
+          /*room.name*/ "[Rumsnamn]",
+          /*room.office*/ "[Plats]",
+          /*backend.getOffices()[room.office].address*/ "[Adress]",
+          currentDay.toString(),
+          /*room.description*/ "[Description]",
+          /*booking.timeslot.toString()*/ "[Timeslot]",
+          /*room.workspaces[booking.roomNr]*/ "[Attribut]",
+          /*booking.workspaceNr.toString()*/ "[Platsnamn]/[Workspacenr]",
+          callback));
+
       previousDay = currentDay;
     }
     return myBookings;
   }
 }
 
-//Class representing a date with a year, month and day.
-//Currently used for comparing dates in _BookingsState.
+/// Class representing a date with a year, month and day.
+/// Contains methods for comparing dates.
 class _Date {
   final int year;
   final int month;

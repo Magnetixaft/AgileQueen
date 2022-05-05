@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 //This class represents the detailed my bookings view.
 class DetailedView extends StatelessWidget {
-  final String office;
-  final String address;
-  final String date;
-  final String description; 
+  final String _place;
+  final String _address;
+  final String _date;
+  final String _description;
+  final String _timeslot;
+  final String _attribute;
 
-  const DetailedView(this.office, this.address,
-    this.date, this.description, {Key? key}) : super(key: key);
+  const DetailedView(this._place, this._address, this._date,
+      this._description, this._timeslot, this._attribute,
+      {Key? key}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +27,20 @@ class DetailedView extends StatelessWidget {
               scrollDirection: Axis.vertical,
               children: <Widget>[
                 Text(
-                  office,
+                  _place,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  address,
+                  _address,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
-                Text(date),
+                Text(_date),
+                Text(_timeslot),
                 const SizedBox(height: 10),
-                Text(description),
+                Text(_description),
                 const SizedBox(height: 10),
-                const Text("[Attribut]"), //TODO ska vi har kvar detta?
-                const SizedBox(height: 10),
-                const Text("Seats remaining: 10"), //TODO ska vi har kvar detta?
+                Text(_attribute),
                 const SizedBox(height: 10),
               ],
             ),
