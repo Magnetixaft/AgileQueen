@@ -2,18 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/tabs/detailed_view.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 
-//This class represents an item that populates the bookingList in the
-//Bookings class.
-//Currently, it is a list of random test objects. The idea is to get a booking
-//object from Firebase.
+///This class represents an item that populates bookingList in the
+///Bookings class.
 class BookingItem extends StatelessWidget {
   final String _roomName;
   final String _place;
   final String _address;
   final String _date;
+  final String _description;
+  final String _timeslot;
+  final String _attribute;
+  final String _workspaceNr;
+  final Function callback;
 
-  //const BookingItem({Key? key}) : super(key: key);
-  const BookingItem(this._roomName, this._place, this._address, this._date,
+  const BookingItem(
+      this._roomName,
+      this._place,
+      this._address,
+      this._date,
+      this._description,
+      this._timeslot,
+      this._attribute,
+      this._workspaceNr,
+      this.callback,
       {Key? key})
       : super(key: key);
 
@@ -43,6 +54,7 @@ class BookingItem extends StatelessWidget {
         ));
   }
 
+  /// Builds and returns a Widget that contains information about a booking.
   Widget _buildColumn() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,14 +76,17 @@ class BookingItem extends StatelessWidget {
     );
   }
 
+  /// Opens the detailed booking view when pressing a BookingItem.
+  /// The detailed view is represented using an AlertDialog.
   void _openDetailedView(BuildContext context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(_roomName), //booking.getRoomName or something.
-          content: DetailedView("Centralen", _address, _date, "Description"),
+          title: Text(_roomName + ', ' + _workspaceNr),
+          content: DetailedView(
+              _place, _address, _date, _description, _timeslot, _attribute),
           elevation: 24.0,
           actions: <Widget>[
             TextButton(
@@ -88,7 +103,8 @@ class BookingItem extends StatelessWidget {
             TextButton(
               child: const Text("Delete Booking"),
               onPressed: () {
-                //TODO: Function call to delete booking and redraw Bookings
+                //TODO function call to delete booking. 
+                callback();
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
