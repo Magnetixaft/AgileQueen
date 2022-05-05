@@ -192,7 +192,7 @@ class _RoomSelectorState extends State<RoomSelector> {
 class WorkspaceSelector extends StatefulWidget {
   MapEntry<int, Room> roomEntry;
   DateTime dateTime;
-  Future<Map<int, Map<int, bool>>> bookingsFuture;
+  Future<Map<int, Map<int, String>>> bookingsFuture;
   WorkspaceSelector(this.roomEntry, this.dateTime, this.bookingsFuture, {Key? key}) : super(key: key);
 
   @override
@@ -256,7 +256,7 @@ class TimeslotSelector extends StatefulWidget {
   final MapEntry<int, Room> roomEntry;
   final int workspaceNr;
   final DateTime dateTime;
-  final Future<Map<int, Map<int, bool>>> bookingsFuture;
+  final Future<Map<int, Map<int, String>>> bookingsFuture;
   const TimeslotSelector(this.roomEntry, this.dateTime, this.bookingsFuture, {Key? key, this.workspaceNr = 0}) : super(key: key);
 
   @override
@@ -292,11 +292,11 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
             ),
             Expanded(
                 flex: 10,
-                child: FutureBuilder<Map<int, Map<int, bool>>>(
+                child: FutureBuilder<Map<int, Map<int, String>>>(
                     future: widget.bookingsFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        Map<int, Map<int, bool>> data = snapshot.data ?? <int, Map<int, bool>>{};
+                        Map<int, Map<int, String>> data = snapshot.data ?? <int, Map<int, String>>{};
                         return ListView(
                           children: generateTimeslotTiles(data),
                         );
@@ -310,7 +310,7 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
   }
 
   // Map<int, Map<int, bool>> bookingInfo, int workspace
-  List<Widget> generateTimeslotTiles(Map<int, Map<int, bool>> bookingsData) {
+  List<Widget> generateTimeslotTiles(Map<int, Map<int, String>> bookingsData) {
     var tilesList = <Widget>[];
     for (var timeslotNr = 0; timeslotNr < widget.roomEntry.value.timeslots.length; timeslotNr++) {
 
@@ -320,17 +320,24 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
       // Selects an available workspace at each timeslot if none was provided.
       if (workspaceNr == 0) {
         for(var bookingEntry in bookingsData.entries) {
-          if (bookingEntry.value[timeslotNr] == false) {
+          if (bookingEntry.value[timeslotNr] == 'available') {
             workspaceNr = bookingEntry.key;
           }
         }
       }
 
-      var message = (bookingsData[workspaceNr]?[timeslotNr] ?? true) ? 'unavailable' : 'available';
+      String bookingInfo = bookingsData[workspaceNr]?[timeslotNr] ?? 'null';
+      if(bookingInfo == 'booked' || bookingInfo == 'null') {
+        bookingInfo = 'Unavailable';
+      } else if (bookingInfo == 'user') {
+        bookingInfo = 'Already booked';
+      } else if (bookingInfo == 'available') {
+        bookingInfo = 'Available';
+      }
 
       tilesList.add(ListTile(
         contentPadding: const EdgeInsets.symmetric(vertical: 10),
-        leading: Text('Timeslot number $timeslotNr   $message'),
+        leading: Text('Timeslot number $timeslotNr   $bookingInfo'),
         title: Text('${timeslot['start']} - ${timeslot['end']}'),
         onTap: () {
           FirebaseHandler.getInstance().addBooking(widget.roomEntry.key, widget.dateTime, timeslotNr, workspaceNr);

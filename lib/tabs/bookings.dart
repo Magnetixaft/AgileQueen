@@ -17,7 +17,7 @@ class _BookingsState extends State<Bookings> {
   Widget build(BuildContext context) {
     FirebaseHandler backend = FirebaseHandler.getInstance();
     return FutureBuilder<List<Booking>>(
-        future: backend.getUserBookings_2(),
+        future: backend.getUserBookings(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             bookingList = buildList(snapshot.data, backend);

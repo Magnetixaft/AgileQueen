@@ -151,9 +151,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // this is not optimal, but work in progress.
     FirebaseHandler.getInstance().buildStaticModel().then((value) {
-
-      FirebaseHandler.getInstance().getRoomBookingInformation(14, DateTime(2022, 5, 20));
-
       Navigator.push(
           context,
           MaterialPageRoute(

@@ -104,7 +104,7 @@ class FirebaseHandler {
   }
 
   /// Returns a list of all bookings made by the current user as Booking objects.
-  Future<List<Booking>> getUserBookings_2() async {
+  Future<List<Booking>> getUserBookings() async {
     var data = await FirebaseFirestore.instance.collection('Bookings_2').where('UserId', isEqualTo: _username).get();
     List<Booking> bookingList = [];
     for (var doc in data.docs) {
@@ -125,20 +125,21 @@ class FirebaseHandler {
   ///
   /// Returns a map with workspace number as key and another map as value.
   /// The inner map has timeslot number as key and boolean as value.
-  Future<Map<int, Map<int, bool>>> getRoomBookingInformation(int roomNr, DateTime day) async {
-    Map<int, Map<int, bool>> bookings = {};
-    //Generates a 2D map of appropriate size and populate it with false
+  Future<Map<int, Map<int, String>>> getRoomBookingInformation(int roomNr, DateTime day) async {
+    Map<int, Map<int, String>> bookings = {};
+    //Generates a 2D map of appropriate size and populate it with 'available'
     _rooms[roomNr]?.workspaces.entries.forEach((workspace) {
-      bookings[workspace.key] = <int, bool>{};
+      bookings[workspace.key] = <int, String>{};
       for (var timeslot = 0; timeslot < (_rooms[roomNr]?.timeslots.length ?? 0); timeslot++) {
-        bookings[workspace.key]?[timeslot] = false;
+        bookings[workspace.key]?[timeslot] = 'available';
       }
     });
     //Gets the correct bookings data from Firebase
     var bookingDocs = await FirebaseFirestore.instance.collection('Bookings_2').where('RoomNr', isEqualTo: roomNr).where('Day', isEqualTo: day).get();
     //Changes bookings entries to true if there's a timeslot booked
     for (var bookingDoc in bookingDocs.docs) {
-      bookings[bookingDoc['WorkspaceNr']]?[bookingDoc['Timeslot']] = true;
+      var infoString = bookingDoc['UserId'] == _username ? 'user' : 'booked';
+      bookings[bookingDoc['WorkspaceNr']]?[bookingDoc['Timeslot']] = infoString;
     }
     return bookings;
   }
