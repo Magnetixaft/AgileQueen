@@ -38,6 +38,7 @@ dependencies:
   cloud_firestore: ^3.1.11
   aad_oauth: ^0.3.0
   http: ^0.13.4
+  jwt_decode: ^0.3.1
 
 dev_dependencies:
   flutter_test:

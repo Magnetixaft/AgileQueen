@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
-import 'package:http/http.dart' as http;
+import 'package:jwt_decode/jwt_decode.dart';
 
 class AuthenticationHandler {
   static final AuthenticationHandler _instance = AuthenticationHandler._();
@@ -28,48 +26,43 @@ class AuthenticationHandler {
   void login() async {
     try {
       await oauth.login();
-      accessToken = await oauth.getAccessToken();
+      accessToken = await oauth.getIdToken();
       print('Logged in successfully, your access token: $accessToken');
     } catch (e) {
       print(e);
     }
   }
 
-  void logout() async {
-    await oauth.logout();
-    print('Logged out');
-  }
-
-  void testing() async {
-    User test = await fetchUser() as User;
-    print(test.id);
-  }
-
-  Future<User> fetchUser() async {
-    final response = await http
-        .get(Uri.parse('https://graph.microsoft.com/'),headers: { "Authorization": "Bearer $accessToken", "Content-Type": "application/json"});
-    print(response.toString());
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response, then parse the JSON.
-      return User.fromJson(jsonDecode(response.body));
-    } else {
-      // If the server did not return a 200 OK response,
-      throw Exception('Failed');
+   Future<bool> isUserSignedIn() async{
+    if(await oauth.getIdToken()==null){
+      return false;
+    }else{
+      return true;
     }
   }
 
-}
-class User {
-  final String id;
-
-  const User({
-    required this.id,
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['displayName'],
-    );
+  void logout() async {
+    await oauth.logout();
+    accessToken="";
   }
+  ///Parsing token and extracts users email
+  String extractUserEmail(String token){
+    Map<String, dynamic> payload = Jwt.parseJwt(token);
+    return payload["preferred_username"];
+  }
+  ///Parsing token and extracts users name
+  String extractUserName(String token){
+    Map<String, dynamic> payload = Jwt.parseJwt(token);
+    return payload["name"];
+  }
+  ///Returns parsed email
+  String getUserEmail(){
+    return extractUserEmail(accessToken);
+  }
+  ///Returns parsed name
+  String getUserName(){
+    return extractUserName(accessToken);
+  }
+
+
 }
