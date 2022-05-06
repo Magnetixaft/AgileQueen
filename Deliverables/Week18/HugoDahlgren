@@ -1,0 +1,11 @@
+- what do I want to learn or understand better?
+Jag vill lära mig kopplingen till Azure för att kunna färdigställa inloggningsprocessen. Det är ett delmål till nästa vecka.
+
+- how can I help someone else, or the entire team, to learn something new?
+Jag kan hjälpa teamet att implementera temat jag skapat förra veckan. Därtill kan jag hjälpa till med att simulera appen på ios vilket vi inte lyckats med tidigare. Det ansvaret har jag och Gustaf nästa sprint.
+
+- what is my contribution towards the team’s use of Scrum?
+ Jag sätter upp möten, för mötesanteckningar som bistår oss vid sprint review. Vi sätter individuellt (och tillsammans, ex. genom planning poker) upp points för respektive user story och subtask.
+ 
+- what is my contribution towards the team’s deliveries?
+Jag har denna vecka designat ny logga, gjort grafisk profil (typsnitt, storlekar, färger, avstånd, radier etc.). Dessa har jag implementerat. Därtill har jag skapat nytt tema för appen i Flutter. Därtill har jag gjort ändringar i design och funktionalitet vad gäller time slots, kontaktinformation, bokningsprocessen och arbetsplater i rummen.
