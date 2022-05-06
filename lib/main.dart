@@ -72,43 +72,47 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            Expanded(
-              child: Center(
+        body: Center(
+          child: Container(
+            width: 700,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(
+                      child: Padding(
+                    padding: const EdgeInsets.fromLTRB(40, 80, 40, 20),
+                    child: Image.asset('assets/images/elicit_logo.png'),
+                  )),
+                ),
+                Expanded(
                   child: Padding(
-                padding: const EdgeInsets.fromLTRB(40, 80, 40, 20),
-                child: Image.asset('assets/images/elicit_logo.png'),
-              )),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(25, 25, 25, 0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Email or phone number',
-                      ),
-                      controller: userIdTextController,
+                    padding: const EdgeInsets.fromLTRB(25, 25, 25, 0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Email or phone number',
+                          ),
+                          controller: userIdTextController,
 //                      onSubmitted: (_) {
 //                        // This moves the focus to the password field when the user presses "enter".
 //                        FocusScope.of(context).requestFocus(focusNodePassword);
 //                      },
-                    ),
-                    TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Password',
-                      ),
-                      controller: userPasswordTextController,
+                        ),
+                        TextField(
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Password',
+                          ),
+                          controller: userPasswordTextController,
 //                      onSubmitted: (_) {
 //                        login();
 //                      },
 //                      focusNode: focusNodePassword,
-                    ),
+                        ),
 //                    Align(
 //                      alignment: Alignment.centerRight,
 //                      child: TextButton(
@@ -118,26 +122,28 @@ class _MyHomePageState extends State<MyHomePage> {
 //                        child: const Text("Forgot Password?"),
 //                      ),
 //                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                          onPressed: () => {login()},
-                          child: const Text(
-                            "Login",
-                          )),
-                    ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                              onPressed: () => {login()},
+                              child: const Text(
+                                "Login",
+                              )),
+                        ),
 //                    TextButton(
 //                      onPressed: () => {
 //                        print("Todo, Show modal"),
 //                      },
 //                      child: const Text("Create an account"),
 //                    ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ));
   }
 
