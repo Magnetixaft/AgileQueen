@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/home.dart';
+import 'package:flutter_application_1/theme.dart';
 import 'package:flutter_application_1/theme_elicit.dart';
 
 void main() async {
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Room Bookings',
-      theme: elicitTheme(),
+      //theme: elicitTheme(),
+      theme: ElliTheme.lightTheme,
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
       home: FutureBuilder(
