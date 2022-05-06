@@ -1,0 +1,20 @@
+Individual reflection for Gustaf Johansson week 18.
+
+- What do I want to learn or understand better?
+  - Flutter/Dart/Firebase/databases in general. Next sprint I will be working on both frontend and connecting the frontend to the database. I have a 
+  feeling that the things I will be doing next sprint will be a little more complicated than the things I have already worked on. Therefore, I need to
+  read up more on Flutter. 
+
+- How can I help someone else, or the entire team, to learn something new?
+  - I have worked with Scrum, UML and sequence diagrams before. As such, I can help my team with these things. At this point in the project I have also
+  worked quite a bit with Flutter and its interaction with Firebase. I can therefore help my team members with this. 
+
+- What is my contribution towards the team’s use of Scrum?
+  - Wrote user stories with my team, wrote acceptance criteria, had meetings. During the sprint planning we did planning poker to estimate the time
+  requirement for user stories.
+
+- What is my contribution towards the team’s deliveries?
+  - This sprint I was supposed to start working on the home page in the admin web page. However, due to some miscommunication, another team member started
+  working on the same thing. We had a meeting about this, and we ended up combining our solutions. After this meeting I started refining the "my
+  bookings" tab. Previously, the database had not properly been set up. Since Johan has started finishing the database structure, I was able to start
+  connecting the database and the "my bookings" tab with function calls. 
