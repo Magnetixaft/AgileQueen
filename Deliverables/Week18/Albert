@@ -1,0 +1,19 @@
+Personal reflections, Albert Wickman, week 18, 2022-05-06 
+
+
+- what do I want to learn or understand better?
+I want to learn about how we should connect everything to the database.
+	
+- how can I help someone else, or the entire team, to learn something new?
+I can help with how the admin chooses a workspace to edit and how I have structured the drop down menu functions,
+and how the rest of the functions work.
+
+- what is my contribution towards the team’s use of Scrum?
+I have used Jira to make sure I have implemented everything that i was assigned to do.
+Update my working status so that my group members know what I'm currently up to.
+
+
+- what is my contribution towards the team’s deliveries?
+I have implemented the home page for the admin application using flutter.
+Implemented drop down menus for choosing company, office and workspace.
+Implemented the "cards" that show the specification of a workspace which the admin can edit.
