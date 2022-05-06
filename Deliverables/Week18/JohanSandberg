@@ -1,0 +1,13 @@
+- what do I want to learn or understand better?
+Nothing at the moment.
+
+- how can I help someone else, or the entire team, to learn something new?
+Be available to answer questions regarding code and Azure/Authentication.
+
+- what is my contribution towards the team’s use of Scrum?
+Attending our team's meetings and participated in the process. Done my tasks. Played Planning Poker.
+
+- what is my contribution towards the team’s deliveries?
+Connected project for admins to Firebase Authentication to only allow accounts with admin privileges to access.
+Connected logic for login to admin to the UI. Checks if admin is logged in etc.
+Created a way to get logged in users email and name via Azure.
