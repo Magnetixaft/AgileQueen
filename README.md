@@ -10,7 +10,7 @@ In order to run Elli you may either compile the source code yourself or simply d
 ### From source code
 
 Requirements:
-- Flutter SDK version XX or above
+- Flutter SDK version 2.10.4
 - A development environment with Android SDK version XX or above
 - An Android emulator or Android device
 
