@@ -1,0 +1,23 @@
+Personal reflections for Ole Fjeldså, week 18, 2022-05-06 
+
+
+- what do I want to learn or understand better?
+
+	I would like a deeper understanding of how to connect the application to the database.	
+	
+- how can I help someone else, or the entire team, to learn something new?
+
+	I can help build the connection between the admin page and firebase for the pages I designed.
+
+- what is my contribution towards the team’s use of Scrum?
+	
+	Was scrum master this week. This week we started using planning poker to plan our velocity.
+	It helped the group better decide on the scope of the different user stories.
+	
+- what is my contribution towards the team’s deliveries?
+
+	Implemented navigation for the admin application.
+	Implemented Config page for the admin application.
+	Some functionality dependent on the database is still missing for Config page.
+	
+	
