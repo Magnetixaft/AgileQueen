@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/tabs/booking_item.dart';
-import '../models/booking.dart';
 
-//This class is really just a list that contains BookingItems
+/// Class that builds and displays a list of BookingItems and Strings.
 class Bookings extends StatefulWidget {
   const Bookings({Key? key}) : super(key: key);
 
@@ -13,6 +12,10 @@ class Bookings extends StatefulWidget {
 
 class _BookingsState extends State<Bookings> {
   List<Widget> bookingList = <Widget>[];
+
+  callback() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +48,12 @@ class _BookingsState extends State<Bookings> {
         });
   }
 
+  /// Builds and returns a list of Widgets.
   List<Widget> buildList(List<Booking>? bookings, FirebaseHandler backend) {
     if (bookings == null) {
       return [const Text('No bookings found')];
     }
+
     var myBookings = <Widget>[];
     _Date previousDay = const _Date(0, 0, 0);
 
@@ -63,10 +68,7 @@ class _BookingsState extends State<Bookings> {
         continue;
       }
 
-      if (currentDay.equals(previousDay)) {
-        myBookings.add(BookingItem(booking.roomNr.toString(), "[Plats]",
-            backend.getSelectedOffice(), currentDay.toString()));
-      } else {
+      if (currentDay.equals(previousDay) == false) {
         String date =
             currentDay.equals(today) ? "Today" : currentDay.toString();
         myBookings.add(
@@ -83,64 +85,73 @@ class _BookingsState extends State<Bookings> {
             ),
           ),
         );
-        myBookings.add(BookingItem(booking.roomNr.toString(), "[Plats]",
-            backend.getSelectedOffice(), currentDay.toString()));
       }
+      //room = backend.getRooms()[booking.roomNr];
+      myBookings.add(BookingItem(
+          /*room.name*/ "[Rumsnamn]",
+          /*room.office*/ "[Plats]",
+          /*backend.getOffices()[room.office].address*/ "[Adress]",
+          currentDay.toString(),
+          /*room.description*/ "[Description]",
+          /*booking.timeslot.toString()*/ "[Timeslot]",
+          /*room.workspaces[booking.roomNr]*/ "[Attribut]",
+          /*booking.workspaceNr.toString()*/ "[Platsnamn]/[Workspacenr]",
+          callback));
+
       previousDay = currentDay;
     }
     return myBookings;
   }
 }
 
-//Class representing a date with a year, month and day.
-//Currently used for comparing dates in _BookingsState.
+/// Class representing a date with a year, month and day.
+/// Contains methods for comparing dates.
 class _Date {
   final int year;
   final int month;
   final int day;
   const _Date(this.year, this.month, this.day);
 
+  static const List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+
   bool equals(_Date date2) {
     return year == date2.year && month == date2.month && day == date2.day;
   }
 
   bool lessThan(_Date date2) {
-    return year <= date2.year && month <= date2.month && day < date2.day;
+    if (year < date2.year) {
+      return true;
+    }
+    if (year > date2.year) {
+      return false;
+    }
+    if (month < date2.month) {
+      return true;
+    }
+    if (month > date2.month) {
+      return false;
+    }
+    if (day < date2.day) {
+      return true;
+    }
+    return false;
   }
 
   @override
   String toString() {
-    return _getMonth(month) + ' ' + day.toString() + ', ' + year.toString();
-  }
-
-  String _getMonth(var month) {
-    switch (month) {
-      case 1:
-        return 'January';
-      case 2:
-        return 'February';
-      case 3:
-        return 'March';
-      case 4:
-        return 'April';
-      case 5:
-        return 'May';
-      case 6:
-        return 'June';
-      case 7:
-        return 'July';
-      case 8:
-        return 'August';
-      case 9:
-        return 'September';
-      case 10:
-        return 'October';
-      case 11:
-        return 'November';
-      case 12:
-        return 'December';
-      default:
-        return '';
-    }
+    return months[month - 1] + ' ' + day.toString() + ', ' + year.toString();
   }
 }

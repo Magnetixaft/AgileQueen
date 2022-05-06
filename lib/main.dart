@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/home.dart';
+import 'package:flutter_application_1/theme.dart';
 import 'package:flutter_application_1/theme_elicit.dart';
 
 void main() async {
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Room Bookings',
-      theme: elicitTheme(),
+      //theme: elicitTheme(),
+      theme: ElliTheme.lightTheme,
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
       home: FutureBuilder(
@@ -154,10 +156,14 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO login using Firebase Auth
     String userId = userIdTextController.text;
     FirebaseHandler.initialize(userId);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
+
+    // this is not optimal, but work in progress.
+    FirebaseHandler.getInstance().buildStaticModel().then((value) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
+    });
   }
 }
