@@ -86,18 +86,19 @@ class _BookingsState extends State<Bookings> {
           ),
         );
       }
-      //room = backend.getRooms()[booking.roomNr];
-      myBookings.add(BookingItem(
-          /*room.name*/ "[Rumsnamn]",
-          /*room.office*/ "[Plats]",
-          /*backend.getOffices()[room.office].address*/ "[Adress]",
-          currentDay.toString(),
-          /*room.description*/ "[Description]",
-          /*booking.timeslot.toString()*/ "[Timeslot]",
-          /*room.workspaces[booking.roomNr]*/ "[Attribut]",
-          /*booking.workspaceNr.toString()*/ "[Platsnamn]/[Workspacenr]",
-          callback));
-
+      Room? room = backend.getRooms()[booking.roomNr];
+      if (room != null) {
+        myBookings.add(BookingItem(
+            room.name, // "[Rumsnamn]",
+            room.office,// "[Plats]",
+            backend.getOffices()[room.office]!.address,// "[Adress]",
+            currentDay.toString(),
+            room.description,// "[Description]",
+            booking.timeslot.toString(),// "[Timeslot]",
+            room.workspaces[booking.roomNr].toString(),// "[Attribut]",
+            booking.workspaceNr.toString(),// "[Platsnamn]/[Workspacenr]",
+            callback));
+      }
       previousDay = currentDay;
     }
     return myBookings;

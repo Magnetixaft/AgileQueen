@@ -116,11 +116,11 @@ class BookingItem extends StatelessWidget {
             IconButton(
               onPressed: () {
                 Add2Calendar.addEvent2Cal(Event(
-                  title: 'Event title', // TODO use firebase data
-                  description: 'Event description',
-                  location: 'Event location',
-                  startDate: DateTime(2022, 06, 06, 08, 00),
-                  endDate: DateTime(2022, 06, 06, 17, 00),
+                  title: "Workspace "+_workspaceNr+" in "+_roomName+" booked at "+_place, // TODO use firebase data
+                  description: 'Workspace with '+_attribute+" booked in "+_roomName+", "+_description,
+                  location: _address,
+                  startDate: DateTime(2022,05,17,08,00), // TODO parse from _date and _timeslot
+                  endDate: DateTime(2022,05,17,17,00), // TODO parse from _date and _timeslot
                 ));
               },
               icon: const Icon(Icons.share),
