@@ -103,6 +103,10 @@ class FirebaseHandler {
     return Map.fromEntries(_rooms.entries.where((entry) => entry.value.office == _office));
   }
 
+  Map<int, Room> getAllRooms() {
+    return _rooms;
+  }
+
   /// Returns a list of all bookings made by the current user as Booking objects.
   Future<List<Booking>> getUserBookings() async {
     var data = await FirebaseFirestore.instance.collection('Bookings_2').where('UserId', isEqualTo: _username).get();
