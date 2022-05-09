@@ -1,5 +1,7 @@
 import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
+import 'package:flutter/material.dart';
+
 import 'package:jwt_decode/jwt_decode.dart';
 
 class AuthenticationHandler {
@@ -13,7 +15,6 @@ class AuthenticationHandler {
     redirectUri: 'msauth://com.example.flutter_application_1/Nwn3Du03NhXB4Wt4ZMuGlrxrLH8%3D',
   );
   final AadOAuth oauth = AadOAuth(config);
-
   AuthenticationHandler._();
 
   static void initialize() {
@@ -23,7 +24,7 @@ class AuthenticationHandler {
     return _instance;
   }
 
-  void login() async {
+  Future<void> login() async {
     try {
       await oauth.login();
       accessToken = await oauth.getIdToken();
@@ -33,18 +34,26 @@ class AuthenticationHandler {
     }
   }
 
+  Future<void> updateToken() async{
+    accessToken = await oauth.getIdToken();
+  }
+
   Future<bool> isUserSignedIn() async{
-    if(await oauth.getIdToken()==null){
+    updateToken();
+    var token = await oauth.getIdToken();
+    if(token==null || token == ""){
       return false;
     }else{
+      updateToken();
       return true;
     }
   }
-
+  ///Logout and sets accessToken to an empty String
   void logout() async {
     await oauth.logout();
     accessToken="";
   }
+
   ///Parsing token and extracts users email
   String extractUserEmail(String token){
     Map<String, dynamic> payload = Jwt.parseJwt(token);
@@ -55,14 +64,14 @@ class AuthenticationHandler {
     Map<String, dynamic> payload = Jwt.parseJwt(token);
     return payload["name"];
   }
-  ///Returns parsed email
-  String getUserEmail(){
+  ///Returns parsed email after updating Token
+  Future<String> getUserEmail() async{
+    await updateToken();
     return extractUserEmail(accessToken);
   }
-  ///Returns parsed name
-  String getUserName(){
+  ///Returns parsed name after updating Token
+  Future<String> getUserName() async{
+    await updateToken();
     return extractUserName(accessToken);
   }
-
-
 }

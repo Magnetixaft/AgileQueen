@@ -4,6 +4,7 @@ import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/home.dart';
 import 'package:flutter_application_1/theme.dart';
 import 'package:flutter_application_1/theme_elicit.dart';
+import 'AuthenticationHandler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,104 +67,67 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final userIdTextController = TextEditingController();
-  final userPasswordTextController = TextEditingController();
-//  final focusNodePassword = FocusNode();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(
-          child: Container(
-            width: 700,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Center(
-                      child: Padding(
+        child: Container(
+        width: 700,
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                  child: Padding(
                     padding: const EdgeInsets.fromLTRB(40, 80, 40, 20),
                     child: Image.asset('assets/images/elicit_logo.png'),
                   )),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(25, 25, 25, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextField(
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Email or phone number',
-                          ),
-                          controller: userIdTextController,
-//                      onSubmitted: (_) {
-//                        // This moves the focus to the password field when the user presses "enter".
-//                        FocusScope.of(context).requestFocus(focusNodePassword);
-//                      },
-                        ),
-                        TextField(
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Password',
-                          ),
-                          controller: userPasswordTextController,
-//                      onSubmitted: (_) {
-//                        login();
-//                      },
-//                      focusNode: focusNodePassword,
-                        ),
-//                    Align(
-//                      alignment: Alignment.centerRight,
-//                      child: TextButton(
-//                        onPressed: () => {
-//                          print("Todo, Show modal"),
-//                        },
-//                        child: const Text("Forgot Password?"),
-//                      ),
-//                    ),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                              onPressed: () => {login()},
-                              child: const Text(
-                                "Login",
-                              )),
-                        ),
-//                    TextButton(
-//                      onPressed: () => {
-//                        print("Todo, Show modal"),
-//                      },
-//                      child: const Text("Create an account"),
-//                    ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
             ),
-          ),
-        ));
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(25, 25, 25, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                          onPressed: () => {login()},
+                          child: const Text(
+                            "Login with Azure",
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )
+        )
+    ));
   }
 
-  /// Logs the user in using Azure
-  ///
-  /// Navigates to [Home] when login is succesful. Initalizes the [FirebaseHandler] using the input from [userIdTextController]
-  void login() {
-    // TODO login using Firebase Auth
-    String userId = userIdTextController.text;
-    FirebaseHandler.initialize(userId);
-
-    // this is not optimal, but work in progress.
-    FirebaseHandler.getInstance().buildStaticModel().then((value) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  const Home())); // TODO use pushReplacement when login has been implemented. That way, the user will not be able to return to this page by pressing the back arrow
-    });
+  /// Navigates to [Home] when login is succesful. Initalizes the [FirebaseHandler] using email from AuthenticationHandler
+  Future<void> login() async{
+    AuthenticationHandler authenticationHandler = AuthenticationHandler.getInstance();
+    try{
+      await authenticationHandler.login();
+      if(await authenticationHandler.isUserSignedIn()==true){
+        // this is not optimal, but work in progress.
+        FirebaseHandler.initialize(await authenticationHandler.getUserEmail());
+        FirebaseHandler.getInstance().buildStaticModel().then((value) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                  const Home()));
+        });
+      }
+    } catch(e){
+      print(e.toString());
+    }
   }
 }
