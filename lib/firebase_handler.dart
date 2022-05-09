@@ -103,16 +103,64 @@ class FirebaseHandler {
     return Map.fromEntries(_rooms.entries.where((entry) => entry.value.office == _office));
   }
 
-  /// Returns all rooms in the modell
+  /// Returns all rooms in the model
   Map<int, Room> getAllRooms() {
     return _rooms;
   }
 
+  Future<ReportCard> generateReportCard() async {
+    final bookingData3Weeks = await FirebaseFirestore.instance
+        .collection('Bookings_2')
+        .where('Day', isGreaterThan: DateTime.now().subtract(const Duration(days: 21)))
+        .where('Day', isLessThan: DateTime.now())
+        .get();
+    final bookingList = _bookingDataToBookings(bookingData3Weeks);
+
+    final numberOfWorkSpacesPerDay = _rooms.values.expand((room) => room.workspaces.values).length;
+    final numberOfTimeslotsPerDay = _rooms.values.expand((room) => room.timeslots).length;
+    final numberOfBookings3Weeks = bookingList.length;
+
+    //Get most used room
+    final roomUseMap = <int, int>{};
+    for (var booking in bookingList) {
+      roomUseMap.update(booking.roomNr, (value) => ++value, ifAbsent: () => 1);
+    }
+    var mostUsedRoom = {'room':-1, 'number':0};
+    for(var roomUseData in roomUseMap.entries) {
+      if(roomUseData.value > (mostUsedRoom['number'] ?? 0)) {
+        mostUsedRoom = {'room':roomUseData.key, 'number':roomUseData.value};
+      }
+    }
+
+    //Get most used room
+    final workspaceUseMap = <String, int>{};
+    for (var booking in bookingList) {
+      workspaceUseMap.update('${booking.roomNr} ${booking.workspaceNr}', (value) => ++value, ifAbsent: () => 1);
+    }
+    var mostUsedWorkSpace = {'room': -1, 'workspace':-1, 'number':0};
+    for(var workspaceUseData in workspaceUseMap.entries) {
+      if(workspaceUseData.value > (mostUsedWorkSpace['number'] ?? 0)) {
+        mostUsedWorkSpace = {'room': int.parse(workspaceUseData.key.split(' ')[0]), 'workspace':int.parse(workspaceUseData.key.split(' ')[1]), 'number':workspaceUseData.value};
+      }
+    }
+
+
+    // for(var booking in allBookings.docs) {
+    //   print(booking.data());
+    // }
+
+    return ReportCard();
+  }
+
   /// Returns a list of all bookings made by the current user as Booking objects.
   Future<List<Booking>> getUserBookings() async {
-    var data = await FirebaseFirestore.instance.collection('Bookings_2').where('UserId', isEqualTo: _username).get();
+    var bookingData = await FirebaseFirestore.instance.collection('Bookings_2').where('UserId', isEqualTo: _username).get();
+    return _bookingDataToBookings(bookingData);
+  }
+
+  List<Booking> _bookingDataToBookings(QuerySnapshot<Map<String, dynamic>> bookingData) {
     List<Booking> bookingList = [];
-    for (var doc in data.docs) {
+    for (var doc in bookingData.docs) {
       var docData = doc.data();
       int roomNr = docData['RoomNr'];
       Room room = _rooms[roomNr] ?? Room({1:['Error workspace']}, [{'start': '00:00', 'end': '12:00'}], 'Error room', 'Error Office', 'Error room');
@@ -127,6 +175,20 @@ class FirebaseHandler {
     });
     return bookingList;
   }
+
+  Set<String> getAllEquipment() {
+    var allEquipment = <String>{};
+    for (var room in getAllRooms().values) {
+      for (var workspace in room.workspaces.values) {
+        for (var equipment in workspace) {
+          allEquipment.add(equipment);
+        }
+      }
+    }
+    allEquipment.remove("");
+    return allEquipment;
+  }
+
 
   /// Returns information about bookings for a room on a certain day.
   ///
@@ -219,6 +281,10 @@ class FirebaseHandler {
 
 // ----------------------------------------------------------------
 
+}
+
+class ReportCard {
+  // TODO fill with all analysis information.
 }
 
 class Room {
