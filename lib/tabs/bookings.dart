@@ -55,13 +55,13 @@ class _BookingsState extends State<Bookings> {
     }
 
     var myBookings = <Widget>[];
-    _Date previousDay = const _Date(0, 0, 0);
+    Date previousDay = const Date(0, 0, 0);
 
     for (Booking booking in bookings) {
-      _Date currentDay =
-          _Date(booking.day.year, booking.day.month, booking.day.day);
+      Date currentDay =
+          Date(booking.day.year, booking.day.month, booking.day.day);
       DateTime now = DateTime.now();
-      _Date today = _Date(now.year, now.month, now.day);
+      Date today = Date(now.year, now.month, now.day);
 
       //TODO Gettolösning, borde kanske radera gamla bokningar i backenden.
       if (currentDay.lessThan(today)) {
@@ -92,7 +92,7 @@ class _BookingsState extends State<Bookings> {
             room.name, // "[Rumsnamn]",
             room.office,// "[Plats]",
             backend.getOffices()[room.office]!.address,// "[Adress]",
-            currentDay.toString(),
+            currentDay,//.toString(),
             room.description,// "[Description]",
             room.timeslots[booking.timeslot].toString(),// "[Timeslot]",
             room.workspaces[booking.roomNr].toString(),// "[Attribut]",
@@ -107,11 +107,11 @@ class _BookingsState extends State<Bookings> {
 
 /// Class representing a date with a year, month and day.
 /// Contains methods for comparing dates.
-class _Date {
+class Date {
   final int year;
   final int month;
   final int day;
-  const _Date(this.year, this.month, this.day);
+  const Date(this.year, this.month, this.day);
 
   static const List<String> months = [
     'January',
@@ -128,11 +128,11 @@ class _Date {
     'December'
   ];
 
-  bool equals(_Date date2) {
+  bool equals(Date date2) {
     return year == date2.year && month == date2.month && day == date2.day;
   }
 
-  bool lessThan(_Date date2) {
+  bool lessThan(Date date2) {
     if (year < date2.year) {
       return true;
     }
