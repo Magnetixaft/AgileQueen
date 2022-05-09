@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/tabs/detailed_view.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 
+import 'bookings.dart';
+
 ///This class represents an item that populates bookingList in the
 ///Bookings class.
 class BookingItem extends StatelessWidget {
   final String _roomName;
   final String _place;
   final String _address;
-  final String _date;
+  final Date _date;
   final String _description;
   final String _timeslot;
   final String _attribute;
@@ -86,7 +88,7 @@ class BookingItem extends StatelessWidget {
         return AlertDialog(
           title: Text(_roomName + ', ' + _workspaceNr),
           content: DetailedView(
-              _place, _address, _date, _description, _timeslot, _attribute),
+              _place, _address, _date.toString(), _description, _timeslot, _attribute),
           elevation: 24.0,
           actions: <Widget>[
             TextButton(
@@ -114,15 +116,7 @@ class BookingItem extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {
-                Add2Calendar.addEvent2Cal(Event(
-                  title: "Workspace "+_workspaceNr+" in "+_roomName+" booked at "+_place, // TODO use firebase data
-                  description: 'Workspace with '+_attribute+" booked in "+_roomName+", "+_description,
-                  location: _address,
-                  startDate: DateTime(2022,05,17,08,00), // TODO parse from _date and _timeslot
-                  endDate: DateTime(2022,05,17,17,00), // TODO parse from _date and _timeslot
-                ));
-              },
+              onPressed: _addToCalendar,
               icon: const Icon(Icons.share),
             ),
           ],
@@ -131,4 +125,24 @@ class BookingItem extends StatelessWidget {
       },
     );
   }
+
+  /// Function to open phone calendar to add the current booking to it
+  void _addToCalendar() {
+          int startTimeHour = int.parse(_timeslot.substring(8,10));
+          int startTimeMinute = int.parse(_timeslot.substring(11,13));
+  
+          int endTimeHour = int.parse(_timeslot.substring(20,22));
+          int endTimeMinute = int.parse(_timeslot.substring(23,25));
+  
+          DateTime start = DateTime(_date.year,_date.month,_date.day,startTimeHour,startTimeMinute);
+          DateTime end = DateTime(_date.year,_date.month,_date.day,endTimeHour,endTimeMinute);
+  
+          Add2Calendar.addEvent2Cal(Event(
+            title: "Workspace "+_workspaceNr+" in "+_roomName+" booked at "+_place,
+            description: 'Workspace with '+_attribute+" booked in "+_roomName+", "+_description,
+            location: _address,
+            startDate: start,
+            endDate: end,
+          ));
+        }
 }
