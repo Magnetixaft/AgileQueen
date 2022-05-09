@@ -86,7 +86,7 @@ class _BookingsState extends State<Bookings> {
           ),
         );
       }
-      Room? room = backend.getRooms()[booking.roomNr];
+      Room? room = backend.getAllRooms()[booking.roomNr];
       if (room != null) {
         myBookings.add(BookingItem(
             room.name, // "[Rumsnamn]",
@@ -94,7 +94,7 @@ class _BookingsState extends State<Bookings> {
             backend.getOffices()[room.office]!.address,// "[Adress]",
             currentDay.toString(),
             room.description,// "[Description]",
-            booking.timeslot.toString(),// "[Timeslot]",
+            room.timeslots[booking.timeslot].toString(),// "[Timeslot]",
             room.workspaces[booking.roomNr].toString(),// "[Attribut]",
             booking.workspaceNr.toString(),// "[Platsnamn]/[Workspacenr]",
             callback));
