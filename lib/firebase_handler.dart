@@ -99,10 +99,11 @@ class FirebaseHandler {
   }
 
   /// Returns all rooms in the selected office
-  Map<int, Room> getRooms() {
+  Map<int, Room> getCurrentOfficeRooms() {
     return Map.fromEntries(_rooms.entries.where((entry) => entry.value.office == _office));
   }
 
+  /// Returns all rooms in the modell
   Map<int, Room> getAllRooms() {
     return _rooms;
   }
@@ -113,8 +114,10 @@ class FirebaseHandler {
     List<Booking> bookingList = [];
     for (var doc in data.docs) {
       var docData = doc.data();
-      bookingList.add(Booking(DateTime.fromMicrosecondsSinceEpoch(docData['Day'].microsecondsSinceEpoch), docData['UserId'], docData['RoomNr'],
-          docData['WorkspaceNr'], docData['Timeslot'], docData['RepeatedBookingKey']));
+      int roomNr = docData['RoomNr'];
+      Room room = _rooms[roomNr] ?? Room({1:['Error workspace']}, [{'start': '00:00', 'end': '12:00'}], 'Error room', 'Error Office', 'Error room');
+      bookingList.add(Booking(DateTime.fromMicrosecondsSinceEpoch(docData['Day'].microsecondsSinceEpoch), docData['UserId'], roomNr,
+          docData['WorkspaceNr'], docData['Timeslot'], docData['RepeatedBookingKey'], room));
     }
     bookingList.sort((a, b) {
       if (a.day.compareTo(b.day) == 0) {
@@ -275,11 +278,20 @@ class Booking {
   final int workspaceNr;
   final int timeslot;
   final int repeatedBookingKey;
+  final Room room;
 
-  Booking(this.day, this.personID, this.roomNr, this.workspaceNr, this.timeslot, this.repeatedBookingKey);
+  Booking(this.day, this.personID, this.roomNr, this.workspaceNr, this.timeslot, this.repeatedBookingKey, this.room);
 
   @override
   String toString() {
     return 'Booking_2{day: $day, personID: $personID, roomNr: $roomNr, workspaceNr: $workspaceNr, timeslot: $timeslot, repeatedBooking: $repeatedBookingKey}';
+  }
+
+  String getStartTime() {
+    return room.timeslots[timeslot]['start'] ?? "00:00";
+  }
+
+  String getEndTime() {
+    return room.timeslots[timeslot]['end'] ?? "24:00";
   }
 }

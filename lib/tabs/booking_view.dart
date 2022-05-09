@@ -152,7 +152,7 @@ class _RoomSelectorState extends State<RoomSelector> {
             Expanded(
                 flex: 10,
                 child: ListView(
-                    children: FirebaseHandler.getInstance().getRooms().entries.map((entry) {
+                    children: FirebaseHandler.getInstance().getCurrentOfficeRooms().entries.map((entry) {
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: ElevatedButton(
