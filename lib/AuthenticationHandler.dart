@@ -28,7 +28,7 @@ class AuthenticationHandler {
     try {
       await oauth.login();
       accessToken = await oauth.getIdToken();
-      print('Logged in successfully, your access token: $accessToken');
+      // print('Logged in successfully, your access token: $accessToken');
     } catch (e) {
       print(e);
     }

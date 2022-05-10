@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           }
           //Checks connection to Firebase and when done loads HomePage
           if (snapshot.connectionState == ConnectionState.done) {
-            print("Firebase initialized correctly");
+            // print("Firebase initialized correctly");
             return const MyHomePage(
               title: "Room Bookings",
             );
@@ -68,76 +68,79 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  /// Tests if a user is already logged in with Azure by calling [login] after the widget has been initially built.
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      if (await AuthenticationHandler.getInstance().isUserSignedIn()) {
+        login();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(
-        child: Container(
-        width: 700,
-        child: Column(
-          children: [
-            Expanded(
-              child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(40, 80, 40, 20),
-                    child: Image.asset('assets/images/elicit_logo.png'),
-                  )),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(25, 25, 25, 0),
+            child: Container(
+                width: 700,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                          onPressed: () => {login()},
-                          child: const Text(
-                            "Login with Azure",
-                          )),
+                    Expanded(
+                      child: Center(
+                          child: Padding(
+                        padding: const EdgeInsets.fromLTRB(40, 80, 40, 20),
+                        child: Image.asset('assets/images/elicit_logo.png'),
+                      )),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(25, 25, 25, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                  onPressed: () => {login()},
+                                  child: const Text(
+                                    "Login with Azure",
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
-                ),
-              ),
-            ),
-          ],
-        )
-        )
-    ));
+                ))));
   }
 
-  /// Navigates to [Home] when login is succesful. Initalizes the [FirebaseHandler] using email from AuthenticationHandler
-  Future<void> login() async{
+  /// Navigates to [Home] when login is successful. Initializes the [FirebaseHandler] using email from AuthenticationHandler
+  Future<void> login() async {
     AuthenticationHandler authenticationHandler = AuthenticationHandler.getInstance();
-    try{
+    try {
       await authenticationHandler.login();
-      if(await authenticationHandler.isUserSignedIn()==true){
+      if (await authenticationHandler.isUserSignedIn() == true) {
         // this is not optimal, but work in progress.
         FirebaseHandler.initialize(await authenticationHandler.getUserEmail());
-        FirebaseHandler.getInstance().buildStaticModel().then((value) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                  const Home()));
-        });
+        await FirebaseHandler.getInstance().buildStaticModel();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
       }
-    } catch(e){
+    } catch (e) {
       print(e.toString());
     }
 
-   //TODO for debugging using the web. Remove before shipping.
-   //  FirebaseHandler.initialize("testing");
-   //  FirebaseHandler.getInstance().buildStaticModel().then((value) {
-   //    Navigator.pushReplacement(
-   //        context,
-   //        MaterialPageRoute(
-   //            builder: (context) =>
-   //            const Home()));
-   //  });
+    //TODO for debugging using the web. Remove before shipping.
+    //  FirebaseHandler.initialize("testing");
+    //  FirebaseHandler.getInstance().buildStaticModel().then((value) {
+    //    Navigator.pushReplacement(
+    //        context,
+    //        MaterialPageRoute(
+    //            builder: (context) =>
+    //            const Home()));
+    //  });
   }
 }
