@@ -237,7 +237,7 @@ class FirebaseHandler {
       var start = timesMap['start'] ?? "";
       var end = timesMap['end'] ?? "";
       return start + "-" + end;
-    });
+    }).toList();
 
     FirebaseFirestore.instance.collection('Rooms_2').doc(roomNr.toString()).set(<String, dynamic>{
       'Office': room.office,
@@ -248,10 +248,20 @@ class FirebaseHandler {
     });
   }
 
+  /// Removes a room from Firebase and deletes all corresponding bookings
+  Future<void> removeSpace(int roomNr) async{
+    await FirebaseFirestore.instance.collection('Rooms_2').doc(roomNr.toString()).delete();
+    var allBookingsInThatRoom = await FirebaseFirestore.instance.collection('Bookings_2').where('RoomNr', isEqualTo: roomNr).get();
+    for(var booking in allBookingsInThatRoom.docs) {
+      booking.reference.delete();
+    }
+    return;
+  }
+
   ///Adds a booking to Firebase.
   ///
   ///[repeatKey] will be used to identify different bookings made with the repeat bookings function when added.
-  Future<void> addBooking(int roomNr, DateTime day, int timeslot, int workspaceNr, [int repeatKey = 0]) async {
+  Future<void> saveBooking(int roomNr, DateTime day, int timeslot, int workspaceNr, [int repeatKey = 0]) async {
     if (_username != "") {
       FirebaseFirestore.instance.collection('Bookings_2').doc('room:$roomNr workspace:$workspaceNr timeslot:$timeslot day:${day.year}-${day.month}-${day.day}').set(
           {'UserId': _username, 'Timeslot': timeslot, 'Day': day, 'WorkspaceNr': workspaceNr, 'RoomNr': roomNr, 'RepeatedBookingKey': repeatKey});

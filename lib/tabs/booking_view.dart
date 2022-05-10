@@ -364,7 +364,7 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
         leading: Text('Timeslot number $timeslotNr   $bookingInfo'),
         title: Text('${timeslot['start']} - ${timeslot['end']}'),
         onTap: () {
-          FirebaseHandler.getInstance().addBooking(widget.roomEntry.key, widget.dateTime, timeslotNr, workspaceNr);
+          FirebaseHandler.getInstance().saveBooking(widget.roomEntry.key, widget.dateTime, timeslotNr, workspaceNr);
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
