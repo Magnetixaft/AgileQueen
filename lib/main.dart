@@ -21,6 +21,10 @@ void main() async {
   runApp(MyApp());
 }
 
+/// The main widget for ELLI
+///
+/// This widget is presented when the app is started and, whilst Firebase is initializing, a [CircularProgressIndicator] i returned.
+/// Once Firebase is initialized, [MyHomePage] is returned.
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
