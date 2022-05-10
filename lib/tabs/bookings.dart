@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/tabs/booking_item.dart';
 
-/// Class that builds and displays a list of BookingItems and Strings.
+/// Class that builds and displays a list of [BookingItem] and [String].
 class Bookings extends StatefulWidget {
   const Bookings({Key? key}) : super(key: key);
 
@@ -48,7 +48,7 @@ class _BookingsState extends State<Bookings> {
         });
   }
 
-  /// Builds and returns a list of Widgets.
+  /// Builds and returns a list of [Booking].
   List<Widget> buildList(List<Booking>? bookings, FirebaseHandler backend) {
     if (bookings == null) {
       return [const Text('No bookings found')];
@@ -106,7 +106,8 @@ class _BookingsState extends State<Bookings> {
 }
 
 /// Class representing a date with a year, month and day.
-/// Contains methods for comparing dates.
+/// 
+/// Contains methods [equals] and [lessThan] for comparing two [Date].
 class Date {
   final int year;
   final int month;
