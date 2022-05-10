@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
+/// A theme correspodning to Elli's visual identity.
+/// 
+/// Contains both a theme [lightTheme], a list of colors [ElliColors] and font specification [ElliText].
 class ElliTheme {
+
+  /// Return the light theme for Elli
   static ThemeData get lightTheme => ThemeData(
         brightness: Brightness.light,
         colorScheme: const ColorScheme(
@@ -33,6 +38,7 @@ class ElliTheme {
       );
 }
 
+/// A class of all the colors in [ElliTheme]
 class ElliColors {
   static const black = Color(0xff202020);
   static const grey = Color(0xff8E8E8E);
@@ -47,6 +53,7 @@ class ElliColors {
   static const lightPink = Color(0xffFEDEE1);
 }
 
+/// A class of all the fonts used in [ElliTheme]
 class ElliText {
   static const _title1 = 67.0;
   static const _title2 = 34.0;
@@ -206,6 +213,7 @@ class ElliText {
       regularCaption.copyWith(fontWeight: _bold, color: _pink);
 }
 
+/// A definer of standard widget sizes and shapes.
 class UiHelper {
   //Spaces
   static const fullSpace = 20;
