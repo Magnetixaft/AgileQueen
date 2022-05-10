@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/home.dart';
 import 'package:flutter_application_1/theme.dart';
-import 'package:flutter_application_1/theme_elicit.dart';
+//import 'package:flutter_application_1/theme_elicit.dart';
 import 'AuthenticationHandler.dart';
 
 void main() async {
