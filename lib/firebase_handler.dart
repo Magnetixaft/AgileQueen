@@ -253,12 +253,12 @@ class FirebaseHandler {
   ///[repeatKey] will be used to identify different bookings made with the repeat bookings function when added.
   Future<void> addBooking(int roomNr, DateTime day, int timeslot, int workspaceNr, [int repeatKey = 0]) async {
     if (_username != "") {
-      FirebaseFirestore.instance.collection('Bookings_2').add(
+      FirebaseFirestore.instance.collection('Bookings_2').doc('room:$roomNr workspace:$workspaceNr timeslot:$timeslot day:${day.year}-${day.month}-${day.day}').set(
           {'UserId': _username, 'Timeslot': timeslot, 'Day': day, 'WorkspaceNr': workspaceNr, 'RoomNr': roomNr, 'RepeatedBookingKey': repeatKey});
     }
   }
 
-  //TODO implment repeat bookings
+  //TODO implement repeat bookings
 
   /// Removes all matching bookings from Firebase.
   Future<void> removeBooking(Booking booking) async {
@@ -287,8 +287,13 @@ class ReportCard {
   // TODO fill with all analysis information.
 }
 
+/// Immutable dataclass which models a room
 class Room {
+  /// Contains all the workspace in a room.
+  /// Key is workspace number and value is a list of all equipment at that workspace as a list of strings.
   final Map<int, List<String>> workspaces;
+  /// Contains all timeslots in a room. Entries are Maps structured as such
+  /// {'start': '00:00', 'end': '12:00'}
   final List<Map<String, String>> timeslots;
   final String description;
   final String office;
@@ -301,6 +306,7 @@ class Room {
     return 'Room{workspaces: $workspaces, timeslots: $timeslots, description: $description, office: $office, name: $name}';
   }
 
+  /// Returns true if the room has any workspaces with equipment
   bool hasSpecialEquipment() {
     var special = false;
     for (var workspace in workspaces.entries) {
@@ -314,7 +320,10 @@ class Room {
   }
 }
 
+
+/// Immutable dataclass which models a corporate division
 class Division {
+  /// Contains all the division's offices. Office name is key.
   final Map<String, Office> offices;
 
   Division(this.offices);
@@ -325,6 +334,8 @@ class Division {
   }
 }
 
+
+/// Immutable dataclass which models an office
 class Office {
   final String address;
   final String description;
@@ -337,12 +348,15 @@ class Office {
   }
 }
 
+
+/// Immutable dataclass which models a booking
 class Booking {
   final DateTime day;
   final String personID;
   final int roomNr;
   final int workspaceNr;
   final int timeslot;
+  // repeatedBookingKey is not currently used. Meant to identify several bookings which were made simultaneously.
   final int repeatedBookingKey;
   final Room room;
 
