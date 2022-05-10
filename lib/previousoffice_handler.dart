@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-///Reading and writing for documents directory,
-///A directory for the app to store files that only it can access. The system clears the directory only when the app is deleted.
+/// A handler for reading and writing to the documents directory,
+/// 
+/// A directory for the app to store files that only it can access. The system clears the directory only when the app is deleted.
 class PreviousOfficeHandler {
   static final PreviousOfficeHandler _instance = PreviousOfficeHandler._();
   PreviousOfficeHandler._();
