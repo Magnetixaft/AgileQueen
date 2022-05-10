@@ -253,12 +253,12 @@ class FirebaseHandler {
   ///[repeatKey] will be used to identify different bookings made with the repeat bookings function when added.
   Future<void> addBooking(int roomNr, DateTime day, int timeslot, int workspaceNr, [int repeatKey = 0]) async {
     if (_username != "") {
-      FirebaseFirestore.instance.collection('Bookings_2').add(
+      FirebaseFirestore.instance.collection('Bookings_2').doc('room:$roomNr workspace:$workspaceNr timeslot:$timeslot day:${day.year}-${day.month}-${day.day}').set(
           {'UserId': _username, 'Timeslot': timeslot, 'Day': day, 'WorkspaceNr': workspaceNr, 'RoomNr': roomNr, 'RepeatedBookingKey': repeatKey});
     }
   }
 
-  //TODO implment repeat bookings
+  //TODO implement repeat bookings
 
   /// Removes all matching bookings from Firebase.
   Future<void> removeBooking(Booking booking) async {
