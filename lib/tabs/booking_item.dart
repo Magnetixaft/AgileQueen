@@ -4,8 +4,7 @@ import 'package:add_2_calendar/add_2_calendar.dart';
 
 import 'bookings.dart';
 
-///This class represents an item that populates bookingList in the
-///Bookings class.
+/// This class represents an item that populates bookingList in [Bookings]
 class BookingItem extends StatelessWidget {
   final String _roomName;
   final String _place;
@@ -78,8 +77,9 @@ class BookingItem extends StatelessWidget {
     );
   }
 
-  /// Opens the detailed booking view when pressing a BookingItem.
-  /// The detailed view is represented using an AlertDialog.
+  /// Opens a detailed booking view when pressing a [BookingItem].
+  /// 
+  /// The detailed view is represented using an [AlertDialog].
   void _openDetailedView(BuildContext context) async {
     return showDialog<void>(
       context: context,
@@ -128,7 +128,7 @@ class BookingItem extends StatelessWidget {
 
   /// Shares this [BookingItem] to the phone calendar.
   ///
-  /// Opens the phone's default calendar and fills all fields with information about this specific booking.
+  /// Opens the phone's default calendar and fills all fields with information about this specific [BookingItem].
   void _addToCalendar() {
 
     /// Start time for the booking parsed from _timeslot.
