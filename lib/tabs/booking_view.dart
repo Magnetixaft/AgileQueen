@@ -1,14 +1,15 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
+import 'package:flutter_application_1/previousoffice_handler.dart';
 
 /// View for bookings
 ///
 /// Contains elements for selecting office, selecting day,
 /// picking room and booking that room for a timeslot
 class BookingView extends StatefulWidget {
-  const BookingView({Key? key}) : super(key: key);
+  final Future<String> previousOfficeFuture = PreviousOfficeHandler.getInstance().readPrevChoice();
+  BookingView({Key? key}) : super(key: key);
 
   @override
   State<BookingView> createState() => _BookingViewState();
@@ -17,45 +18,65 @@ class BookingView extends StatefulWidget {
 class _BookingViewState extends State<BookingView> {
   /// Determines if the office selector is visible
   bool isLocationSelected = false;
+  bool ignorePreviousChoice = false;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Align(
-          //This is just the title text
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
-            child: Text(
-              'Select Office',
-              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: 20),
-            ),
-          ),
-        ),
-        // this is either showing the selected office or showing the office selector
-        isLocationSelected ? showSelectedOffice() : showOfficeSelector(),
-        const Spacer(
-          flex: 2,
-        ),
-        //CalendarDatePicker is a built in class
-        if (isLocationSelected)
-          // TODO Change the locale of our app in order to get the CalendarDatePicker to start weeks on Monday https://stackoverflow.com/questions/57975312/flutter-showdatepicker-set-first-day-of-week-to-monday
-          CalendarDatePicker(
-              initialDate: DateTime.now(),
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 1000)),
-              onDateChanged: (selected) {
-                setState(() {
-                  Navigator.push(
-                      // changes scene to where the user can select room in the given office.
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RoomSelector(selected),
-                      ));
-                });
-              })
-      ],
+    return FutureBuilder<String>(
+      // The future contains the name of the previous office if PreviousOfficeHandler had one.
+      future: widget.previousOfficeFuture,
+      builder: (context, snapshot) {
+        if(snapshot.connectionState == ConnectionState.done) {
+          String officeString = snapshot.data ?? 'null';
+          // If the future contained a valid office name and the user is not trying to change office then the previous
+          // office is chosen and the officeSelector is not displayed.
+          if(!ignorePreviousChoice && FirebaseHandler.getInstance().getOffices().keys.toList().contains(officeString)) {
+            isLocationSelected = true;
+            FirebaseHandler.getInstance().selectOffice(officeString);
+          }
+
+          return Column(
+            children: [
+              const Align(
+                //This is just the title text
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
+                  child: Text(
+                    'Select Office',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: 20),
+                  ),
+                ),
+              ),
+              // this is either showing the selected office or showing the office selector
+              isLocationSelected ? showSelectedOffice() : showOfficeSelector(),
+              const Spacer(
+                flex: 2,
+              ),
+              //CalendarDatePicker is a built in class
+              if (isLocationSelected)
+              // TODO Change the locale of our app in order to get the CalendarDatePicker to start weeks on Monday https://stackoverflow.com/questions/57975312/flutter-showdatepicker-set-first-day-of-week-to-monday
+                CalendarDatePicker(
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(const Duration(days: 1000)),
+                    onDateChanged: (selected) {
+                      setState(() {
+                        Navigator.push(
+                          // changes scene to where the user can select room in the given office.
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RoomSelector(selected),
+                            ));
+                      });
+                    })
+            ],
+          );
+        }
+        else {
+          return const CircularProgressIndicator();
+        }
+      }
     );
   }
 
@@ -69,6 +90,7 @@ class _BookingViewState extends State<BookingView> {
         onPressed: () {
           setState(() {
             isLocationSelected = false;
+            ignorePreviousChoice = true;
           });
         },
         child: Text(
@@ -94,6 +116,7 @@ class _BookingViewState extends State<BookingView> {
                     // TODO consider changing these buttons to Cards when we include description/images etc.
                     onPressed: () {
                       setState(() {
+                        PreviousOfficeHandler.getInstance().writeChoice(entry.key);
                         FirebaseHandler.getInstance().selectOffice(entry.key);
                         isLocationSelected = true;
                       });
@@ -340,7 +363,7 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
         leading: Text('Timeslot number $timeslotNr   $bookingInfo'),
         title: Text('${timeslot['start']} - ${timeslot['end']}'),
         onTap: () {
-          FirebaseHandler.getInstance().addBooking(widget.roomEntry.key, widget.dateTime, timeslotNr, workspaceNr);
+          FirebaseHandler.getInstance().saveBooking(widget.roomEntry.key, widget.dateTime, timeslotNr, workspaceNr);
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

@@ -45,15 +45,15 @@ class FirebaseHandler {
 
   Future<void> _buildDivision() async {
     var divisionsData = await FirebaseFirestore.instance.collection('Divisions').get();
-    for (var divisonData in divisionsData.docs) {
-      var officesData = await FirebaseFirestore.instance.collection('Divisions').doc(divisonData.id).collection('Offices').get();
+    for (var divisionData in divisionsData.docs) {
+      var officesData = await FirebaseFirestore.instance.collection('Divisions').doc(divisionData.id).collection('Offices').get();
 
       var offices = <String, Office>{};
       for (var office in officesData.docs) {
         offices[office.id] = Office(office.data()['Address'], office.data()['Description']);
       }
 
-      _divisions[divisonData.id] = Division(offices);
+      _divisions[divisionData.id] = Division(offices);
     }
     return;
   }
@@ -231,13 +231,50 @@ class FirebaseHandler {
 
   // ---------------- Modifiers ------------
 
+  Future<void> addAdmin(String adminHashId, String permissions) async{
+    await FirebaseFirestore.instance.collection('Admins').doc(adminHashId).set({'Permissions': permissions});
+    return;
+  }
+
+  Future<void> removeAdmin(String adminHashId) async{
+    await FirebaseFirestore.instance.collection('Admins').doc(adminHashId).delete();
+    return;
+  }
+
+  Future<void> saveDivision(String divisionName, String info) async{
+    await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).set({'Info': info});
+    return;
+  }
+
+  Future<void> removeDivision(String divisionName) async {
+    var offices = await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).collection('Offices').get();
+    for(var office in offices.docs) {
+      office.reference.delete();
+    }
+    await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).delete();
+    return;
+  }
+
+  Future<void> saveOffice(String divisionName, String officeName, Office office) async{
+    await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).collection('Offices').doc(officeName).set({
+      'Address': office.address,
+      'Description': office.description
+    });
+  }
+
+  Future<void> removeOffice(String divisionName, String officeName) async {
+    await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).collection('Offices').doc(officeName).delete();
+    return;
+  }
+
+
   /// Adds a room to Firebase.
-  Future<void> saveSpaceData(int roomNr, Room room) async {
+  Future<void> saveRoom(int roomNr, Room room) async {
     var timeslots = room.timeslots.map((timesMap) {
       var start = timesMap['start'] ?? "";
       var end = timesMap['end'] ?? "";
       return start + "-" + end;
-    });
+    }).toList();
 
     FirebaseFirestore.instance.collection('Rooms_2').doc(roomNr.toString()).set(<String, dynamic>{
       'Office': room.office,
@@ -248,14 +285,25 @@ class FirebaseHandler {
     });
   }
 
+  /// Removes a room from Firebase and deletes all corresponding bookings
+  Future<void> removeRoom(int roomNr) async{
+    await FirebaseFirestore.instance.collection('Rooms_2').doc(roomNr.toString()).delete();
+    var allBookingsInThatRoom = await FirebaseFirestore.instance.collection('Bookings_2').where('RoomNr', isEqualTo: roomNr).get();
+    for(var booking in allBookingsInThatRoom.docs) {
+      booking.reference.delete();
+    }
+    return;
+  }
+
   ///Adds a booking to Firebase.
   ///
   ///[repeatKey] will be used to identify different bookings made with the repeat bookings function when added.
-  Future<void> addBooking(int roomNr, DateTime day, int timeslot, int workspaceNr, [int repeatKey = 0]) async {
+  Future<void> saveBooking(int roomNr, DateTime day, int timeslot, int workspaceNr, [int repeatKey = 0]) async {
     if (_username != "") {
-      FirebaseFirestore.instance.collection('Bookings_2').doc('room:$roomNr workspace:$workspaceNr timeslot:$timeslot day:${day.year}-${day.month}-${day.day}').set(
+      await FirebaseFirestore.instance.collection('Bookings_2').doc('room:$roomNr workspace:$workspaceNr timeslot:$timeslot day:${day.year}-${day.month}-${day.day}').set(
           {'UserId': _username, 'Timeslot': timeslot, 'Day': day, 'WorkspaceNr': workspaceNr, 'RoomNr': roomNr, 'RepeatedBookingKey': repeatKey});
     }
+    return;
   }
 
   //TODO implement repeat bookings

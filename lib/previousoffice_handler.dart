@@ -35,7 +35,7 @@ class PreviousOfficeHandler {
       final contents = await file.readAsString();
       return contents.toString();
     } catch (e) {
-      return e.toString();
+      return 'No saved data';
     }
   }
 

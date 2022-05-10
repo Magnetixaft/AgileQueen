@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   
   /// The list of tabs/pages selectable using the BottomNavigationBar
   final List<Widget> _tabs = <Widget>[
-    const BookingView(),
+    BookingView(),
     const Bookings(),
     const Profile()
   ];
