@@ -87,8 +87,8 @@ class BookingItem extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(_roomName + ', ' + _workspaceNr),
-          content: DetailedView(
-              _place, _address, _date.toString(), _description, _timeslot, _attribute),
+          content: DetailedView(_place, _address, _date.toString(),
+              _description, _timeslot, _attribute),
           elevation: 24.0,
           actions: <Widget>[
             TextButton(
@@ -105,7 +105,7 @@ class BookingItem extends StatelessWidget {
             TextButton(
               child: const Text("Delete Booking"),
               onPressed: () {
-                //TODO function call to delete booking. 
+                //TODO function call to delete booking.
                 callback();
                 Navigator.of(context).pop();
               },
@@ -126,23 +126,31 @@ class BookingItem extends StatelessWidget {
     );
   }
 
-  /// Function to open phone calendar to add the current booking to it
+  /// Shares this [BookingItem] to the phone calendar.
+  ///
+  /// Opens the phone's default calendar and fills all fields with information about this specific booking.
   void _addToCalendar() {
-          int startTimeHour = int.parse(_timeslot.substring(8,10));
-          int startTimeMinute = int.parse(_timeslot.substring(11,13));
-  
-          int endTimeHour = int.parse(_timeslot.substring(20,22));
-          int endTimeMinute = int.parse(_timeslot.substring(23,25));
-  
-          DateTime start = DateTime(_date.year,_date.month,_date.day,startTimeHour,startTimeMinute);
-          DateTime end = DateTime(_date.year,_date.month,_date.day,endTimeHour,endTimeMinute);
-  
-          Add2Calendar.addEvent2Cal(Event(
-            title: "Workspace "+_workspaceNr+" in "+_roomName+" booked at "+_place,
-            description: 'Workspace with '+_attribute+" booked in "+_roomName+", "+_description,
-            location: _address,
-            startDate: start,
-            endDate: end,
-          ));
-        }
+
+    /// Start time for the booking parsed from _timeslot.
+    int startTimeHour = int.parse(_timeslot.substring(8, 10));
+    int startTimeMinute = int.parse(_timeslot.substring(11, 13));
+
+    /// End time for the booking parsed from _timeslot.
+    int endTimeHour = int.parse(_timeslot.substring(20, 22));
+    int endTimeMinute = int.parse(_timeslot.substring(23, 25));
+
+    /// Start day parsed from the booking.
+    DateTime start = DateTime(_date.year, _date.month, _date.day, startTimeHour, startTimeMinute);
+
+    /// End day parsed from the booking .
+    DateTime end = DateTime(_date.year, _date.month, _date.day, endTimeHour, endTimeMinute);
+
+    /// Opens the phonhe calendar and adds the booking.
+    Add2Calendar.addEvent2Cal(Event(
+      title: "Workspace " +_workspaceNr +" in " +_roomName +" booked at " +_place,description: 'Workspace with ' +_attribute +" booked in " +_roomName +", " +_description,
+      location: _address,
+      startDate: start,
+      endDate: end,
+    ));
+  }
 }
