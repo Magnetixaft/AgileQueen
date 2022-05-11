@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/AuthenticationHandler.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -9,14 +10,24 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  /*bool valNotify = false;
+  var userEmail = "";
+  var userName = "";
 
-  onChangeFunction(bool newValue) {
-    setState(() {
-      valNotify = newValue;
+
+  @override
+  void initState() {
+    AuthenticationHandler.getInstance().getUserEmail().then((email) {
+      setState(() {
+        userEmail = email;
+      });
     });
+    AuthenticationHandler.getInstance().getUserName().then((name) {
+      setState(() {
+        userName = name;
+      });
+    });
+    super.initState();
   }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +73,9 @@ class _ProfileState extends State<Profile> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
+                  children: <Widget>[
                     Text(
-                      'Albert Wickman', // TODO get name
+                      userName,
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -73,7 +84,7 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                     Text(
-                      'albert.wickman@hotmail.se', // TODO get email
+                      userEmail,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12,
