@@ -57,7 +57,6 @@ class AuthenticationHandler {
     if(token==null || token == ""){
       return false;
     }else{
-      updateToken();
       return true;
     }
   }
