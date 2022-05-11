@@ -91,7 +91,7 @@ class _BookingsState extends State<Bookings> {
         myBookings.add(BookingItem(
             room.name, // "[Rumsnamn]",
             room.office,// "[Plats]",
-            backend.getOffices()[room.office]!.address,// "[Adress]",
+            backend.getAllOffices()[room.office]?.address ?? 'Office not found',// "[Adress]",
             currentDay,//.toString(),
             room.description,// "[Description]",
             room.timeslots[booking.timeslot].toString(),// "[Timeslot]",

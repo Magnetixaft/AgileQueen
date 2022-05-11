@@ -92,8 +92,19 @@ class FirebaseHandler {
   }
 
   /// Returns all the offices in the selected division
-  Map<String, Office> getOffices() {
+  Map<String, Office> getDivisionOffices() {
     return _divisions[_division]?.offices ?? {};
+  }
+
+  /// Returns all the offices in the model
+  Map<String, Office> getAllOffices() {
+    var allOffices = <String, Office>{};
+    for (var division in _divisions.values) {
+      for (var office in division.offices.entries) {
+        allOffices[office.key] = office.value;
+      }
+    }
+    return allOffices;
   }
 
   /// Returns all rooms in the selected office
