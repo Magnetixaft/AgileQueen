@@ -30,7 +30,7 @@ class _BookingViewState extends State<BookingView> {
           String officeString = snapshot.data ?? 'null';
           // If the future contained a valid office name and the user is not trying to change office then the previous
           // office is chosen and the officeSelector is not displayed.
-          if(!ignorePreviousChoice && FirebaseHandler.getInstance().getOffices().keys.toList().contains(officeString)) {
+          if(!ignorePreviousChoice && FirebaseHandler.getInstance().getDivisionOffices().keys.toList().contains(officeString)) {
             isLocationSelected = true;
             FirebaseHandler.getInstance().selectOffice(officeString);
           }
@@ -109,7 +109,7 @@ class _BookingViewState extends State<BookingView> {
         child: Padding(
             padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
             child: ListView(
-              children: FirebaseHandler.getInstance().getOffices().entries.map((entry) {
+              children: FirebaseHandler.getInstance().getDivisionOffices().entries.map((entry) {
                 return ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: ElevatedButton(
