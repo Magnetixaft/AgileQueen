@@ -77,9 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) async {
-      if (await AuthenticationHandler.getInstance().isUserSignedIn()) {
-        login();
-      }
+      checkIfLoggedIn();
     });
   }
 
@@ -136,7 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       print(e.toString());
     }
-
     //TODO for debugging using the web. Remove before shipping.
     //  FirebaseHandler.initialize("testing");
     //  FirebaseHandler.getInstance().buildStaticModel().then((value) {
@@ -146,5 +143,18 @@ class _MyHomePageState extends State<MyHomePage> {
     //            builder: (context) =>
     //            const Home()));
     //  });
+  }
+
+  Future<void> checkIfLoggedIn() async {
+    AuthenticationHandler authenticationHandler = AuthenticationHandler.getInstance();
+    try{
+      if(await authenticationHandler.isUserSignedIn()==true){
+        FirebaseHandler.initialize(await authenticationHandler.getUserEmail());
+        await FirebaseHandler.getInstance().buildStaticModel();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
+      }
+    }catch (e) {
+      print(e.toString());
+    }
   }
 }
