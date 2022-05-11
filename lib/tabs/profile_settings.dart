@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AuthenticationHandler.dart';
+import 'package:flutter_application_1/main.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -107,7 +108,7 @@ class _ProfileState extends State<Profile> {
         _buildSettingItem(context, 'About Elli', 'Read more about Elli'),
         const Divider(height: 0, indent: 20, endIndent: 20),
 
-        _buildSettingItem(context, 'Log Out', 'Leave the application'),
+        _logOutBuildSettingItem(context, 'Log Out', 'Leave the application'),
         const Divider(height: 0, indent: 20, endIndent: 20),
 
 
@@ -163,6 +164,64 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
+  }
+
+  /// Builder method which creates a setting item with title and subtitle.
+  GestureDetector _logOutBuildSettingItem(BuildContext context, String title, String subtitle) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(title),
+                content: Text(subtitle),
+                actions: <Widget>[
+                  ElevatedButton(
+                      onPressed: () => logout(),
+                      child: Text('Log out')),
+                ],
+              );
+            });
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title),
+                  const SizedBox(height: 8),
+                  Text(
+                      subtitle,
+                      style: const TextStyle(
+                          color: Colors.grey
+                      )),
+                ],
+              ),
+            ),
+            const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> logout() async{
+    try{
+      await AuthenticationHandler.getInstance().logout();
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MyHomePage(title: "Room Bookings")));
+    } catch (e){
+      print(e.toString());
+    }
   }
 
 

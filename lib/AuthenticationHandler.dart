@@ -79,7 +79,7 @@ class AuthenticationHandler {
   }
 
   /// Logout and sets accessToken to an empty String
-  void logout() async {
+  Future<void> logout() async {
     await oauth.logout();
     accessToken="";
   }
