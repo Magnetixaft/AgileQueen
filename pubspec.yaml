@@ -40,6 +40,7 @@ dependencies:
   add_2_calendar: ^2.1.2 # https://pub.dev/packages/add_2_calendar
   aad_oauth: ^0.3.0
   jwt_decode: ^0.3.1
+  encrypt: ^5.0.1
 
 dev_dependencies:
   flutter_test:

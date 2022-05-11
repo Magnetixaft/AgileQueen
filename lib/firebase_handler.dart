@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Singleton class to communicate with Firebase.
@@ -24,7 +22,7 @@ class FirebaseHandler {
 
   /// Initializes the singleton with a username
   static void initialize(String username) {
-    _instance._username = username.toLowerCase();
+    _instance._username = username;
   }
 
   /// Downloads data about rooms and offices from Firebase and builds a model.

@@ -1,6 +1,6 @@
 import 'package:aad_oauth/aad_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
-import 'package:flutter/material.dart';
+import 'package:encrypt/encrypt.dart';
 
 import 'package:jwt_decode/jwt_decode.dart';
 
@@ -48,6 +48,23 @@ class AuthenticationHandler {
   /// Updates the [accessToken] by fetching it again from Azure
   Future<void> updateToken() async{
     accessToken = await oauth.getIdToken();
+  }
+
+  ///Encrypts users [email] and return encrypted, needs .base64 to get String of encrypted
+  Encrypted encryptEmail(String email){
+    final key = Key.fromUtf8('testkeytestkeytestkeytestkeytest');
+    final iv = IV.fromLength(16);
+    final encrypter = Encrypter(AES(key));
+    return encrypter.encrypt(email, iv: iv);
+  }
+
+  ///Decrypts email, not needed for now, might be implemented
+  String decryptEmail(String encryptedEmail){
+    final key = Key.fromUtf8('testkeytestkeytestkeytestkeytest');
+    final iv = IV.fromLength(16);
+    final encrypter = Encrypter(AES(key));
+    final encrypted = encrypter.encrypt(encryptedEmail, iv: iv);
+    return encrypter.decrypt(encrypted, iv:iv);
   }
 
   /// Returns 'true' is the user is signed in, else returns 'false'
