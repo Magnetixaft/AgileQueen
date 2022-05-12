@@ -218,7 +218,7 @@ class _ProfileState extends State<Profile> {
   Future<void> logout() async{
     try{
       await AuthenticationHandler.getInstance().logout();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MyHomePage(title: "Room Bookings")));
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
     } catch (e){
       print(e.toString());
     }
