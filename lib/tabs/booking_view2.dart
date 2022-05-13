@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
 import 'package:flutter_application_1/previousoffice_handler.dart';
 import 'package:flutter_application_1/theme.dart';
+import 'package:flutter_application_1/tabs/bookings.dart';
 import 'dart:math' as math;
 
 /// Contains functionality that lets a user book a room.
@@ -133,10 +134,10 @@ class _BookingView2State extends State<BookingView2> {
               onDateChanged: (selected) {
                 setState(() {
                   Navigator.push(
-                    // changes scene to where the user can select room in the given office.
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RoomSelector(selected),
+                      // changes scene to where the user can select room in the given office.
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RoomSelector(selected),
                       ));
                 });
               }),
@@ -197,6 +198,7 @@ class _BookingView2State extends State<BookingView2> {
                       fontFamily: "Poppins",
                     )),
                 onPressed: () {
+                  isDivisionSelected = true;
                   setState(() {});
                 },
               ))),
@@ -310,7 +312,8 @@ class _OfficeCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(_office,
+                            Text(_office == 'init' ? "Select an office" : 
+                              _office,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -334,8 +337,10 @@ class _OfficeCard extends StatelessWidget {
   }
 }
 
-class RoomSelector extends StatefulWidget {
 
+/// Contains functionality to select a a room, bringing the user to a 
+/// [Workspaceselector] or [TimeslotSelector]. 
+class RoomSelector extends StatefulWidget {
   final DateTime dateTime;
   const RoomSelector(this.dateTime, {Key? key}) : super(key: key);
 
@@ -344,31 +349,180 @@ class RoomSelector extends StatefulWidget {
 }
 
 class _RoomSelectorState extends State<RoomSelector> {
+  FirebaseHandler backend = FirebaseHandler.getInstance();
   @override
   Widget build(BuildContext context) {
+    Date selectedDate =
+        Date(widget.dateTime.year, widget.dateTime.month, widget.dateTime.day);
     return Scaffold(
-      body: Column(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(25, 20, 0, 10),
+        body: Column(children: [
+      Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 0, 5),
               child: TextButton.icon(
-                icon: const Icon(Icons.arrow_back_ios, size: 16),
-                label: const Text("Back",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: "Poppins"
-                  )
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }
-              )
+                  icon: const Icon(Icons.arrow_back_ios, size: 16),
+                  label: const Text("Back",
+                      style: TextStyle(fontSize: 16, fontFamily: "Poppins")),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }))),
+      Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+              padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
+              child: Text(selectedDate.toString(),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.bold,
+                  )))),
+      const Divider(),
+      _OfficeCard(
+        backend.getSelectedOffice(),
+        backend.getAllOffices()[backend.getSelectedOffice()]?.address ??
+            'Address not found',
+        0,
+        ElliColors.grey,
+        ElliColors.lightGrey,
+        ElliColors.lightGrey,
+        25,
+        dummyFunc),
+      const Align(
+        alignment: Alignment.topLeft,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(25, 0, 0, 10),
+          child: Text("Choose room",
+            style: TextStyle(
+              fontSize: 18,
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.bold,
             )
           )
-        ]
+        )
+      ),
+      Expanded(
+        //flex: 10,
+        child: ListView(
+          children: backend.getCurrentOfficeRooms().entries.map((entry) {
+            return GestureDetector(
+              onTap: () {
+                var bookingsFuture =
+                 backend.getRoomBookingInformation(entry.key, widget.dateTime);
+
+                if (entry.value.hasSpecialEquipment()) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => 
+                      WorkspaceSelector(entry, widget.dateTime, bookingsFuture),
+                    )
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => 
+                      TimeslotSelector(entry, widget.dateTime, bookingsFuture)
+                    )
+                  );
+                }
+              },
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
+                height: 60,
+                decoration: const BoxDecoration(
+                  color: ElliColors.lightGrey,
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget> [
+                          Text(entry.value.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontFamily: "Poppins",
+                            )
+                          ),
+                          Text("Number of available workspaces: " +
+                           entry.value.workspaces.length.toString(),
+                            style: const TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 14,
+                              color: ElliColors.grey,
+                            ))
+                        ]
+                      )
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: Icon(Icons.arrow_forward_ios,
+                        color: ElliColors.grey)
+                    )
+                  ]
+                )
+              )
+            );
+          }).toList()
+        )
       )
-    );
+
+    ]));
   }
+
+  void dummyFunc(){}
+}
+
+/// Contains functionality to select a workspace, bringing the user to 
+/// a [TimeslotSelector].
+class WorkspaceSelector extends StatefulWidget {
+  final MapEntry<int, Room> roomEntry;
+  final DateTime dateTime;
+  final Future<Map<int, Map<int, String>>> bookingsFuture;
+
+  const WorkspaceSelector(this.roomEntry, this.dateTime, this.bookingsFuture,
+   {Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _WorkspaceSelectorState();
+  
+}
+
+class _WorkspaceSelectorState extends State<WorkspaceSelector> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+  
+}
+
+/// Contains functionality to select and book a timeslot.  
+class TimeslotSelector extends StatefulWidget {
+  final MapEntry<int, Room> roomEntry;
+  final int workspaceNr;
+  final DateTime dateTime;
+  final Future<Map<int, Map<int, String>>> bookingsFuture;
+
+  const TimeslotSelector(this.roomEntry, this.dateTime, this.bookingsFuture,
+   {Key? key, this.workspaceNr = 0}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _TimeslotSelectorState();
+  
+}
+
+class _TimeslotSelectorState extends State<TimeslotSelector> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+  
 }
