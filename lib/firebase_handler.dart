@@ -229,6 +229,9 @@ class FirebaseHandler {
   /// Returns the name of the currently selected office.
   String getSelectedOffice() => _office;
 
+  /// Returns the name of the currently selected division. 
+  String getSelectedDivision() => _division;
+
   // ---------------- Modifiers ------------
 
   Future<void> addAdmin(String adminHashId, String permissions) async{

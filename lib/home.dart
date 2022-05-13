@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/tabs/booking_view.dart';
+import 'package:flutter_application_1/tabs/booking_view2.dart';
 import 'package:flutter_application_1/tabs/bookings.dart';
 import 'package:flutter_application_1/tabs/profile_settings.dart';
 
