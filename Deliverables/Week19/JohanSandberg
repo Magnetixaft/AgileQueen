@@ -1,0 +1,14 @@
+What do I want to learn or understand better?
+Building IOS
+
+- how can I help someone else, or the entire team, to learn something new?
+Be available to answer questions regarding code and Azure/Authentication.
+
+- what is my contribution towards the team’s use of Scrum?
+Attending our team's meetings and participated in the process. Done my tasks. Played Planning Poker.
+
+- what is my contribution towards the team’s deliveries?
+Encrypting all emails that are stored on out database, with functions to decrypt(not needed for now)
+Connected adminpage to Azure and verifying that the user has admin privileges. Authentication now works.
+Connected profilepage with signout-button and getting signed in users email and name.
+Fixed the last steps on Authentication for the userapp. Checks if user is logged in, logout, etc.
