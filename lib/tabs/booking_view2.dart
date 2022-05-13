@@ -39,7 +39,7 @@ class _BookingView2State extends State<BookingView2> {
               return buildDivisionSelector();
             }
             if (!ignorePreviousChoice &&
-                backend.getOffices().keys.toList().contains(officeString)) {
+                backend.getAllOffices().keys.toList().contains(officeString)) {
               isLocationSelected = true;
               backend.selectOffice(officeString);
               return buildMainView();
@@ -104,7 +104,7 @@ class _BookingView2State extends State<BookingView2> {
                       fontFamily: "Poppins")))),
       _OfficeCard(
           backend.getSelectedOffice(),
-          backend.getOffices()[backend.getSelectedOffice()]?.address ??
+          backend.getAllOffices()[backend.getSelectedOffice()]?.address ??
               'Address not found',
           math.pi / 2,
           Colors.white,
@@ -227,7 +227,7 @@ class _BookingView2State extends State<BookingView2> {
     String currentOffice = backend.getSelectedOffice();
     _OfficeCard firstItem = _OfficeCard(
         currentOffice,
-        backend.getOffices()[currentOffice]?.address ?? "Address not found",
+        backend.getAllOffices()[currentOffice]?.address ?? "Address not found",
         3 * math.pi / 2,
         Colors.white,
         ElliColors.darkBlue,
@@ -236,7 +236,7 @@ class _BookingView2State extends State<BookingView2> {
         callbackFromOffice);
     officeList.add(firstItem);
 
-    for (var officeEntry in backend.getOffices().entries) {
+    for (var officeEntry in backend.getDivisionOffices().entries) {
       if (officeEntry.key != backend.getSelectedOffice()) {
         _OfficeCard listItem = _OfficeCard(
             officeEntry.key,
