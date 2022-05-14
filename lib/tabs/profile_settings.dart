@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AuthenticationHandler.dart';
-import 'package:flutter_application_1/main.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -65,9 +63,12 @@ class _ProfileState extends State<Profile> {
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 30,
-                    child: ClipRRect(
-                      child: Image.network('https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'), // temporary image
-                      borderRadius: BorderRadius.circular(50.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: ClipRRect(
+                        child: Image.asset('assets/images/icons8-user-96.png'),
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
                     ),
                   ),
                 ),
@@ -77,7 +78,7 @@ class _ProfileState extends State<Profile> {
                   children: <Widget>[
                     Text(
                       userName,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -86,7 +87,7 @@ class _ProfileState extends State<Profile> {
                     ),
                     Text(
                       userEmail,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                       ),
@@ -131,7 +132,7 @@ class _ProfileState extends State<Profile> {
                 actions: <Widget>[
                   ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: Text('OK')),
+                      child: const Text('OK')),
                 ],
               );
             });
@@ -180,7 +181,7 @@ class _ProfileState extends State<Profile> {
                 actions: <Widget>[
                   ElevatedButton(
                       onPressed: () => logout(),
-                      child: Text('Log out')),
+                      child: const Text('Log out')),
                 ],
               );
             });
