@@ -85,16 +85,13 @@ class _BookingView2State extends State<BookingView2> {
       Expanded(
           child: ListView(children: [
         Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 25, 0, 0),
-            child: SizedBox(
-              width: 50,
-              height: 30,
-              child: Image.asset('assets/images/elli_logo.png')
-            )
-          )
-        ),
+            alignment: Alignment.topLeft,
+            child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 25, 0, 0),
+                child: SizedBox(
+                    width: 50,
+                    height: 30,
+                    child: Image.asset('assets/images/elli_logo.png')))),
         Align(
             alignment: Alignment.topLeft,
             child: Padding(
@@ -824,6 +821,7 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
                   fontWeight: FontWeight.bold,
                 )))));
 
+    bool atLeastOneSlotBooked = false;
     for (var timeslotNr = 0;
         timeslotNr < widget.roomEntry.value.timeslots.length;
         timeslotNr++) {
@@ -930,12 +928,8 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
                               color: Colors.white,
                             )))))
           ])));
-
-      if (bookingInfo == 'available') {
-        continue;
-      } else if (bookingInfo == 'booked' || bookingInfo == 'user') {
-        wholeDayFree = false;
-        continue;
+      if (userHasAlreadyBooked == true) {
+        atLeastOneSlotBooked = true;
       }
     }
 
@@ -971,15 +965,21 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
                           ])),
                   GestureDetector(
                       onTap: () {
-                        wholeDayFree == true ? bookWholeDay(date) : dummyFunc();
+                        atLeastOneSlotBooked == true
+                            ? dummyFunc()
+                            : wholeDayFree == true
+                                ? bookWholeDay(date)
+                                : dummyFunc();
                       },
                       child: Container(
                           width: 70,
                           margin: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: wholeDayFree == true
-                                ? ElliColors.darkBlue
-                                : ElliColors.grey,
+                            color: atLeastOneSlotBooked
+                                ? ElliColors.grey
+                                : wholeDayFree == true
+                                    ? ElliColors.darkBlue
+                                    : ElliColors.grey,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(6)),
                           ),
