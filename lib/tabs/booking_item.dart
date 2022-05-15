@@ -34,10 +34,10 @@ class BookingItem extends StatelessWidget {
     return GestureDetector(
         onTap: () => _openDetailedView(context),
         child: Container(
-          margin: const EdgeInsets.all(10.0),
-          height: 48.0,
+          margin: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
           decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.primary,
               borderRadius: const BorderRadius.all(Radius.circular(6))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +60,6 @@ class BookingItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const SizedBox(height: 5),
         Text(
           _roomName + ', ' + _place,
           style: const TextStyle(
@@ -78,7 +77,7 @@ class BookingItem extends StatelessWidget {
   }
 
   /// Opens a detailed booking view when pressing a [BookingItem].
-  /// 
+  ///
   /// The detailed view is represented using an [AlertDialog].
   void _openDetailedView(BuildContext context) async {
     return showDialog<void>(
@@ -86,6 +85,8 @@ class BookingItem extends StatelessWidget {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
+          actionsPadding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+          contentPadding: const EdgeInsets.all(20),
           title: Text(_roomName + ', ' + _workspaceNr),
           content: DetailedView(_place, _address, _date.toString(),
               _description, _timeslot, _attribute),
@@ -97,22 +98,27 @@ class BookingItem extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
+                padding: EdgeInsets.all(20),
                 primary: Colors.black,
                 backgroundColor: Colors.grey[100],
                 onSurface: Colors.grey,
               ),
             ),
-            TextButton(
-              child: const Text("Delete Booking"),
-              onPressed: () {
-                //TODO function call to delete booking.
-                callback();
-                Navigator.of(context).pop();
-              },
-              style: TextButton.styleFrom(
-                primary: Colors.white,
-                backgroundColor: Colors.red[600],
-                onSurface: Colors.red[350],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: TextButton(
+                child: const Text("Delete Booking"),
+                onPressed: () {
+                  //TODO function call to delete booking.
+                  callback();
+                  Navigator.of(context).pop();
+                },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.all(20),
+                  primary: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  onSurface: Theme.of(context).colorScheme.secondary,
+                ),
               ),
             ),
             IconButton(
@@ -130,7 +136,6 @@ class BookingItem extends StatelessWidget {
   ///
   /// Opens the phone's default calendar and fills all fields with information about this specific [BookingItem].
   void _addToCalendar() {
-
     /// Start time for the booking parsed from _timeslot.
     int startTimeHour = int.parse(_timeslot.substring(8, 10));
     int startTimeMinute = int.parse(_timeslot.substring(11, 13));
@@ -140,14 +145,27 @@ class BookingItem extends StatelessWidget {
     int endTimeMinute = int.parse(_timeslot.substring(23, 25));
 
     /// Start day parsed from the booking.
-    DateTime start = DateTime(_date.year, _date.month, _date.day, startTimeHour, startTimeMinute);
+    DateTime start = DateTime(
+        _date.year, _date.month, _date.day, startTimeHour, startTimeMinute);
 
     /// End day parsed from the booking .
-    DateTime end = DateTime(_date.year, _date.month, _date.day, endTimeHour, endTimeMinute);
+    DateTime end = DateTime(
+        _date.year, _date.month, _date.day, endTimeHour, endTimeMinute);
 
     /// Opens the phonhe calendar and adds the booking.
     Add2Calendar.addEvent2Cal(Event(
-      title: "Workspace " +_workspaceNr +" in " +_roomName +" booked at " +_place,description: 'Workspace with ' +_attribute +" booked in " +_roomName +", " +_description,
+      title: "Workspace " +
+          _workspaceNr +
+          " in " +
+          _roomName +
+          " booked at " +
+          _place,
+      description: 'Workspace with ' +
+          _attribute +
+          " booked in " +
+          _roomName +
+          ", " +
+          _description,
       location: _address,
       startDate: start,
       endDate: end,

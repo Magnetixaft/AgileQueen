@@ -12,7 +12,6 @@ class _ProfileState extends State<Profile> {
   var userEmail = "";
   var userName = "";
 
-
   @override
   void initState() {
     AuthenticationHandler.getInstance().getUserEmail().then((email) {
@@ -30,20 +29,17 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-
     /// Builds the header.
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const SizedBox(height: 10),
-        const Text('    Menu',
-          style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold
+        Padding(
+          padding: const EdgeInsets.fromLTRB(18.0, 10, 0, 20),
+          child: const Text(
+            'Menu',
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
-        const SizedBox(height: 20),
-
 
         /// Builds a profile box with a name, email and user icon.
         Padding(
@@ -52,9 +48,8 @@ class _ProfileState extends State<Profile> {
             height: 100,
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: const BorderRadius.all(Radius.circular(6))
-            ),
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: const BorderRadius.all(Radius.circular(6))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -82,8 +77,7 @@ class _ProfileState extends State<Profile> {
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          letterSpacing: 1
-                      ),
+                          letterSpacing: 1),
                     ),
                     Text(
                       userEmail,
@@ -99,8 +93,6 @@ class _ProfileState extends State<Profile> {
           ),
         ),
 
-
-
         /// Calls the builder method to build each item.
 
         _buildSettingItem(context, 'Help', 'Read FAQ'),
@@ -111,15 +103,13 @@ class _ProfileState extends State<Profile> {
 
         _logOutBuildSettingItem(context, 'Log Out', 'Leave the application'),
         const Divider(height: 0, indent: 20, endIndent: 20),
-
-
       ],
     );
-
   }
 
   /// Builder method which creates a setting item with title and subtitle.
-  GestureDetector _buildSettingItem(BuildContext context, String title, String subtitle) {
+  GestureDetector _buildSettingItem(
+      BuildContext context, String title, String subtitle) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -129,6 +119,7 @@ class _ProfileState extends State<Profile> {
               return AlertDialog(
                 title: Text(title),
                 content: Text(subtitle),
+                actionsPadding: EdgeInsets.fromLTRB(18, 0, 18, 10),
                 actions: <Widget>[
                   ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
@@ -149,18 +140,11 @@ class _ProfileState extends State<Profile> {
                 children: [
                   Text(title),
                   const SizedBox(height: 8),
-                  Text(
-                      subtitle,
-                      style: const TextStyle(
-                          color: Colors.grey
-                      )),
+                  Text(subtitle, style: const TextStyle(color: Colors.grey)),
                 ],
               ),
             ),
-            const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey
-            )
+            const Icon(Icons.arrow_forward_ios, color: Colors.grey)
           ],
         ),
       ),
@@ -168,7 +152,8 @@ class _ProfileState extends State<Profile> {
   }
 
   /// Builder method which creates a setting item with title and subtitle.
-  GestureDetector _logOutBuildSettingItem(BuildContext context, String title, String subtitle) {
+  GestureDetector _logOutBuildSettingItem(
+      BuildContext context, String title, String subtitle) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -177,11 +162,11 @@ class _ProfileState extends State<Profile> {
             builder: (context) {
               return AlertDialog(
                 title: Text(title),
+                actionsPadding: EdgeInsets.fromLTRB(18, 0, 18, 10),
                 content: Text(subtitle),
                 actions: <Widget>[
                   ElevatedButton(
-                      onPressed: () => logout(),
-                      child: const Text('Log out')),
+                      onPressed: () => logout(), child: const Text('Log out')),
                 ],
               );
             });
@@ -198,34 +183,26 @@ class _ProfileState extends State<Profile> {
                 children: [
                   Text(title),
                   const SizedBox(height: 8),
-                  Text(
-                      subtitle,
-                      style: const TextStyle(
-                          color: Colors.grey
-                      )),
+                  Text(subtitle, style: const TextStyle(color: Colors.grey)),
                 ],
               ),
             ),
-            const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey
-            )
+            const Icon(Icons.arrow_forward_ios, color: Colors.grey)
           ],
         ),
       ),
     );
   }
 
-  Future<void> logout() async{
-    try{
+  Future<void> logout() async {
+    try {
       await AuthenticationHandler.getInstance().logout();
-      Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-    } catch (e){
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
+    } catch (e) {
       print(e.toString());
     }
   }
-
-
 
 /*
   GestureDetector _buildToggleItem(BuildContext context, String title, String subtitle, bool value, Function onChangeMethod) {
