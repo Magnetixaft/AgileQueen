@@ -141,7 +141,7 @@ class FirebaseHandler {
       }
     }
 
-    //Get most used room
+    //Get most used workspace
     final workspaceUseMap = <String, int>{};
     for (var booking in bookingList) {
       workspaceUseMap.update('${booking.roomNr} ${booking.workspaceNr}', (value) => ++value, ifAbsent: () => 1);
