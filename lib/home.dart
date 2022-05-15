@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
   
   /// The list of tabs/pages selectable using the BottomNavigationBar.
   final List<Widget> _tabs = <Widget>[
-    BookingView(),
+    BookingView2(),
     const Bookings(),
     const Profile()
   ];
@@ -37,12 +37,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.fromLTRB(10,0,0,0),
-          child: Image.asset('assets/images/elicit_logo.png'),
-        ),
-      ),
       body: Center(
         child: _tabs.elementAt(_selectedIndex),
       ),
