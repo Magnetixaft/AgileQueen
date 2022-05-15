@@ -5,9 +5,29 @@ import 'package:flutter_application_1/home.dart';
 import 'package:flutter_application_1/theme.dart';
 //import 'package:flutter_application_1/theme_elicit.dart';
 import 'AuthenticationHandler.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  //REMOVE BELOW COMMENT TO BUILD ON IOS
+  // const firebaseConfig = FirebaseOptions(
+  //     apiKey: "AIzaSyD71VJDiqwq5e2y7gpaszs4um91jR6tN1g",
+  //     authDomain: "agilequeen-82096.firebaseapp.com",
+  //     projectId: "agilequeen-82096",
+  //     storageBucket: "agilequeen-82096.appspot.com",
+  //     messagingSenderId: "883336254219",
+  //     appId: "1:883336254219:web:7d2de78527260bb27e080e");
+
+  // if (kIsWeb) {
+  //   await Firebase.initializeApp(
+  //     options: firebaseConfig,
+  //   );
+  // } else {
+  //   await Firebase.initializeApp();
+  // }
+
+  //COMMENT THIS OUT WHEN BUILDING ON IOS
   await Firebase.initializeApp(
       // Firebase options related to FirebaseDB
       options: const FirebaseOptions(
@@ -71,7 +91,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   /// Tests if a user is already logged in with Azure by calling [login] after the widget has been initially built.
   @override
   void initState() {
@@ -135,26 +154,27 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e.toString());
     }
     //TODO for debugging using the web. Remove before shipping.
-    //  FirebaseHandler.initialize("testing");
-    //  FirebaseHandler.getInstance().buildStaticModel().then((value) {
-    //    Navigator.pushReplacement(
-    //        context,
-    //        MaterialPageRoute(
-    //            builder: (context) =>
-    //            const Home()));
-    //  });
+    // FirebaseHandler.initialize("testing");
+    // FirebaseHandler.getInstance().buildStaticModel().then((value) {
+    //   Navigator.pushReplacement(
+    //       context, MaterialPageRoute(builder: (context) => const Home()));
+    // });
   }
 
   /// Navigates to [Home] if user is logged in. Initializes the [FirebaseHandler] using encrypted email from AuthenticationHandler
   Future<void> checkIfLoggedIn() async {
-    AuthenticationHandler authenticationHandler = AuthenticationHandler.getInstance();
-    try{
-      if(await authenticationHandler.isUserSignedIn()==true){
-        FirebaseHandler.initialize(authenticationHandler.encryptEmail(await authenticationHandler.getUserEmail()).base64);
+    AuthenticationHandler authenticationHandler =
+        AuthenticationHandler.getInstance();
+    try {
+      if (await authenticationHandler.isUserSignedIn() == true) {
+        FirebaseHandler.initialize(authenticationHandler
+            .encryptEmail(await authenticationHandler.getUserEmail())
+            .base64);
         await FirebaseHandler.getInstance().buildStaticModel();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const Home()));
       }
-    }catch (e) {
+    } catch (e) {
       print(e.toString());
     }
   }
