@@ -618,6 +618,8 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
     );
     
     for (var workspace in workspaces.keys) {
+      String specialEquipment = widget.roomEntry.value.workspaces[workspace]
+        .toString().replaceAll("[", "").replaceAll("]", "");
       GestureDetector card = GestureDetector(
         onTap: () {
           Navigator.push(
@@ -642,15 +644,16 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(workspace.toString(), //TODO Should not a workspace be a string, not an int?
+                      Text(workspace.toString(),
                         style: const TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         )
                       ),
-                      Text(widget.roomEntry.value.workspaces[workspace] //TODO make this look nice
-                        .toString()),
+                      if (specialEquipment.length > 1) ...[
+                        Text(specialEquipment)
+                      ],
                       const SizedBox(height: 10),
                       Row(
                         children: buildAvailabilityRow(workspaces[workspace]!)
@@ -750,18 +753,20 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
                 ))
             )
           ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
-              child: Text(widget.workspaceNr.toString(), //TODO check if 0, if so do smth
-                style: const TextStyle(
-                  fontFamily: "Poppins",
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ))
+          if (widget.workspaceNr != 0) ...[
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
+                child: Text(widget.workspaceNr.toString(),
+                  style: const TextStyle(
+                    fontFamily: "Poppins",
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ))
+              )
             )
-          ),
+          ],
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
@@ -822,7 +827,32 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
   List<Widget> buildTimeslotList(Map<int, Map<int, String>> bookingData){
     List<Widget> result = [];
     
+    for (var timeslotNr = 0; timeslotNr < 
+    widget.roomEntry.value.timeslots.length; timeslotNr++){
+      var timeslot = widget.roomEntry.value.timeslots[timeslotNr];
+      var workspaceNr = widget.workspaceNr;
 
+      if (workspaceNr == 0) {
+        for(var bookingEntry in bookingData.entries) {
+          if (bookingEntry.value[timeslotNr] == 'available') {
+            workspaceNr = bookingEntry.key;
+          }
+        }
+      }
+
+      String bookingInfo = bookingData[workspaceNr]?[timeslotNr] ?? 'null';
+
+      if  (bookingInfo == 'available'){
+        continue;
+      }
+      else if (bookingInfo == 'booked'){
+        continue;
+      }
+
+
+      print(timeslot.toString() + workspaceNr.toString() + bookingInfo);
+
+    }
 
     return result;
   }
