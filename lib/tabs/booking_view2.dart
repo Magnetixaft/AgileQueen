@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_handler.dart';
-import 'package:flutter_application_1/previousoffice_handler.dart';
+import 'package:flutter_application_1/previous_choice_handler.dart';
 import 'package:flutter_application_1/theme.dart';
 import 'package:flutter_application_1/tabs/bookings.dart';
 import 'dart:math' as math;
 
 /// Contains functionality that lets a user book a room.
 class BookingView2 extends StatefulWidget {
-  final Future<String> previousOfficeFuture =
-      PreviousOfficeHandler.getInstance().readPrevChoice();
+  final Future<PreviousChoices> previousChoiceFuture =
+      PreviousChoiceHandler.instance.readPrevChoice();
   BookingView2({Key? key}) : super(key: key);
 
   @override
@@ -31,16 +31,22 @@ class _BookingView2State extends State<BookingView2> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-        future: widget.previousOfficeFuture,
+    return FutureBuilder<PreviousChoices>(
+        future: widget.previousChoiceFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            String officeString = snapshot.data ?? 'null';
+            String divisionString = snapshot.data?.division ?? 'nullDivision';
+            String officeString = snapshot.data?.office ?? 'nullOffice';
+            if (!ignorePreviousChoice &&
+                backend.getDivisions().keys.toList().contains(divisionString)) {
+              isDivisionSelected = true;
+              backend.selectDivision(divisionString);
+            }
             if (!isDivisionSelected) {
               return buildDivisionSelector();
             }
             if (!ignorePreviousChoice &&
-                backend.getAllOffices().keys.toList().contains(officeString)) {
+                backend.getDivisionOffices().keys.toList().contains(officeString)) {
               isLocationSelected = true;
               backend.selectOffice(officeString);
               return buildMainView();
@@ -81,6 +87,7 @@ class _BookingView2State extends State<BookingView2> {
                 child: GestureDetector(
                     onTap: () {
                       isDivisionSelected = false;
+                      ignorePreviousChoice = true;
                       setState(() {});
                     },
                     child: Row(children: [
@@ -165,6 +172,7 @@ class _BookingView2State extends State<BookingView2> {
           onTap: () {
             backend.selectDivision(divisionEntry.key);
             isDivisionSelected = true;
+            PreviousChoiceHandler.instance.setPreviousDivision(divisionEntry.key);
             setState(() {});
           },
           child: Column(children: [
@@ -305,6 +313,7 @@ class _OfficeCard extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           backend.selectOffice(_office);
+          PreviousChoiceHandler.instance.setPreviousOffice(_office);
           callback();
         },
         child: Container(
