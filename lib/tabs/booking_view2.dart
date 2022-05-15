@@ -46,7 +46,11 @@ class _BookingView2State extends State<BookingView2> {
               return buildDivisionSelector();
             }
             if (!ignorePreviousChoice &&
-                backend.getDivisionOffices().keys.toList().contains(officeString)) {
+                backend
+                    .getDivisionOffices()
+                    .keys
+                    .toList()
+                    .contains(officeString)) {
               isLocationSelected = true;
               backend.selectOffice(officeString);
               return buildMainView();
@@ -81,6 +85,17 @@ class _BookingView2State extends State<BookingView2> {
       Expanded(
           child: ListView(children: [
         Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 25, 0, 0),
+            child: SizedBox(
+              width: 50,
+              height: 30,
+              child: Image.asset('assets/images/elli_logo.png')
+            )
+          )
+        ),
+        Align(
             alignment: Alignment.topLeft,
             child: Padding(
                 padding: const EdgeInsets.fromLTRB(25, 25, 0, 10),
@@ -106,7 +121,7 @@ class _BookingView2State extends State<BookingView2> {
         const Align(
             alignment: Alignment.topLeft,
             child: Padding(
-                padding: EdgeInsets.fromLTRB(25, 10, 0, 0),
+                padding: EdgeInsets.fromLTRB(25, 5, 0, 0),
                 child: Text("Change office",
                     style: TextStyle(
                         fontSize: 20,
@@ -172,7 +187,10 @@ class _BookingView2State extends State<BookingView2> {
           onTap: () {
             backend.selectDivision(divisionEntry.key);
             isDivisionSelected = true;
-            PreviousChoiceHandler.instance.setPreviousDivision(divisionEntry.key);
+            isLocationSelected = false;
+            backend.selectOffice('init');
+            PreviousChoiceHandler.instance
+                .setPreviousDivision(divisionEntry.key);
             setState(() {});
           },
           child: Column(children: [
@@ -512,187 +530,164 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
     Date selectedDate =
         Date(widget.dateTime.year, widget.dateTime.month, widget.dateTime.day);
     return FutureBuilder<Map<int, Map<int, String>>>(
-      future: backend.getRoomBookingInformation(widget.roomEntry.key,
-        widget.dateTime),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return Scaffold(
-                body: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 5),
-                        child: TextButton.icon(
-                          icon: const Icon(Icons.arrow_back_ios, size: 16),
-                          label: const Text("Back",
-                            style: TextStyle(fontSize: 16,
-                              fontFamily: "Poppins")),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        )
-                      ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
-                        child: Text(widget.roomEntry.value.name,
+        future: backend.getRoomBookingInformation(
+            widget.roomEntry.key, widget.dateTime),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+                body: Column(children: [
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 0, 5),
+                      child: TextButton.icon(
+                        icon: const Icon(Icons.arrow_back_ios, size: 16),
+                        label: const Text("Back",
+                            style:
+                                TextStyle(fontSize: 16, fontFamily: "Poppins")),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ))),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
+                      child: Text(widget.roomEntry.value.name,
                           style: const TextStyle(
                             fontFamily: "Poppins",
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                          ))
-                      )
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
-                        child: Text(backend.getSelectedOffice() + "\n" +
-                        backend.getAllOffices()[backend.getSelectedOffice()]
-                        !.address,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontFamily: "Poppins"
-                        ))
-                      )
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
-                        child: Text(selectedDate.toString(),
-                        style: const TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 14,
-                          color: ElliColors.grey
-                        ))
-                      )
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
-                        child: Text(widget.roomEntry.value.description,
+                          )))),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
+                      child: Text(
+                          backend.getSelectedOffice() +
+                              "\n" +
+                              backend
+                                  .getAllOffices()[backend.getSelectedOffice()]!
+                                  .address,
                           style: const TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 14,
-                            color: ElliColors.grey
-                        ))
-                      )
-                    ),
-                    const Divider(),
-                    Expanded(
-                      child: ListView(
-                        children: buildWorkSpaceList(snapshot.data!)
-                      )
-                    ),
-                  ]
-                )
-              );
-        }
-        return const Center(child: CircularProgressIndicator());
-      }  
-    );
+                              fontSize: 14, fontFamily: "Poppins")))),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
+                      child: Text(selectedDate.toString(),
+                          style: const TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 14,
+                              color: ElliColors.grey)))),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
+                      child: Text(widget.roomEntry.value.description,
+                          style: const TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 14,
+                              color: ElliColors.grey)))),
+              const Divider(),
+              Expanded(
+                  child:
+                      ListView(children: buildWorkSpaceList(snapshot.data!))),
+            ]));
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 
   /// Returns [workSpaceList], which is a list of Widgets containing
-  /// information about specific workspaces. 
-  List<Widget> buildWorkSpaceList(Map<int, Map<int, String>> workspaces){
+  /// information about specific workspaces.
+  List<Widget> buildWorkSpaceList(Map<int, Map<int, String>> workspaces) {
     List<Widget> workSpaceList = [];
-    workSpaceList.add(
-      const Align(
+    workSpaceList.add(const Align(
         alignment: Alignment.topLeft,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
-          child: Text("Workspaces",
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontSize: 20,
-              fontWeight: FontWeight.bold
-            ))
-        )
-      )
-    );
-    
+            padding: EdgeInsets.fromLTRB(25, 10, 0, 10),
+            child: Text("Workspaces",
+                style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)))));
+
     for (var workspace in workspaces.keys) {
       String specialEquipment = widget.roomEntry.value.workspaces[workspace]
-        .toString().replaceAll("[", "").replaceAll("]", "");
+          .toString()
+          .replaceAll("[", "")
+          .replaceAll("]", "");
       GestureDetector card = GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TimeslotSelector(
-                widget.roomEntry, widget.dateTime, widget.bookingsFuture,
-                workspaceNr: workspace)));
-        },
-        child: Container(
-           margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
-            height: 80.0,
-            decoration: const BoxDecoration(
-                color: ElliColors.lightGrey), //Theme.of(context).primaryColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(workspace.toString(),
-                        style: const TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        )
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TimeslotSelector(widget.roomEntry,
+                        widget.dateTime, widget.bookingsFuture,
+                        workspaceNr: workspace)));
+          },
+          child: Container(
+              margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
+              height: 80.0,
+              decoration: const BoxDecoration(
+                  color:
+                      ElliColors.lightGrey), //Theme.of(context).primaryColor,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(workspace.toString(),
+                                  style: const TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              if (specialEquipment.length > 1) ...[
+                                Text(specialEquipment)
+                              ],
+                              const SizedBox(height: 10),
+                              Row(
+                                  children: buildAvailabilityRow(
+                                      workspaces[workspace]!))
+                            ]),
                       ),
-                      if (specialEquipment.length > 1) ...[
-                        Text(specialEquipment)
-                      ],
-                      const SizedBox(height: 10),
-                      Row(
-                        children: buildAvailabilityRow(workspaces[workspace]!)
-                      )
-                    ]
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Icon(Icons.arrow_forward_ios,
-                  color: ElliColors.grey))
-            ])
-        )
-      );
+                    ),
+                    const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        child: Icon(Icons.arrow_forward_ios,
+                            color: ElliColors.grey))
+                  ])));
       workSpaceList.add(card);
     }
     return workSpaceList;
   }
 
   /// Returns a list of Widgets representing timeslots, that are colored
-  /// based on their availability. 
+  /// based on their availability.
   List<Widget> buildAvailabilityRow(Map<int, String> timeslots) {
     List<Widget> availability = [];
 
-    for (String timeslot in timeslots.values){
+    for (String timeslot in timeslots.values) {
       Flexible item = Flexible(
-        flex: 1,
-        fit: FlexFit.loose,
-        child: Container(
-          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-          height: 7,
-          decoration: BoxDecoration(
-            color: timeslot == 'booked' ? ElliColors.darkPink :
-             timeslot == 'user' ? Colors.yellow : Colors.green,
-              borderRadius: const BorderRadius.all(Radius.circular(2))
-          )
-        )
-      );
+          flex: 1,
+          fit: FlexFit.loose,
+          child: Container(
+              margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+              height: 7,
+              decoration: BoxDecoration(
+                  color: timeslot == 'booked'
+                      ? ElliColors.darkPink
+                      : timeslot == 'user'
+                          ? Colors.yellow
+                          : Colors.green,
+                  borderRadius: const BorderRadius.all(Radius.circular(2)))));
       availability.add(item);
     }
     return availability;
@@ -722,118 +717,125 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
     Date selectedDate =
         Date(widget.dateTime.year, widget.dateTime.month, widget.dateTime.day);
     return Scaffold(
-      body: Column(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
+        body: Column(children: [
+      Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 0, 5),
               child: TextButton.icon(
                 icon: const Icon(Icons.arrow_back_ios, size: 16),
                 label: const Text("Back",
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontSize: 16
-                  )),
+                    style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-              )
-            )
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
+              ))),
+      Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
               padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
               child: Text(widget.roomEntry.value.name,
-                style: const TextStyle(
-                  fontFamily: "Poppins",
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ))
-            )
-          ),
-          if (widget.workspaceNr != 0) ...[
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
-                child: Text(widget.workspaceNr.toString(),
                   style: const TextStyle(
                     fontFamily: "Poppins",
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                  ))
-              )
-            )
-          ],
-          Align(
+                  )))),
+      if (widget.workspaceNr != 0) ...[
+        Align(
             alignment: Alignment.topLeft,
             child: Padding(
+                padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
+                child: Text(widget.workspaceNr.toString(),
+                    style: const TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ))))
+      ],
+      Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
               padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
-              child: Text(backend.getSelectedOffice() + "\n" + 
-                backend.getAllOffices()[backend.getSelectedOffice()]
-                !.address,
-                style: const TextStyle(
-                  fontFamily: "Poppins",
-                  fontSize: 14
-                ))
-            )
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
+              child: Text(
+                  backend.getSelectedOffice() +
+                      "\n" +
+                      backend
+                          .getAllOffices()[backend.getSelectedOffice()]!
+                          .address,
+                  style:
+                      const TextStyle(fontFamily: "Poppins", fontSize: 14)))),
+      Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
               padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
               child: Text(selectedDate.toString(),
-              style: const TextStyle(
-                fontFamily: "Poppins",
-                fontSize: 14,
-                color: ElliColors.grey
-              ))
-            )
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
+                  style: const TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 14,
+                      color: ElliColors.grey)))),
+      Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
               padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
               child: Text(widget.roomEntry.value.description,
-                style: const TextStyle(
-                  fontFamily: "Poppins",
-                  fontSize: 14,
-                  color: ElliColors.grey
-                ))
-            )
-          ),
-          const Divider(),
-          Expanded(
-            child: FutureBuilder<Map<int, Map<int, String>>>(
-                future: widget.bookingsFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return ListView(
-                      children: 
-                        buildTimeslotList(snapshot.data!)
-                    );
-                  }
-                  return const Center(child: CircularProgressIndicator());
+                  style: const TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 14,
+                      color: ElliColors.grey)))),
+      const Divider(),
+      Expanded(
+          child: FutureBuilder<Map<int, Map<int, String>>>(
+              future: widget.bookingsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return ListView(
+                      children:
+                          buildTimeslotList(snapshot.data!, selectedDate));
                 }
-              )
-          ),
-        ]
-      )
-    );
+                return const Center(child: CircularProgressIndicator());
+              })),
+    ]));
   }
 
-  List<Widget> buildTimeslotList(Map<int, Map<int, String>> bookingData){
+  List<Widget> buildTimeslotList(
+      Map<int, Map<int, String>> bookingData, Date date) {
     List<Widget> result = [];
-    
-    for (var timeslotNr = 0; timeslotNr < 
-    widget.roomEntry.value.timeslots.length; timeslotNr++){
+    bool wholeDayFree = true;
+
+    result.add(const Align(
+        alignment: Alignment.topLeft,
+        child: Padding(
+            padding: EdgeInsets.fromLTRB(25, 0, 0, 10),
+            child: Text("All day",
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                )))));
+
+    result.add(const Align(
+        alignment: Alignment.topLeft,
+        child: Padding(
+            padding: EdgeInsets.fromLTRB(25, 15, 0, 10),
+            child: Text("Time Slots",
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                )))));
+
+    for (var timeslotNr = 0;
+        timeslotNr < widget.roomEntry.value.timeslots.length;
+        timeslotNr++) {
       var timeslot = widget.roomEntry.value.timeslots[timeslotNr];
       var workspaceNr = widget.workspaceNr;
+      bool userHasAlreadyBooked = false;
 
       if (workspaceNr == 0) {
-        for(var bookingEntry in bookingData.entries) {
+        for (var bookingEntry in bookingData.entries) {
+          if (bookingEntry.value[timeslotNr] == 'user') {
+            userHasAlreadyBooked = true;
+          }
           if (bookingEntry.value[timeslotNr] == 'available') {
             workspaceNr = bookingEntry.key;
           }
@@ -842,36 +844,303 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
 
       String bookingInfo = bookingData[workspaceNr]?[timeslotNr] ?? 'null';
 
-      if  (bookingInfo == 'available'){
+      result.add(Container(
+          decoration: const BoxDecoration(
+            color: ElliColors.lightGrey,
+            borderRadius: BorderRadius.all(Radius.circular(6)),
+          ),
+          margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
+          height: 70,
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(children: [
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("From",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 16,
+                            )),
+                        Text(timeslot.values.first,
+                            style: const TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold))
+                      ])),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(" ",
+                            style:
+                                TextStyle(fontSize: 16, fontFamily: "Poppins")),
+                        Text("-",
+                            style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold))
+                      ])),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("To",
+                            style:
+                                TextStyle(fontSize: 16, fontFamily: "Poppins")),
+                        Text(timeslot.values.last,
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.bold))
+                      ]))
+            ]),
+            GestureDetector(
+                onTap: () {
+                  userHasAlreadyBooked == true
+                      ? dummyFunc()
+                      : bookingInfo == 'available'
+                          ? bookOneTimeslot(timeslotNr, workspaceNr, date)
+                          : dummyFunc();
+                },
+                child: Container(
+                    width: 70,
+                    margin: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: userHasAlreadyBooked == true
+                          ? ElliColors.grey
+                          : bookingInfo == 'available'
+                              ? ElliColors.darkBlue
+                              : ElliColors.grey,
+                      borderRadius: const BorderRadius.all(Radius.circular(6)),
+                    ),
+                    child: const Center(
+                        child: Text("Book",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white,
+                            )))))
+          ])));
+
+      if (bookingInfo == 'available') {
+        continue;
+      } else if (bookingInfo == 'booked' || bookingInfo == 'user') {
+        wholeDayFree = false;
         continue;
       }
-      else if (bookingInfo == 'booked'){
-        continue;
-      }
-
-
-      print(timeslot.toString() + workspaceNr.toString() + bookingInfo);
-
     }
+
+    result.insert(
+        1,
+        Container(
+            decoration: const BoxDecoration(
+              color: ElliColors.lightGrey,
+              borderRadius: BorderRadius.all(Radius.circular(6)),
+            ),
+            margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
+            height: 70,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(date.toString(),
+                                style: const TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontSize: 16,
+                                )),
+                            const Text("All day",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ))
+                          ])),
+                  GestureDetector(
+                      onTap: () {
+                        wholeDayFree == true ? bookWholeDay(date) : dummyFunc();
+                      },
+                      child: Container(
+                          width: 70,
+                          margin: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: wholeDayFree == true
+                                ? ElliColors.darkBlue
+                                : ElliColors.grey,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(6)),
+                          ),
+                          child: const Center(
+                              child: Text("Book",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  )))))
+                ])));
 
     return result;
   }
+
+  /// Does not do anything
+  dummyFunc() {}
+
+  /// Books a single timeslot.
+  bookOneTimeslot(int timeslotNr, int workspaceNr, Date date) {
+    backend.saveBooking(
+        widget.roomEntry.key, widget.dateTime, timeslotNr, workspaceNr);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              ConfirmationScreen(widget.roomEntry, widget.workspaceNr, date),
+        ));
+  }
+
+  /// Books a full day worth of timeslots.
+  bookWholeDay(Date date) async {
+    for (var timeslotNr = 0;
+        timeslotNr < widget.roomEntry.value.timeslots.length;
+        timeslotNr++) {
+      var workspaceNr = widget.workspaceNr;
+
+      await backend.saveBooking(
+          widget.roomEntry.key, widget.dateTime, timeslotNr, workspaceNr);
+    }
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              ConfirmationScreen(widget.roomEntry, widget.workspaceNr, date),
+        ));
+  }
 }
 
-/// Shows the user a confirmation for their booking. 
+/// Shows the user a confirmation for their booking.
 class ConfirmationScreen extends StatefulWidget {
-  const ConfirmationScreen({Key? key}) : super(key: key);
+  final MapEntry<int, Room> roomEntry;
+  final int workspaceNr;
+  final Date date;
+
+  const ConfirmationScreen(this.roomEntry, this.workspaceNr, this.date,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ConfirmationScreenState();
-  
 }
 
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
+  FirebaseHandler backend = FirebaseHandler.getInstance();
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+          const SizedBox(height: 40),
+          Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
+                  child: Text(widget.roomEntry.value.name,
+                      style: const TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )))),
+          if (widget.workspaceNr != 0) ...[
+            Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
+                    child: Text(widget.workspaceNr.toString(),
+                        style: const TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ))))
+          ],
+          Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
+                  child: Text(widget.roomEntry.value.description,
+                      style: const TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 14,
+                        color: ElliColors.grey,
+                      )))),
+          const Align(
+              alignment: Alignment.center,
+              child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  child: Icon(Icons.check_circle,
+                      size: 160, color: ElliColors.darkPink))),
+          const Align(
+              alignment: Alignment.center,
+              child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 50),
+                  child: Text("Booking confirmed!",
+                      style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: ElliColors.grey)))),
+          Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 0, 0, 10),
+                  child: Text(
+                      widget.date.toString() +
+                          "\n" +
+                          backend.getSelectedOffice() +
+                          "\n" +
+                          backend
+                              .getAllOffices()[backend.getSelectedOffice()]!
+                              .address,
+                      style: const TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 14,
+                          color: ElliColors.grey)))),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                      },
+                      child: Container(
+                          height: 60,
+                          decoration: const BoxDecoration(
+                            color: ElliColors.darkBlue,
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                          ),
+                          child: const Center(
+                              child: Text("Go to Home Page",
+                                  style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white)))))))
+        ]));
   }
-  
 }
