@@ -615,7 +615,8 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
             context,
             MaterialPageRoute(
               builder: (context) => TimeslotSelector(
-                widget.roomEntry, widget.dateTime, widget.bookingsFuture)));
+                widget.roomEntry, widget.dateTime, widget.bookingsFuture,
+                workspaceNr: workspace)));
         },
         child: Container(
            margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
@@ -639,9 +640,8 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
                           fontWeight: FontWeight.bold,
                         )
                       ),
-                      Text(backend.getCurrentOfficeRooms()
-                      [widget.roomEntry.value.name]?.workspaces[workspace]
-                      .toString()?? "No special equipment"), //TODO this does not work for some reason
+                      Text(widget.roomEntry.value.workspaces[workspace] //TODO make this look nice
+                        .toString()),
                       const SizedBox(height: 10),
                       Row(
                         children: buildAvailabilityRow(workspaces[workspace]!)
@@ -707,12 +707,122 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("Hej");
+    Date selectedDate =
+        Date(widget.dateTime.year, widget.dateTime.month, widget.dateTime.day);
+    return Scaffold(
+      body: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 0, 5),
+              child: TextButton.icon(
+                icon: const Icon(Icons.arrow_back_ios, size: 16),
+                label: const Text("Back",
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontSize: 16
+                  )),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            )
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
+              child: Text(widget.roomEntry.value.name,
+                style: const TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ))
+            )
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(25, 5, 0, 10),
+              child: Text(widget.workspaceNr.toString(), //TODO check if 0, if so do smth
+                style: const TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ))
+            )
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
+              child: Text(backend.getSelectedOffice() + "\n" + 
+                backend.getAllOffices()[backend.getSelectedOffice()]
+                !.address,
+                style: const TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 14
+                ))
+            )
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
+              child: Text(selectedDate.toString(),
+              style: const TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 14,
+                color: ElliColors.grey
+              ))
+            )
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(25, 10, 0, 10),
+              child: Text(widget.roomEntry.value.description,
+                style: const TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 14,
+                  color: ElliColors.grey
+                ))
+            )
+          ),
+          const Divider(),
+          Expanded(
+            child: FutureBuilder<Map<int, Map<int, String>>>(
+                future: widget.bookingsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return ListView(
+                      children: 
+                        buildTimeslotList(snapshot.data!)
+                    );
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                }
+              )
+          ),
+        ]
+      )
+    );
+  }
+
+  List<Widget> buildTimeslotList(Map<int, Map<int, String>> bookingData){
+    List<Widget> result = [];
+    
+
+
+    return result;
   }
 }
 
 /// Shows the user a confirmation for their booking. 
 class ConfirmationScreen extends StatefulWidget {
+  const ConfirmationScreen({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _ConfirmationScreenState();
   
