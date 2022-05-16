@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/AuthenticationHandler.dart';
+import 'package:flutter_application_1/handlers/authentication_handler.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+class MenuTab extends StatefulWidget {
+  const MenuTab({Key? key}) : super(key: key);
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<MenuTab> createState() => _MenuTabState();
 }
 
-class _ProfileState extends State<Profile> {
+class _MenuTabState extends State<MenuTab> {
   var userEmail = "";
   var userName = "";
 
