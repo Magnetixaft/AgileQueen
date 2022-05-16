@@ -31,7 +31,7 @@ To view, delete or add you bookings to your calendar, simply navigate to the *My
 
 ## Compiling and running
 
-In order to run Elli you must compile the source code yourself. To do so, please follow the below instructions:
+In order to run Elli you must compile the source code yourself. Although Elli works great on iOS devices as well, installation instructions for Android devices are given here. To install, please follow the below instructions:
 
 Requirements:
 - Flutter SDK version 2.10.4
