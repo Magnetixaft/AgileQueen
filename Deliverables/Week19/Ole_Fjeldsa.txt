@@ -1,0 +1,22 @@
+Personal reflections for Ole Fjeldså, week 19 - 20, 2022-05-16 
+
+
+- what do I want to learn or understand better?
+
+	What is causing the last litte problems in the admin application.
+	
+- how can I help someone else, or the entire team, to learn something new?
+
+	I can take part in bug fixing and making sure the application is fully functional by wednesday.
+
+- what is my contribution towards the team’s use of Scrum?
+	
+	Participated in sprint planning and planning poker.
+	
+- what is my contribution towards the team’s deliveries?
+
+	Made layout for edit company, edit office, edit room. Not implementented into master branch yet.
+	Added functionality for adding and removing administrators.
+	Conected logout button in the administrator app.
+	
+	
