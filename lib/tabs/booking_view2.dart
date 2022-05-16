@@ -976,7 +976,7 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
                         atLeastOneSlotBooked == true
                             ? dummyFunc()
                             : wholeDayFree == true
-                                ? bookWholeDay(date)
+                                ? bookWholeDay(date, bookingData)
                                 : dummyFunc();
                       },
                       child: Container(
@@ -1020,11 +1020,19 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
   }
 
   /// Books a full day worth of timeslots.
-  bookWholeDay(Date date) async {
+  bookWholeDay(Date date, Map<int, Map<int, String>> bookingData) async {
     for (var timeslotNr = 0;
         timeslotNr < widget.roomEntry.value.timeslots.length;
         timeslotNr++) {
       var workspaceNr = widget.workspaceNr;
+
+      if (workspaceNr == 0) {
+        for (var bookingEntry in bookingData.entries) {
+          if (bookingEntry.value[timeslotNr] == 'available') {
+            workspaceNr = bookingEntry.key;
+          }
+        }
+      }
 
       await backend.saveBooking(
           widget.roomEntry.key, widget.dateTime, timeslotNr, workspaceNr);

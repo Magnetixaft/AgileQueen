@@ -61,7 +61,14 @@ class BookingItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          _roomName + ', ' + _place,
+          _roomName,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          _place,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
