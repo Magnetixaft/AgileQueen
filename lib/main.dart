@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_application_1/firebase_handler.dart';
+import 'package:flutter_application_1/handlers/firebase_handler.dart';
 import 'package:flutter_application_1/home.dart';
-import 'package:flutter_application_1/theme.dart';
+import 'package:flutter_application_1/themes/theme.dart';
 //import 'package:flutter_application_1/theme_elicit.dart';
-import 'AuthenticationHandler.dart';
+import 'handlers/authentication_handler.dart';
 import 'package:flutter/foundation.dart';
 
 void main() async {
@@ -38,15 +38,15 @@ void main() async {
           messagingSenderId: "883336254219",
           appId: "1:883336254219:web:7d2de78527260bb27e080e"));
 
-  runApp(MyApp());
+  runApp(StartPage());
 }
 
 /// The main widget for ELLI
 ///
 /// This widget is presented when the app is started and, whilst Firebase is initializing, a [CircularProgressIndicator] i returned.
-/// Once Firebase is initialized, [MyHomePage] is returned.
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+/// Once Firebase is initialized, [LoginPage] is returned.
+class StartPage extends StatelessWidget {
+  StartPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
           //Checks connection to Firebase and when done loads HomePage
           if (snapshot.connectionState == ConnectionState.done) {
             // print("Firebase initialized correctly");
-            return const MyHomePage(
+            return const LoginPage(
               title: "Room Bookings",
             );
           }
@@ -82,15 +82,15 @@ class MyApp extends StatelessWidget {
 /// The login page
 ///
 /// A login page that navigates to [Home] when login is successful.
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LoginPageState extends State<LoginPage> {
   /// Tests if a user is already logged in with Azure by calling [login] after the widget has been initially built.
   @override
   void initState() {

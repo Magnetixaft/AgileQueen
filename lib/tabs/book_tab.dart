@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/firebase_handler.dart';
-import 'package:flutter_application_1/previous_choice_handler.dart';
-import 'package:flutter_application_1/theme.dart';
-import 'package:flutter_application_1/tabs/bookings.dart';
+import 'package:flutter_application_1/handlers/firebase_handler.dart';
+import 'package:flutter_application_1/handlers/previous_choice_handler.dart';
+import 'package:flutter_application_1/themes/theme.dart';
+import 'package:flutter_application_1/tabs/my_bookings_tab.dart';
 import 'dart:math' as math;
 
 /// Contains functionality that lets a user book a room.
-class BookingView2 extends StatefulWidget {
+class BookTab extends StatefulWidget {
   final Future<PreviousChoices> previousChoiceFuture =
       PreviousChoiceHandler.instance.readPrevChoice();
-  BookingView2({Key? key}) : super(key: key);
+  BookTab({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _BookingView2State();
+  State<StatefulWidget> createState() => _BookTabState();
 }
 
-class _BookingView2State extends State<BookingView2> {
+class _BookTabState extends State<BookTab> {
   FirebaseHandler backend = FirebaseHandler.getInstance();
   bool isLocationSelected = false;
   bool ignorePreviousChoice = false;
@@ -24,7 +24,7 @@ class _BookingView2State extends State<BookingView2> {
 
   //Widget currentView = const CircularProgressIndicator();
 
-  _BookingView2State() {
+  _BookTabState() {
     // backend.selectOffice("Göteborgskontoret");
     //currentView = buildMainView();
   }
