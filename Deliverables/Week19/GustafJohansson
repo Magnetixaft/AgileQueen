@@ -1,0 +1,18 @@
+Individual reflection for Gustaf Johansson week 19.
+
+- What do I want to learn or understand better?
+  - The app is pretty mushc finished now, all that remains is fixing bugs and hopefully publishing the app on AppStore and Google Play. None of us 
+  have any experience with publishing apps, and so I really want/need to learn how to do this. 
+
+- How can I help someone else, or the entire team, to learn something new?
+  - I have worked with Scrum, UML and sequence diagrams before. As such, I can help my team with these things. At this point in the project I have also
+  worked quite a bit with Flutter and its interaction with Firebase. I can therefore help my team members with this. 
+
+- What is my contribution towards the team’s use of Scrum?
+  - Wrote user stories with my team, wrote acceptance criteria, had meetings. During the sprint planning we did planning poker to estimate the time
+  requirement for user stories. We had a meeting with our client this morning to show off the app, the meeting went well.  
+
+- What is my contribution towards the team’s deliveries?
+  This sprint I redesigned the entire booking GUI in the app. It took quite a while, but the end result came out very well. This new GUI implements some
+  cool new functionality, too, like being able to book an entire day's worth of timeslots, and visualizing which timeslots are available in a pretty way. 
+  I also fixed some other minor GUI related things such as adding the correct logo etc. 
