@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Center(
                           child: Padding(
                         padding: const EdgeInsets.fromLTRB(40, 80, 40, 20),
-                        child: Image.asset('assets/images/elli_logo.png'),
+                        child: Image.asset('assets/images/Resurs 5@4x.png'),
                       )),
                     ),
                     Expanded(
@@ -158,11 +158,11 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e.toString());
     }
     //TODO for debugging using the web. Remove before shipping.
-    FirebaseHandler.initialize("testing");
-    FirebaseHandler.getInstance().buildStaticModel().then((value) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Home()));
-    });
+    // FirebaseHandler.initialize("testing");
+    // FirebaseHandler.getInstance().buildStaticModel().then((value) {
+    //   Navigator.pushReplacement(
+    //       context, MaterialPageRoute(builder: (context) => const Home()));
+    // });
   }
 
   /// Navigates to [Home] if user is logged in. Initializes the [FirebaseHandler] using encrypted email from AuthenticationHandler
