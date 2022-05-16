@@ -95,9 +95,6 @@ class _ProfileState extends State<Profile> {
 
         /// Calls the builder method to build each item.
 
-        _buildSettingItem(context, 'Help', 'Read FAQ'),
-        const Divider(height: 0, indent: 20, endIndent: 20),
-
         _buildSettingItem(context, 'About Elli', 'Read more about Elli'),
         const Divider(height: 0, indent: 20, endIndent: 20),
 
@@ -118,7 +115,7 @@ class _ProfileState extends State<Profile> {
             builder: (context) {
               return AlertDialog(
                 title: Text(title),
-                content: Text(subtitle),
+                content: Text("Lite go info om Elli. Skapad av oss för att flärpa."),
                 actionsPadding: EdgeInsets.fromLTRB(18, 0, 18, 10),
                 actions: <Widget>[
                   ElevatedButton(
