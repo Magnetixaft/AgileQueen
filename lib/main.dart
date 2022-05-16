@@ -141,24 +141,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Navigates to [Home] when login is successful. Initializes the [FirebaseHandler] using encrypted email from AuthenticationHandler
   Future<void> login() async {
-    AuthenticationHandler authenticationHandler = AuthenticationHandler.getInstance();
+    AuthenticationHandler authenticationHandler =
+        AuthenticationHandler.getInstance();
     try {
       await authenticationHandler.login();
       if (await authenticationHandler.isUserSignedIn() == true) {
         // this is not optimal, but work in progress.
-        FirebaseHandler.initialize(authenticationHandler.encryptEmail(await authenticationHandler.getUserEmail()).base64);
+        FirebaseHandler.initialize(authenticationHandler
+            .encryptEmail(await authenticationHandler.getUserEmail())
+            .base64);
         await FirebaseHandler.getInstance().buildStaticModel();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const Home()));
       }
     } catch (e) {
       print(e.toString());
     }
     //TODO for debugging using the web. Remove before shipping.
-    // FirebaseHandler.initialize("testing");
-    // FirebaseHandler.getInstance().buildStaticModel().then((value) {
-    //   Navigator.pushReplacement(
-    //       context, MaterialPageRoute(builder: (context) => const Home()));
-    // });
+    FirebaseHandler.initialize("testing");
+    FirebaseHandler.getInstance().buildStaticModel().then((value) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const Home()));
+    });
   }
 
   /// Navigates to [Home] if user is logged in. Initializes the [FirebaseHandler] using encrypted email from AuthenticationHandler

@@ -29,11 +29,14 @@ class _BookingsState extends State<Bookings> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 10),
-                const Text("    My bookings",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                    )),
+                const Padding(
+                  padding: EdgeInsets.only(left: 18.0),
+                  child: Text("My bookings",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      )),
+                ),
                 const Divider(),
                 Expanded(
                   child: ListView(
@@ -90,13 +93,14 @@ class _BookingsState extends State<Bookings> {
       if (room != null) {
         myBookings.add(BookingItem(
             room.name, // "[Rumsnamn]",
-            room.office,// "[Plats]",
-            backend.getAllOffices()[room.office]?.address ?? 'Office not found',// "[Adress]",
-            currentDay,//.toString(),
-            room.description,// "[Description]",
-            room.timeslots[booking.timeslot].toString(),// "[Timeslot]",
-            room.workspaces[booking.roomNr].toString(),// "[Attribut]",
-            booking.workspaceNr.toString(),// "[Platsnamn]/[Workspacenr]",
+            room.office, // "[Plats]",
+            backend.getAllOffices()[room.office]?.address ??
+                'Office not found', // "[Adress]",
+            currentDay, //.toString(),
+            room.description, // "[Description]",
+            room.timeslots[booking.timeslot].toString(), // "[Timeslot]",
+            room.workspaces[booking.roomNr].toString(), // "[Attribut]",
+            booking.workspaceNr.toString(), // "[Platsnamn]/[Workspacenr]",
             callback));
       }
       previousDay = currentDay;
@@ -106,7 +110,7 @@ class _BookingsState extends State<Bookings> {
 }
 
 /// Class representing a date with a year, month and day.
-/// 
+///
 /// Contains methods [equals] and [lessThan] for comparing two [Date].
 class Date {
   final int year;
