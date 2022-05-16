@@ -91,7 +91,7 @@ class _BookingView2State extends State<BookingView2> {
                 child: SizedBox(
                     width: 50,
                     height: 30,
-                    child: Image.asset('assets/images/elli_logo.png')))),
+                    child: Image.asset('assets/images/Resurs 5@4x.png')))),
         Align(
             alignment: Alignment.topLeft,
             child: Padding(
@@ -147,13 +147,17 @@ class _BookingView2State extends State<BookingView2> {
         Container(
           margin: const EdgeInsets.all(25.0),
           decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3),
-            )
-          ]),
+            // BoxShadow(
+            //   color: Colors.grey.withOpacity(0.5),
+            //   spreadRadius: 5,
+            //   blurRadius: 7,
+            //   offset: const Offset(0, 3),
+            // ),
+          ],
+          border: Border.all(color: ElliColors.darkBlue),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          
+          ),
           child: Card(
             child: CalendarDatePicker(
                 initialDate: DateTime.now(),

@@ -28,7 +28,7 @@ class _BookingsState extends State<Bookings> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const SizedBox(height: 10),
+                const SizedBox(height: 58),
                 const Padding(
                   padding: EdgeInsets.only(left: 18.0),
                   child: Text("My bookings",
