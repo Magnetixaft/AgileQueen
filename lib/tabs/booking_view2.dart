@@ -797,7 +797,7 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
   List<Widget> buildTimeslotList(
       Map<int, Map<int, String>> bookingData, Date date) {
     List<Widget> result = [];
-    bool wholeDayFree = true;
+    bool wholeDayFree = true; //TODO update this somewhere!!
 
     result.add(const Align(
         alignment: Alignment.topLeft,
@@ -841,6 +841,10 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
       }
 
       String bookingInfo = bookingData[workspaceNr]?[timeslotNr] ?? 'null';
+
+      if (bookingInfo != 'available') {
+        wholeDayFree = false;
+      }
 
       result.add(Container(
           decoration: const BoxDecoration(
