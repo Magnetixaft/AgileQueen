@@ -43,3 +43,11 @@ Run from source:
 2. Fetch Flutter packages: `flutter pub get`
 3. Make sure your emulator or device is connected an run the app: `flutter run --release`
     1. If you wish to enable debug functions when running, use `flutter run --debug`
+
+## Documentation
+
+Elli's codebase is documented using [DartDoc](https://dart.dev/guides/language/effective-dart/documentation). To view the compiled docs, kindly download the zipped folder from [here](todo), unzip, and open 'index.html' using your favorite browser.
+
+
+
+
