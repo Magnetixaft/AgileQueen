@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/handlers/firebase_handler.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
+import 'dart:io' show Platform;
 
 /// Class that builds and displays a list of [BookingItem] and [String].
 class MyBookingsTab extends StatefulWidget {
@@ -80,6 +81,7 @@ class _MyBookingsTabState extends State<MyBookingsTab> {
             child: Text(
               date,
               style: TextStyle(
+                fontFamily: "Poppins",
                 fontSize: 20,
                 fontWeight: currentDay.equals(today)
                     ? FontWeight.bold
@@ -101,7 +103,7 @@ class _MyBookingsTabState extends State<MyBookingsTab> {
             room.timeslots[booking.timeslot].toString(), // "[Timeslot]",
             room.workspaces[booking.roomNr].toString(), // "[Attribut]",
             booking.workspaceNr.toString(), // "[Platsnamn]/[Workspacenr]",
-            callback));
+            callback, booking));
       }
       previousDay = currentDay;
     }
@@ -176,6 +178,7 @@ class _BookingItem extends StatelessWidget {
   final String _attribute;
   final String _workspaceNr;
   final Function callback;
+  final Booking _booking;
 
   const _BookingItem(
       this._roomName,
@@ -187,6 +190,7 @@ class _BookingItem extends StatelessWidget {
       this._attribute,
       this._workspaceNr,
       this.callback,
+      this._booking,
       {Key? key})
       : super(key: key);
 
@@ -257,7 +261,7 @@ class _BookingItem extends StatelessWidget {
           contentPadding: const EdgeInsets.all(20),
           title: Text(_roomName + ', ' + _workspaceNr),
           content: _DetailedView(_place, _address, _date.toString(),
-              _description, _timeslot, _attribute),
+              _description, _timeslot, _attribute, _booking),
           elevation: 24.0,
           actions: <Widget>[
             TextButton(
@@ -266,33 +270,33 @@ class _BookingItem extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(10),
                 primary: Colors.black,
                 backgroundColor: Colors.grey[100],
                 onSurface: Colors.grey,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextButton(
+              TextButton(
                 child: const Text("Delete Booking"),
-                onPressed: () {
+                onPressed: () async {
+                  await FirebaseHandler.getInstance().removeBooking(_booking);
                   //TODO function call to delete booking.
                   callback();
                   Navigator.of(context).pop();
                 },
                 style: TextButton.styleFrom(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(10),
                   primary: Colors.white,
                   backgroundColor: Theme.of(context).colorScheme.secondary,
                   onSurface: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-            ),
-            IconButton(
-              onPressed: _addToCalendar,
-              icon: const Icon(Icons.share),
-            ),
+            if (Platform.isAndroid)...[
+              IconButton(
+                onPressed: _addToCalendar,
+                icon: const Icon(Icons.share),
+              )
+            ],
           ],
           actionsAlignment: MainAxisAlignment.spaceEvenly,
         );
@@ -341,9 +345,6 @@ class _BookingItem extends StatelessWidget {
   }
 }
 
-
-
-
 //This class represents the detailed my bookings view.
 class _DetailedView extends StatelessWidget {
   final String _place;
@@ -352,9 +353,10 @@ class _DetailedView extends StatelessWidget {
   final String _description;
   final String _timeslot;
   final String _attribute;
+  final Booking _booking;
 
   const _DetailedView(this._place, this._address, this._date,
-      this._description, this._timeslot, this._attribute,
+      this._description, this._timeslot, this._attribute, this._booking,
       {Key? key}): super(key: key);
 
   @override
@@ -380,11 +382,12 @@ class _DetailedView extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(_date),
-                Text(_timeslot),
+                Text(_timeslot.replaceAll("{start: ", "").
+                  replaceAll(", end:", " -").replaceAll("}", "")),
                 const SizedBox(height: 10),
-                Text(_description),
+                Text(_description == "null" ? "" :_description),
                 const SizedBox(height: 10),
-                Text(_attribute),
+                Text(_attribute == "null" ? "" : _attribute),
                 const SizedBox(height: 10),
               ],
             ),
