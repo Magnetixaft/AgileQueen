@@ -1,15 +1,14 @@
 # User tests
 
-Elli_Admin has been extensively tested throughout its development in order combat bugs and unexpected behaviors. After each major commit made by a developer, 
-the devloper in question is resposnbile to ensure that the Elli works as intended by following the below guidelines. Something that has been tested:
+Elli_Admin has been extensively tested throughout its development in order combat bugs and unexpected behaviors. After each major commit made by a developer, the devloper in question is resposnbile to ensure that the Elli works as intended by following the below guidelines. Something that has been tested:
 *Home*
 1. Add and remove companies/offices/rooms shoud add and remove companies/offices/rooms in Firebase database.
 2. The newly added companies/offices/rooms shoud should be visable/bookable from the Elli user app.
-3. Drop down menus should only show selected companies/offices/rooms.
+3. After selecting a company/offices/rooms on the drop down menus only company/offices/rooms selected should be shown.
 
 *Analytics*
 1. The admin should be able to navigate and see the collected data from all the diffrent companies/offices/rooms.
-2. The data should be updtaded from the Firebase database. ((( TODO MED MER INFO SKRIVA OM)))
+2. The data should be updated dynamiclly from the Firebase database.
 
 *Config*
 1. Adding antother admin should give the new admin access to the app.
