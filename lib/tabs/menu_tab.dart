@@ -33,13 +33,15 @@ class _MenuTabState extends State<MenuTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(18.0, 10, 0, 20),
-          child: const Text(
+        const SizedBox(height: 58),
+        const Padding(
+          padding: EdgeInsets.only(left: 18.0),
+          child: Text(
             'Menu',
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
+        const Divider(),
 
         /// Builds a profile box with a name, email and user icon.
         Padding(
@@ -54,7 +56,7 @@ class _MenuTabState extends State<MenuTab> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 30,
@@ -73,6 +75,7 @@ class _MenuTabState extends State<MenuTab> {
                   children: <Widget>[
                     Text(
                       userName,
+                      softWrap: true,
                       style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

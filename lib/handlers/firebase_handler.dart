@@ -324,19 +324,19 @@ class FirebaseHandler {
   Future<void> removeBooking(Booking booking) async {
     // TODO add remove repeat when implemented
 
-    FirebaseFirestore.instance
-        .collection('Bookings_2')
-        .where('UserId', isEqualTo: booking.personID)
-        .where('RoomNr', isEqualTo: booking.roomNr)
-        .where('WorkspaceNr', isEqualTo: booking.workspaceNr)
-        .where('Timeslot', isEqualTo: booking.timeslot)
-        .where('Day', isEqualTo: booking.day)
-        .get()
-        .then((value) {
-      for (var document in value.docs) {
-        document.reference.delete();
-      }
-    });
+    var references = await FirebaseFirestore.instance
+      .collection('Bookings_2')
+      .where('UserId', isEqualTo: booking.personID)
+      .where('RoomNr', isEqualTo: booking.roomNr)
+      .where('WorkspaceNr', isEqualTo: booking.workspaceNr)
+      .where('Timeslot', isEqualTo: booking.timeslot)
+      .where('Day', isEqualTo: booking.day)
+      .get();
+    
+    for(var document in references.docs) {
+      await document.reference.delete();
+    }
+    return;
   }
 
 // ----------------------------------------------------------------
