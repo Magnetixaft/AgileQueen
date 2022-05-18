@@ -146,17 +146,17 @@ class _BookTabState extends State<BookTab> {
                     )))),
         Container(
           margin: const EdgeInsets.all(25.0),
-          decoration: BoxDecoration(boxShadow: [
-            // BoxShadow(
-            //   color: Colors.grey.withOpacity(0.5),
-            //   spreadRadius: 5,
-            //   blurRadius: 7,
-            //   offset: const Offset(0, 3),
-            // ),
-          ],
-          border: Border.all(color: ElliColors.darkBlue),
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          
+          decoration: BoxDecoration(
+            boxShadow: [
+              // BoxShadow(
+              //   color: Colors.grey.withOpacity(0.5),
+              //   spreadRadius: 5,
+              //   blurRadius: 7,
+              //   offset: const Offset(0, 3),
+              // ),
+            ],
+            border: Border.all(color: ElliColors.darkBlue),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
           child: Card(
             child: CalendarDatePicker(
@@ -210,8 +210,8 @@ class _BookTabState extends State<BookTab> {
                               fontSize: 16,
                               color: divisionEntry.key ==
                                       backend.getSelectedDivision()
-                                  ? ElliColors.pink : Colors.black)
-                          ),
+                                  ? ElliColors.pink
+                                  : Colors.black)),
                       const Icon(Icons.arrow_forward_ios, size: 14)
                     ]),
               ),
@@ -612,8 +612,10 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
                     fontSize: 20,
                     fontWeight: FontWeight.bold)))));
 
-    for (var workspace in workspaces.keys) {
-      String specialEquipment = widget.roomEntry.value.workspaces[workspace]
+    var localVar = workspaces.entries.toList();
+    localVar.sort((a, b) => a.key - b.key);
+    for (var workspace in localVar) {
+      String specialEquipment = widget.roomEntry.value.workspaces[workspace.key]
           .toString()
           .replaceAll("[", "")
           .replaceAll("]", "");
@@ -624,10 +626,11 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
                 MaterialPageRoute(
                     builder: (context) => TimeslotSelector(widget.roomEntry,
                         widget.dateTime, widget.bookingsFuture,
-                        workspaceNr: workspace)));
+                        workspaceNr: workspace.key)));
           },
           child: Container(
               margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
+              
               height: 80.0,
               decoration: const BoxDecoration(
                   color:
@@ -642,7 +645,7 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(workspace.toString(),
+                              Text(workspace.key.toString(),
                                   style: const TextStyle(
                                     fontFamily: "Poppins",
                                     fontSize: 16,
@@ -654,7 +657,7 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
                               const SizedBox(height: 10),
                               Row(
                                   children: buildAvailabilityRow(
-                                      workspaces[workspace]!))
+                                      workspaces[workspace.key]!))
                             ]),
                       ),
                     ),
