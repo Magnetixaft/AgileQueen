@@ -206,14 +206,8 @@ class _BookTabState extends State<BookTab> {
                             fontSize: 16,
                             color: divisionEntry.key ==
                                     backend.getSelectedDivision()
-                                ? const Color.fromARGB(
-                                    255,
-                                    254,
-                                    131,
-                                    139,
-                                  )
-                                : Colors.black //TODO Add this color to theme?
-                            )),
+                                ? ElliColors.pink : Colors.black)
+                        ),
                     const Icon(Icons.arrow_forward_ios, size: 14)
                   ]),
             ),
@@ -248,8 +242,7 @@ class _BookTabState extends State<BookTab> {
                     fontFamily: "Poppins",
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(
-                        255, 254, 131, 139), //TODO Add this color to theme?
+                    color: ElliColors.pink,
                   )))),
       const Divider(),
       Expanded(
