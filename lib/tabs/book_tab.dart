@@ -252,9 +252,9 @@ class _BookTabState extends State<BookTab> {
       const Divider(height: 0),
       Expanded(
           child: ListView(
-        //padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         children: divisionList,
-      ))
+      )),
     ]);
   }
 
@@ -630,8 +630,9 @@ class _WorkspaceSelectorState extends State<WorkspaceSelector> {
           },
           child: Container(
               margin: const EdgeInsets.fromLTRB(25, 5, 25, 5),
-              
-              height: 80.0,
+              constraints: const BoxConstraints(
+                minHeight: 80,
+              ),
               decoration: const BoxDecoration(
                   color:
                       ElliColors.lightGrey), //Theme.of(context).primaryColor,
