@@ -3,6 +3,8 @@ import 'package:flutter_application_1/handlers/firebase_handler.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'dart:io' show Platform;
 
+import 'package:flutter_application_1/themes/theme.dart';
+
 /// Class that builds and displays a list of [BookingItem] and [String].
 class MyBookingsTab extends StatefulWidget {
   const MyBookingsTab({Key? key}) : super(key: key);
@@ -30,13 +32,9 @@ class _MyBookingsTabState extends State<MyBookingsTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 58),
-                const Padding(
-                  padding: EdgeInsets.only(left: 18.0),
-                  child: Text("My bookings",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                      )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 18.0),
+                  child: Text("My bookings", style: ElliText.boldHeadLine),
                 ),
                 const Divider(),
                 Expanded(
@@ -55,7 +53,7 @@ class _MyBookingsTabState extends State<MyBookingsTab> {
   /// Builds and returns a list of [Booking].
   List<Widget> buildList(List<Booking>? bookings, FirebaseHandler backend) {
     if (bookings == null) {
-      return [const Text('No bookings found')];
+      return const [Text('No bookings found', style: ElliText.regularBody)];
     }
 
     var myBookings = <Widget>[];
@@ -82,7 +80,7 @@ class _MyBookingsTabState extends State<MyBookingsTab> {
               date,
               style: TextStyle(
                 fontFamily: "Poppins",
-                fontSize: 20,
+                fontSize: 17,
                 fontWeight: currentDay.equals(today)
                     ? FontWeight.bold
                     : FontWeight.normal,
@@ -103,7 +101,8 @@ class _MyBookingsTabState extends State<MyBookingsTab> {
             room.timeslots[booking.timeslot].toString(), // "[Timeslot]",
             room.workspaces[booking.roomNr].toString(), // "[Attribut]",
             booking.workspaceNr.toString(), // "[Platsnamn]/[Workspacenr]",
-            callback, booking));
+            callback,
+            booking));
       }
       previousDay = currentDay;
     }
@@ -163,9 +162,6 @@ class Date {
     return months[month - 1] + ' ' + day.toString() + ', ' + year.toString();
   }
 }
-
-
-
 
 /// This class represents an item that populates bookingList in [MyBookingsTab]
 class _BookingItem extends StatelessWidget {
@@ -227,23 +223,14 @@ class _BookingItem extends StatelessWidget {
       children: <Widget>[
         Text(
           _roomName,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: ElliText.boldWhiteSubHead,
         ),
-        Text(
-          _place,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        Text(_place, style: ElliText.boldWhiteSubHead),
         const SizedBox(height: 5),
-        Text(_address,
-            style: const TextStyle(
-              color: Colors.white,
-            )),
+        Text(
+          _address,
+          style: ElliText.regularWhiteSubHead,
+        ),
       ],
     );
   }
@@ -259,39 +246,40 @@ class _BookingItem extends StatelessWidget {
         return AlertDialog(
           actionsPadding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
           contentPadding: const EdgeInsets.all(20),
-          title: Text(_roomName + ', ' + _workspaceNr),
+          title: Text(_roomName + ', ' + _workspaceNr,
+              style: ElliText.regularBody),
           content: _DetailedView(_place, _address, _date.toString(),
               _description, _timeslot, _attribute, _booking),
           elevation: 24.0,
           actions: <Widget>[
             TextButton(
-              child: const Text("Close"),
+              child: Text("Close", style: ElliText.regularWhiteBody),
               onPressed: () {
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 primary: Colors.black,
                 backgroundColor: Colors.grey[100],
                 onSurface: Colors.grey,
               ),
             ),
-              TextButton(
-                child: const Text("Delete Booking"),
-                onPressed: () async {
-                  await FirebaseHandler.getInstance().removeBooking(_booking);
-                  //TODO function call to delete booking.
-                  callback();
-                  Navigator.of(context).pop();
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.all(10),
-                  primary: Colors.white,
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  onSurface: Theme.of(context).colorScheme.secondary,
-                ),
+            TextButton(
+              child: Text("Delete Booking", style: ElliText.regularWhiteBody),
+              onPressed: () async {
+                await FirebaseHandler.getInstance().removeBooking(_booking);
+                //TODO function call to delete booking.
+                callback();
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.all(10),
+                primary: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                onSurface: Theme.of(context).colorScheme.secondary,
               ),
-            if (Platform.isAndroid)...[
+            ),
+            if (Platform.isAndroid) ...[
               IconButton(
                 onPressed: _addToCalendar,
                 icon: const Icon(Icons.share),
@@ -324,7 +312,7 @@ class _BookingItem extends StatelessWidget {
     DateTime end = DateTime(
         _date.year, _date.month, _date.day, endTimeHour, endTimeMinute);
 
-    /// Opens the phonhe calendar and adds the booking.
+    /// Opens the phone calendar and adds the booking.
     Add2Calendar.addEvent2Cal(Event(
       title: "Workspace " +
           _workspaceNr +
@@ -355,9 +343,10 @@ class _DetailedView extends StatelessWidget {
   final String _attribute;
   final Booking _booking;
 
-  const _DetailedView(this._place, this._address, this._date,
-      this._description, this._timeslot, this._attribute, this._booking,
-      {Key? key}): super(key: key);
+  const _DetailedView(this._place, this._address, this._date, this._description,
+      this._timeslot, this._attribute, this._booking,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -382,10 +371,12 @@ class _DetailedView extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(_date),
-                Text(_timeslot.replaceAll("{start: ", "").
-                  replaceAll(", end:", " -").replaceAll("}", "")),
+                Text(_timeslot
+                    .replaceAll("{start: ", "")
+                    .replaceAll(", end:", " -")
+                    .replaceAll("}", "")),
                 const SizedBox(height: 10),
-                Text(_description == "null" ? "" :_description),
+                Text(_description == "null" ? "" : _description),
                 const SizedBox(height: 10),
                 Text(_attribute == "null" ? "" : _attribute),
                 const SizedBox(height: 10),

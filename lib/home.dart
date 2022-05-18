@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/tabs/book_tab.dart';
 import 'package:flutter_application_1/tabs/my_bookings_tab.dart';
 import 'package:flutter_application_1/tabs/menu_tab.dart';
+import 'package:flutter_application_1/themes/theme.dart';
 
 /// A tab-based view that acts as the apps top most page.
 ///
@@ -15,17 +16,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
   /// The index currently selected in the BottomNavigationBar.
   int _selectedIndex = 0;
-  
+
   /// The list of tabs/pages selectable using the BottomNavigationBar.
   final List<Widget> _tabs = <Widget>[
     BookTab(),
     const MyBookingsTab(),
     const MenuTab()
   ];
-  
+
   /// Switches tab to [index].
   void _onItemTapped(int index) {
     setState(() {

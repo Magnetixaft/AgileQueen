@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 /// A theme correspodning to Elli's visual identity.
-/// 
+///
 /// Contains both a theme [lightTheme], a list of colors [ElliColors] and font specification [ElliText].
 class ElliTheme {
-
   /// Return the light theme for Elli
   static ThemeData get lightTheme => ThemeData(
         brightness: Brightness.light,
@@ -67,7 +66,7 @@ class ElliText {
   static const _bold = FontWeight.w700;
 
   static const _black = ElliColors.black;
-  static const _grey = ElliColors.black;
+  static const _grey = ElliColors.grey;
   static const _pink = ElliColors.pink;
   static const _white = ElliColors.white;
 
@@ -76,7 +75,7 @@ class ElliText {
   static const regularTilte1 = TextStyle(
     inherit: false,
     color: _black,
-    height: 80,
+    height: 80 / _title1,
     fontSize: _title1,
     fontFamily: _font,
     fontWeight: _regular,
@@ -86,7 +85,7 @@ class ElliText {
   static const regularTilte2 = TextStyle(
     inherit: false,
     color: _black,
-    height: 40,
+    height: 40 / _title2,
     fontSize: _title2,
     fontFamily: _font,
     fontWeight: _regular,
@@ -96,7 +95,7 @@ class ElliText {
   static const regularHeadLine = TextStyle(
     inherit: false,
     color: _black,
-    height: 27,
+    height: 27 / _headline,
     fontSize: _headline,
     fontFamily: _font,
     fontWeight: _regular,
@@ -106,7 +105,7 @@ class ElliText {
   static const regularBody = TextStyle(
     inherit: false,
     color: _black,
-    height: 20,
+    height: 20 / _body,
     fontSize: _body,
     fontFamily: _font,
     fontWeight: _regular,
@@ -116,7 +115,7 @@ class ElliText {
   static const regularSubHead = TextStyle(
     inherit: false,
     color: _black,
-    height: 16,
+    height: 16 / _subHead,
     fontSize: _subHead,
     fontFamily: _font,
     fontWeight: _regular,
@@ -126,7 +125,7 @@ class ElliText {
   static const regularCaption = TextStyle(
     inherit: false,
     color: _black,
-    height: 10,
+    height: 10 / _caption,
     fontSize: _caption,
     fontFamily: _font,
     fontWeight: _regular,
@@ -136,7 +135,7 @@ class ElliText {
   static const regularNavBar = TextStyle(
     inherit: false,
     color: _black,
-    height: 10,
+    height: 10 / _navBar,
     fontSize: _navBar,
     fontFamily: _font,
     fontWeight: _regular,

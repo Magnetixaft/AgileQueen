@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/handlers/authentication_handler.dart';
+import 'package:flutter_application_1/themes/theme.dart';
 
 class MenuTab extends StatefulWidget {
   const MenuTab({Key? key}) : super(key: key);
@@ -34,65 +35,37 @@ class _MenuTabState extends State<MenuTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 58),
-        const Padding(
-          padding: EdgeInsets.only(left: 18.0),
+        Padding(
+          padding: const EdgeInsets.only(left: 18.0),
           child: Text(
             'Menu',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            style: ElliText.boldHeadLine,
           ),
         ),
         const Divider(),
 
         /// Builds a profile box with a name, email and user icon.
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          child: Container(
-            height: 100,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: const BorderRadius.all(Radius.circular(6))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 30,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: ClipRRect(
-                        child: Image.asset('assets/images/icons8-user-96.png'),
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                    ),
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      userName,
-                      softWrap: true,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          letterSpacing: 1),
-                    ),
-                    Text(
-                      userEmail,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+        Container(
+          margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: const BorderRadius.all(Radius.circular(6))),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                userName,
+                softWrap: true,
+                style: ElliText.boldWhiteBody,
+              ),
+              Text(
+                userEmail,
+                style: ElliText.regularWhiteSubHead,
+              ),
+            ],
           ),
         ),
 
@@ -117,13 +90,16 @@ class _MenuTabState extends State<MenuTab> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text(title),
-                content: Text("Lite go info om Elli. Skapad av oss för att flärpa."),
+                title: Text(title, style: ElliText.boldBody),
+                content: const Text(
+                  "Lite go info om Elli. Skapad av oss för att flärpa.",
+                  style: ElliText.regularBody,
+                ),
                 actionsPadding: EdgeInsets.fromLTRB(18, 0, 18, 10),
                 actions: <Widget>[
                   ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('OK')),
+                      child: Text('OK', style: ElliText.regularWhiteBody)),
                 ],
               );
             });
@@ -138,9 +114,12 @@ class _MenuTabState extends State<MenuTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title),
+                  Text(title, style: ElliText.regularBody),
                   const SizedBox(height: 8),
-                  Text(subtitle, style: const TextStyle(color: Colors.grey)),
+                  Text(
+                    subtitle,
+                    style: ElliText.regularGreySubHead,
+                  ),
                 ],
               ),
             ),
@@ -161,12 +140,13 @@ class _MenuTabState extends State<MenuTab> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text(title),
+                title: Text(title, style: ElliText.boldBody),
                 actionsPadding: EdgeInsets.fromLTRB(18, 0, 18, 10),
                 content: Text(subtitle),
                 actions: <Widget>[
                   ElevatedButton(
-                      onPressed: () => logout(), child: const Text('Log out')),
+                      onPressed: () => logout(),
+                      child: Text('Log out', style: ElliText.regularWhiteBody)),
                 ],
               );
             });
@@ -181,9 +161,9 @@ class _MenuTabState extends State<MenuTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title),
+                  Text(title, style: ElliText.regularBody),
                   const SizedBox(height: 8),
-                  Text(subtitle, style: const TextStyle(color: Colors.grey)),
+                  Text(subtitle, style: ElliText.regularGreySubHead),
                 ],
               ),
             ),
