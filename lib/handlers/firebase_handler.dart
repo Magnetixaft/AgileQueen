@@ -30,6 +30,13 @@ class FirebaseHandler {
   /// Data is stored in [_rooms] and [_divisions].
   /// This is information which is not supposed to be updated often.
   Future<void> buildStaticModel() async {
+    
+    //delete old bookings
+    var oldBookings = await FirebaseFirestore.instance.collection('Bookings_2').where('Day', isLessThan: DateTime.now().subtract(const Duration(days: 21))).get();
+    for(var oldBooking in oldBookings.docs) {
+      oldBooking.reference.delete();
+    }
+    
     _divisions = <String, Division>{};
     _rooms = <int, Room>{};
     //Downloads divisions and their offices
