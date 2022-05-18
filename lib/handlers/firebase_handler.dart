@@ -56,7 +56,8 @@ class FirebaseHandler {
 
       var offices = <String, Office>{};
       for (var office in officesData.docs) {
-        offices[office.id] = Office(office.data()['Address'], office.data()['Description']);
+        var contactInfo = office.data()['ContactInfo'] ?? 'No contact information';
+        offices[office.id] = Office(office.data()['Address'], office.data()['Description'], contactInfo);
       }
 
       _divisions[divisionData.id] = Division(offices);
@@ -611,8 +612,9 @@ class Division {
 class Office {
   final String address;
   final String description;
+  final String contactInformation;
 
-  Office(this.address, this.description);
+  Office(this.address, this.description, this.contactInformation);
 
   @override
   String toString() {
