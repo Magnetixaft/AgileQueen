@@ -258,9 +258,9 @@ class _BookingItem extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                 primary: Colors.black,
-                backgroundColor: Colors.grey[100],
+                backgroundColor: ElliColors.darkBlue,
                 onSurface: Colors.grey,
               ),
             ),
@@ -268,12 +268,11 @@ class _BookingItem extends StatelessWidget {
               child: Text("Delete Booking", style: ElliText.regularWhiteBody),
               onPressed: () async {
                 await FirebaseHandler.getInstance().removeBooking(_booking);
-                //TODO function call to delete booking.
                 callback();
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.fromLTRB(2, 10, 2, 10),
                 primary: Colors.white,
                 backgroundColor: Theme.of(context).colorScheme.secondary,
                 onSurface: Theme.of(context).colorScheme.secondary,
