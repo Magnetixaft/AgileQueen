@@ -194,25 +194,30 @@ class _BookTabState extends State<BookTab> {
                 .setPreviousDivision(divisionEntry.key);
             setState(() {});
           },
-          child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(divisionEntry.key,
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 16,
-                            color: divisionEntry.key ==
-                                    backend.getSelectedDivision()
-                                ? ElliColors.pink : Colors.black)
-                        ),
-                    const Icon(Icons.arrow_forward_ios, size: 14)
-                  ]),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
             ),
-            const Divider(),
-          ]));
+            child: Column(children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(divisionEntry.key,
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 16,
+                              color: divisionEntry.key ==
+                                      backend.getSelectedDivision()
+                                  ? ElliColors.pink : Colors.black)
+                          ),
+                      const Icon(Icons.arrow_forward_ios, size: 14)
+                    ]),
+              ),
+              const Divider(),
+            ]),
+          ));
       divisionList.add(listItem);
     }
 
@@ -244,7 +249,7 @@ class _BookTabState extends State<BookTab> {
                     fontWeight: FontWeight.bold,
                     color: ElliColors.pink,
                   )))),
-      const Divider(),
+      const Divider(height: 0),
       Expanded(
           child: ListView(
         //padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
