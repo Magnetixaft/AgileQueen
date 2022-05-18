@@ -20,9 +20,9 @@ class FirebaseHandler {
 
   FirebaseHandler._(); // Hidden constructor
 
-  /// Initializes the singleton with a username
+  /// Initializes the singleton with a username, only needs "Admin" at the moment.
   static void initialize(String username) {
-    _instance._username = username;
+    _instance._username = username.toLowerCase();
   }
 
   /// Downloads data about rooms and offices from Firebase and builds a model.
@@ -41,6 +41,7 @@ class FirebaseHandler {
     return;
   }
 
+  ///Gets data related to divisions to [buildStaticModel]
   Future<void> _buildDivision() async {
     var divisionsData = await FirebaseFirestore.instance.collection('Divisions').get();
     for (var divisionData in divisionsData.docs) {
@@ -56,6 +57,7 @@ class FirebaseHandler {
     return;
   }
 
+  ///Gets data related to rooms to [buildStaticModel]
   Future<void> _buildRooms() async {
     var roomsData = await FirebaseFirestore.instance.collection('Rooms_2').get();
     for (var room in roomsData.docs) {
@@ -70,7 +72,8 @@ class FirebaseHandler {
         timeslots.add({'start': times[0], 'end': times[1]});
       }
 
-      _rooms[int.parse(room.id)] = Room(workspaces, timeslots, room.data()['Description'], room.data()['Office'], room.data()['Name']);
+      _rooms[int.parse(room.id)] =
+          Room(int.parse(room.id), workspaces, timeslots, room.data()['Description'], room.data()['Office'], room.data()['Name']);
     }
     return;
   }
@@ -117,48 +120,162 @@ class FirebaseHandler {
     return _rooms;
   }
 
-  Future<ReportCard> generateReportCard() async {
+  /// Returns the specified Room object or a place holder Room object.
+  Room getRoom(int roomNr) {
+    return _rooms[roomNr] ??
+        Room(
+            -1,
+            {
+              1: ['Error workspace']
+            },
+            [
+              {'start': '00:00', 'end': '12:00'}
+            ],
+            'Error room',
+            'Error Office',
+            'Error room');
+  }
+
+  /// Returns a [DivisionReportCard] with analytical information about a division.
+  Future<DivisionReportCard> generateDivisionReportCard(String division) async {
+    var pastBookings = await _getXDaysBookings(21, 21); // TODO REMOVE!!!!!
+    var allOfficesInDivision = getDivisions()[division]?.offices.keys.toList() ?? ['ErrorOffice'];
+    var allRoomsInDivision = _rooms.values.where((room1) => allOfficesInDivision.contains(room1.office)).toList();
+    var allRoomNrInDivision = allRoomsInDivision.map((room2) => room2.roomNr).toList();
+    var allPastBookingsInDivision = pastBookings.where((booking) => allRoomNrInDivision.contains(booking.roomNr)).toList();
+
+    var futureBookings = await _getXDaysBookings(0, 1000);
+    var allFutureBookingsInDivision = futureBookings.where((booking) => allRoomNrInDivision.contains(booking.roomNr)).toList();
+    var numberOfFutureBookings = allFutureBookingsInDivision.length;
+
+    var officeUse = getOfficeUsage(allPastBookingsInDivision);
+    var roomUsage = getRoomUsage(allPastBookingsInDivision);
+    var workspaceUsage = getWorkspaceUsage(allPastBookingsInDivision);
+    var bookedMinutes = getNrBookedMinutes(allPastBookingsInDivision);
+    var bookableMinutes = getPossibleBookableMinutes(allRoomsInDivision, 15);
+    var usageRate = bookedMinutes / bookableMinutes;
+    var equipmentUsage = getEquipmentUsage(allPastBookingsInDivision);
+    return DivisionReportCard(officeUse, roomUsage, bookedMinutes, workspaceUsage, usageRate, numberOfFutureBookings, equipmentUsage);
+  }
+
+  /// Returns a [OfficeReportCard] with analytical information about an office.
+  Future<OfficeReportCard> generateOfficeReportCard(String office) async {
+    var pastBookings = await _getXDaysBookings(21, 21); // TODO REMOVE!!!!!
+    var allRoomsInOffice = _rooms.values.where((room1) => room1.office == office).toList();
+    var allRoomNrInOffice = allRoomsInOffice.map((room2) => room2.roomNr).toList();
+    var allPastBookingsInOffice = pastBookings.where((booking) => allRoomNrInOffice.contains(booking.roomNr)).toList();
+
+    var futureBookings = await _getXDaysBookings(0, 1000);
+    var allFutureBookingsInOffice = futureBookings.where((booking) => allRoomNrInOffice.contains(booking.roomNr)).toList();
+    var numberOfFutureBookings = allFutureBookingsInOffice.length;
+
+    var roomUsage = getRoomUsage(allPastBookingsInOffice);
+    var workspaceUsage = getWorkspaceUsage(allPastBookingsInOffice);
+    var bookedMinutes = getNrBookedMinutes(allPastBookingsInOffice);
+    var bookableMinutes = getPossibleBookableMinutes(allRoomsInOffice, 15);
+    var usageRate = bookedMinutes / bookableMinutes;
+    var equipmentUsage = getEquipmentUsage(allPastBookingsInOffice);
+    return OfficeReportCard(roomUsage, bookedMinutes, workspaceUsage, usageRate, numberOfFutureBookings, equipmentUsage);
+  }
+
+  /// Returns all bookings made between [numberOfPastDays] and [numberOfFutureDays] as a list of [Booking].
+  Future<List<Booking>> _getXDaysBookings(int numberOfPastDays, int numberOfFutureDays) async {
     final bookingData3Weeks = await FirebaseFirestore.instance
         .collection('Bookings_2')
-        .where('Day', isGreaterThan: DateTime.now().subtract(const Duration(days: 21)))
-        .where('Day', isLessThan: DateTime.now())
+        .where('Day', isGreaterThan: DateTime.now().subtract(Duration(days: numberOfPastDays)))
+        .where('Day', isLessThan: DateTime.now().add(Duration(days: numberOfFutureDays)))
         .get();
-    final bookingList = _bookingDataToBookings(bookingData3Weeks);
+    return _bookingDataToBookings(bookingData3Weeks);
+  }
 
-    final numberOfWorkSpacesPerDay = _rooms.values.expand((room) => room.workspaces.values).length;
-    final numberOfTimeslotsPerDay = _rooms.values.expand((room) => room.timeslots).length;
-    final numberOfBookings3Weeks = bookingList.length;
+  /// Returns a sorted list of pairs containing offices and how many bookings for them were in the list.
+  List<MapEntry<String, int>> getOfficeUsage(List<Booking> bookingList) {
+    var officeUseMap = <String, int>{};
 
+    for (var booking in bookingList) {
+      officeUseMap.update(booking.room.office, (value) => ++value, ifAbsent: () => 1);
+    }
+    var pairs = officeUseMap.entries.toList();
+    pairs.sort((a, b) => b.value - a.value);
+    return pairs;
+  }
+
+  /// Returns a sorted list of pairs containing rooms and how many bookings for them were in the list.
+  List<MapEntry<Room, int>> getRoomUsage(List<Booking> bookingList) {
     //Get most used room
     final roomUseMap = <int, int>{};
     for (var booking in bookingList) {
       roomUseMap.update(booking.roomNr, (value) => ++value, ifAbsent: () => 1);
     }
-    var mostUsedRoom = {'room':-1, 'number':0};
-    for(var roomUseData in roomUseMap.entries) {
-      if(roomUseData.value > (mostUsedRoom['number'] ?? 0)) {
-        mostUsedRoom = {'room':roomUseData.key, 'number':roomUseData.value};
-      }
-    }
+    var roomNrPairs = roomUseMap.entries.toList();
+    var roomPairs = roomNrPairs.map((entry) => MapEntry(getRoom(entry.key), entry.value)).toList();
+    roomPairs.sort((a, b) => b.value - a.value);
+    return roomPairs;
+  }
 
+  /// Returns a sorted list of pairs containing workspaces and how many bookings for them were in the list.
+  List<MapEntry<String, int>> getWorkspaceUsage(List<Booking> bookingList) {
     //Get most used workspace
     final workspaceUseMap = <String, int>{};
     for (var booking in bookingList) {
       workspaceUseMap.update('${booking.roomNr} ${booking.workspaceNr}', (value) => ++value, ifAbsent: () => 1);
     }
-    var mostUsedWorkSpace = {'room': -1, 'workspace':-1, 'number':0};
-    for(var workspaceUseData in workspaceUseMap.entries) {
-      if(workspaceUseData.value > (mostUsedWorkSpace['number'] ?? 0)) {
-        mostUsedWorkSpace = {'room': int.parse(workspaceUseData.key.split(' ')[0]), 'workspace':int.parse(workspaceUseData.key.split(' ')[1]), 'number':workspaceUseData.value};
-      }
+    var pairs = workspaceUseMap.entries.toList();
+    pairs.sort((a, b) => b.value - a.value);
+    return pairs;
+  }
+
+  /// Returns a sorted list of pairs containing equipment and how many times they have been booked.
+  List<MapEntry<String, int>> getEquipmentUsage(List<Booking> bookingList) {
+    //Get most used workspace
+    final equipmentUseMap = <String, int>{};
+    final equipmentList = <String>[];
+    for (var booking in bookingList) {
+      booking.room.workspaces[booking.workspaceNr]?.forEach((element) {
+        equipmentList.add(element);
+      });
     }
+    for (var equipment in equipmentList) {
+      equipmentUseMap.update(
+        equipment,
+            (value) => ++value,
+        ifAbsent: () => 1,
+      );
+    }
+    // Removes '', which represents workspaces without equipment.
+    equipmentUseMap.remove('');
+    var pairs = equipmentUseMap.entries.toList();
+    pairs.sort((a, b) => b.value - a.value);
+    return pairs;
+  }
 
+  /// Returns the total number of minutes booked in the bookings in the list.
+  int getNrBookedMinutes(List<Booking> bookingList) {
+    // Get total amount of booked time.
+    int bookedTime3Weeks = 0;
+    for (var booking in bookingList) {
+      var hours = int.parse(booking.getEndTime().split(':')[0]) - int.parse(booking.getStartTime().split(':')[0]);
+      var minutes = int.parse(booking.getEndTime().split(':')[1]) - int.parse(booking.getStartTime().split(':')[1]);
+      bookedTime3Weeks += (hours * 60 + minutes);
+    }
+    return bookedTime3Weeks;
+  }
 
-    // for(var booking in allBookings.docs) {
-    //   print(booking.data());
-    // }
-
-    return ReportCard();
+  /// Returns the number of minutes which are bookable in the list of rooms during the number of days.
+  int getPossibleBookableMinutes(List<Room> rooms, int numberOfWorkdays) {
+    // Get all possible time last three weeks.
+    int possibleTimePerDay = 0;
+    for (var room in rooms) {
+      var roomTime = 0; // The minutes in timeslots
+      for (var timeslot in room.timeslots) {
+        var hours = int.parse(timeslot['end']!.split(':')[0]) - int.parse(timeslot['start']!.split(':')[0]);
+        var minutes = int.parse(timeslot['end']!.split(':')[1]) - int.parse(timeslot['start']!.split(':')[1]);
+        roomTime += (hours * 60 + minutes);
+      }
+      var timeMultiplier = room.workspaces.length; // The time in the timeslots should be multiplied by the number of workspaces
+      possibleTimePerDay += (roomTime * timeMultiplier);
+    }
+    return (possibleTimePerDay * numberOfWorkdays); // multiplying with the number of workdays.
   }
 
   /// Returns a list of all bookings made by the current user as Booking objects.
@@ -172,7 +289,7 @@ class FirebaseHandler {
     for (var doc in bookingData.docs) {
       var docData = doc.data();
       int roomNr = docData['RoomNr'];
-      Room room = _rooms[roomNr] ?? Room({1:['Error workspace']}, [{'start': '00:00', 'end': '12:00'}], 'Error room', 'Error Office', 'Error room');
+      Room room = getRoom(roomNr);
       bookingList.add(Booking(DateTime.fromMicrosecondsSinceEpoch(docData['Day'].microsecondsSinceEpoch), docData['UserId'], roomNr,
           docData['WorkspaceNr'], docData['Timeslot'], docData['RepeatedBookingKey'], room));
     }
@@ -185,6 +302,8 @@ class FirebaseHandler {
     return bookingList;
   }
 
+  /// Returns a set of all equipment which is present in all rooms.
+  /// Does not check for division or office.
   Set<String> getAllEquipment() {
     var allEquipment = <String>{};
     for (var room in getAllRooms().values) {
@@ -198,11 +317,10 @@ class FirebaseHandler {
     return allEquipment;
   }
 
-
   /// Returns information about bookings for a room on a certain day.
   ///
   /// Returns a map with workspace number as key and another map as value.
-  /// The inner map has timeslot number as key and boolean as value.
+  /// The inner map has timeslot number as key and String as value.
   Future<Map<int, Map<int, String>>> getRoomBookingInformation(int roomNr, DateTime day) async {
     Map<int, Map<int, String>> bookings = {};
     //Generates a 2D map of appropriate size and populate it with 'available'
@@ -214,7 +332,7 @@ class FirebaseHandler {
     });
     //Gets the correct bookings data from Firebase
     var bookingDocs = await FirebaseFirestore.instance.collection('Bookings_2').where('RoomNr', isEqualTo: roomNr).where('Day', isEqualTo: day).get();
-    //Changes bookings entries to true if there's a timeslot booked
+    //Changes bookings entries to the correct string if there's a timeslot booked
     for (var bookingDoc in bookingDocs.docs) {
       var infoString = bookingDoc['UserId'] == _username ? 'user' : 'booked';
       bookings[bookingDoc['WorkspaceNr']]?[bookingDoc['Timeslot']] = infoString;
@@ -238,53 +356,88 @@ class FirebaseHandler {
   /// Returns the name of the currently selected office.
   String getSelectedOffice() => _office;
 
-  /// Returns the name of the currently selected division. 
+  /// Returns the name of the currently selected division.
   String getSelectedDivision() => _division;
+
+  ///Gets a list of all users with admin privileges
+  Future<List<String>> getAdminList() async {
+    var data = await FirebaseFirestore.instance.collection('Admins').where('Permissions', isEqualTo: "all").get();
+    List<String> adminList = [];
+    for (var doc in data.docs) {
+      adminList.add(doc.id);
+    }
+    return adminList;
+  }
 
   // ---------------- Modifiers ------------
 
-  Future<void> addAdmin(String adminHashId, String permissions) async{
-    await FirebaseFirestore.instance.collection('Admins').doc(adminHashId).set({'Permissions': permissions});
+  ///Adds an admin, needs "all" [permissions] in order to get admin privileges
+  Future<void> addAdmin(String adminHashId, String permissions, String name) async {
+    await FirebaseFirestore.instance.collection('Admins').doc(adminHashId).set({'Permissions': permissions, 'Name': name});
     return;
   }
 
-  Future<void> removeAdmin(String adminHashId) async{
+  ///Removes an admin using email as [adminHashId]
+  Future<void> removeAdmin(String adminHashId) async {
     await FirebaseFirestore.instance.collection('Admins').doc(adminHashId).delete();
     return;
   }
 
-  Future<void> saveDivision(String divisionName, String info) async{
+  Future<List<Admin>> getAllAdmins() async {
+    var adminList = <Admin>[];
+    var allAdmins = await FirebaseFirestore.instance.collection('Admins').get();
+
+    for (var admin in allAdmins.docs) {
+      adminList.add(Admin(admin.id, admin.data()['Name'], admin.data()['Permissions']));
+    }
+    return adminList;
+  }
+
+  ///Saves a division
+  Future<void> saveDivision(String divisionName, String info) async {
     await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).set({'Info': info});
     return;
   }
 
+  ///Removes a division, given name of division
   Future<void> removeDivision(String divisionName) async {
-    var offices = await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).collection('Offices').get();
-    for(var office in offices.docs) {
-      office.reference.delete();
-    }
+
+    // var offices = await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).collection('Offices').get();
+    // for (var office in offices.docs) {
+    //   office.reference.delete();
+    // }
+    _divisions[divisionName]?.offices.forEach((officeName, value) async {
+      await removeOffice(divisionName, officeName);
+    });
+
     await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).delete();
     return;
   }
 
-  Future<void> saveOffice(String divisionName, String officeName, Office office) async{
-    await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).collection('Offices').doc(officeName).set({
-      'Address': office.address,
-      'Description': office.description
-    });
+  /// Adds an office to Firebase
+  Future<void> saveOffice(String divisionName, String officeName, Office office) async {
+    await FirebaseFirestore.instance
+        .collection('Divisions')
+        .doc(divisionName)
+        .collection('Offices')
+        .doc(officeName)
+        .set({'Address': office.address, 'Description': office.description});
   }
 
+  ///Removes an office, given a name of division and name of office
   Future<void> removeOffice(String divisionName, String officeName) async {
+    _rooms.entries.where((roomEntry) => roomEntry.value.office == officeName).forEach((remainingEntry) async {
+      await removeRoom(remainingEntry.key);
+    });
     await FirebaseFirestore.instance.collection('Divisions').doc(divisionName).collection('Offices').doc(officeName).delete();
     return;
   }
 
-
   /// Adds a room to Firebase.
   Future<void> saveRoom(int roomNr, Room room) async {
     var timeslots = room.timeslots.map((timesMap) {
-      var start = timesMap['start'] ?? "";
-      var end = timesMap['end'] ?? "";
+      var start = timesMap['start'] ?? "6:00";
+      var end = timesMap['end'] ?? "12:00";
       return start + "-" + end;
     }).toList();
 
@@ -298,10 +451,10 @@ class FirebaseHandler {
   }
 
   /// Removes a room from Firebase and deletes all corresponding bookings
-  Future<void> removeRoom(int roomNr) async{
+  Future<void> removeRoom(int roomNr) async {
     await FirebaseFirestore.instance.collection('Rooms_2').doc(roomNr.toString()).delete();
     var allBookingsInThatRoom = await FirebaseFirestore.instance.collection('Bookings_2').where('RoomNr', isEqualTo: roomNr).get();
-    for(var booking in allBookingsInThatRoom.docs) {
+    for (var booking in allBookingsInThatRoom.docs) {
       booking.reference.delete();
     }
     return;
@@ -312,7 +465,10 @@ class FirebaseHandler {
   ///[repeatKey] will be used to identify different bookings made with the repeat bookings function when added.
   Future<void> saveBooking(int roomNr, DateTime day, int timeslot, int workspaceNr, [int repeatKey = 0]) async {
     if (_username != "") {
-      await FirebaseFirestore.instance.collection('Bookings_2').doc('room:$roomNr workspace:$workspaceNr timeslot:$timeslot day:${day.year}-${day.month}-${day.day}').set(
+      await FirebaseFirestore.instance
+          .collection('Bookings_2')
+          .doc('room:$roomNr workspace:$workspaceNr timeslot:$timeslot day:${day.year}-${day.month}-${day.day}')
+          .set(
           {'UserId': _username, 'Timeslot': timeslot, 'Day': day, 'WorkspaceNr': workspaceNr, 'RoomNr': roomNr, 'RepeatedBookingKey': repeatKey});
     }
     return;
@@ -325,26 +481,75 @@ class FirebaseHandler {
     // TODO add remove repeat when implemented
 
     var references = await FirebaseFirestore.instance
-      .collection('Bookings_2')
-      .where('UserId', isEqualTo: booking.personID)
-      .where('RoomNr', isEqualTo: booking.roomNr)
-      .where('WorkspaceNr', isEqualTo: booking.workspaceNr)
-      .where('Timeslot', isEqualTo: booking.timeslot)
-      .where('Day', isEqualTo: booking.day)
-      .get();
-    
-    for(var document in references.docs) {
+        .collection('Bookings_2')
+        .where('UserId', isEqualTo: booking.personID)
+        .where('RoomNr', isEqualTo: booking.roomNr)
+        .where('WorkspaceNr', isEqualTo: booking.workspaceNr)
+        .where('Timeslot', isEqualTo: booking.timeslot)
+        .where('Day', isEqualTo: booking.day)
+        .get();
+
+    for (var document in references.docs) {
       await document.reference.delete();
     }
     return;
   }
+}
+
+/// Immutable data class which represents an Admin user.
+class Admin {
+  final String adminHashId;
+  final String name;
+  final String permissions;
+
+  Admin(this.adminHashId, this.name, this.permissions);
+
+  @override
+  String toString() {
+    return 'Room{adminHashId: $adminHashId, name: $name, permissions: $permissions}';
+  }
+
+  String getName() {
+    return name;
+  }
+}
 
 // ----------------------------------------------------------------
 
+/// immutable data class for reporting analytics
+class DivisionReportCard {
+  final List<MapEntry<String, int>> officeUse;
+  final List<MapEntry<Room, int>> roomUse;
+  final List<MapEntry<String, int>> workspaceUse;
+  final int bookedMinutes;
+  final double usageRate;
+  final int numberOfFutureBookings;
+  final List<MapEntry<String, int>> equipmentUsage;
+
+  DivisionReportCard(
+      this.officeUse, this.roomUse, this.bookedMinutes, this.workspaceUse, this.usageRate, this.numberOfFutureBookings, this.equipmentUsage);
+
+  @override
+  String toString() {
+    return 'DivisionReportCard{officeUse: $officeUse, roomUse: $roomUse, workspaceUse: $workspaceUse, bookedMinutes: $bookedMinutes, usageRate: $usageRate, numberOfFutureBookings: $numberOfFutureBookings, equipmentUsage: $equipmentUsage}';
+  }
 }
 
-class ReportCard {
-  // TODO fill with all analysis information.
+/// immutable data class for reporting analytics
+class OfficeReportCard {
+  final List<MapEntry<Room, int>> roomUse;
+  final List<MapEntry<String, int>> workspaceUse;
+  final int bookedMinutes;
+  final double usageRate;
+  final int numberOfFutureBookings;
+  final List<MapEntry<String, int>> equipmentUsage;
+
+  OfficeReportCard(this.roomUse, this.bookedMinutes, this.workspaceUse, this.usageRate, this.numberOfFutureBookings, this.equipmentUsage);
+
+  @override
+  String toString() {
+    return 'OfficeReportCard{roomUse: $roomUse, workspaceUse: $workspaceUse, bookedMinutes: $bookedMinutes, usageRate: $usageRate, numberOfFutureBookings: $numberOfFutureBookings, equipmentUsage: $equipmentUsage}';
+  }
 }
 
 /// Immutable dataclass which models a room
@@ -352,14 +557,16 @@ class Room {
   /// Contains all the workspace in a room.
   /// Key is workspace number and value is a list of all equipment at that workspace as a list of strings.
   final Map<int, List<String>> workspaces;
+
   /// Contains all timeslots in a room. Entries are Maps structured as such
   /// {'start': '00:00', 'end': '12:00'}
+  final int roomNr;
   final List<Map<String, String>> timeslots;
   final String description;
   final String office;
   final String name;
 
-  Room(this.workspaces, this.timeslots, this.description, this.office, this.name);
+  Room(this.roomNr, this.workspaces, this.timeslots, this.description, this.office, this.name);
 
   @override
   String toString() {
@@ -380,7 +587,6 @@ class Room {
   }
 }
 
-
 /// Immutable dataclass which models a corporate division
 class Division {
   /// Contains all the division's offices. Office name is key.
@@ -394,7 +600,6 @@ class Division {
   }
 }
 
-
 /// Immutable dataclass which models an office
 class Office {
   final String address;
@@ -407,7 +612,6 @@ class Office {
     return 'Office{address: $address, description: $description}';
   }
 }
-
 
 /// Immutable dataclass which models a booking
 class Booking {
