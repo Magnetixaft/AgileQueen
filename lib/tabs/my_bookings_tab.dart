@@ -65,7 +65,6 @@ class _MyBookingsTabState extends State<MyBookingsTab> {
       DateTime now = DateTime.now();
       Date today = Date(now.year, now.month, now.day);
 
-      //TODO Gettolösning, borde kanske radera gamla bokningar i backenden.
       if (currentDay.lessThan(today)) {
         continue;
       }
@@ -99,7 +98,8 @@ class _MyBookingsTabState extends State<MyBookingsTab> {
             currentDay, //.toString(),
             room.description, // "[Description]",
             room.timeslots[booking.timeslot].toString(), // "[Timeslot]",
-            room.workspaces[booking.roomNr].toString(), // "[Attribut]",
+            room.workspaces[booking.workspaceNr].toString().replaceAll("[","").
+              replaceAll("]", ""), // "[Attribut]",
             booking.workspaceNr.toString(), // "[Platsnamn]/[Workspacenr]",
             callback,
             booking));
@@ -246,8 +246,15 @@ class _BookingItem extends StatelessWidget {
         return AlertDialog(
           actionsPadding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
           contentPadding: const EdgeInsets.all(20),
-          title: Text(_roomName + ', ' + _workspaceNr,
-              style: ElliText.regularBody),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(_roomName,
+                style: ElliText.boldBody),
+              Text(_workspaceNr,
+                style: ElliText.boldBody)
+            ],
+          ),
           content: _DetailedView(_place, _address, _date.toString(),
               _description, _timeslot, _attribute, _booking),
           elevation: 24.0,
@@ -265,7 +272,7 @@ class _BookingItem extends StatelessWidget {
               ),
             ),
             TextButton(
-              child: Text("Delete Booking", style: ElliText.regularWhiteBody),
+              child: Text("Delete", style: ElliText.regularWhiteBody),
               onPressed: () async {
                 await FirebaseHandler.getInstance().removeBooking(_booking);
                 callback();
@@ -278,7 +285,7 @@ class _BookingItem extends StatelessWidget {
                 onSurface: Theme.of(context).colorScheme.secondary,
               ),
             ),
-            if (Platform.isAndroid) ...[
+            if (Platform.isIOS) ...[
               IconButton(
                 onPressed: _addToCalendar,
                 icon: const Icon(Icons.share),
@@ -369,15 +376,18 @@ class _DetailedView extends StatelessWidget {
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
-                Text(_date),
+                Text(_date, style: ElliText.regularBody),
                 Text(_timeslot
                     .replaceAll("{start: ", "")
                     .replaceAll(", end:", " -")
-                    .replaceAll("}", "")),
+                    .replaceAll("}", ""),
+                    style: ElliText.regularBody),
                 const SizedBox(height: 10),
-                Text(_description == "null" ? "" : _description),
+                Text(_description == "null" ? "" : _description,
+                  style: ElliText.regularBody),
                 const SizedBox(height: 10),
-                Text(_attribute == "null" ? "" : _attribute),
+                Text(_attribute == "null" ? "" : _attribute,
+                  style: ElliText.regularBody),
                 const SizedBox(height: 10),
               ],
             ),
