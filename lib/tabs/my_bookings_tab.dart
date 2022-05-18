@@ -251,7 +251,7 @@ class _BookingItem extends StatelessWidget {
             children: [
               Text(_roomName,
                 style: ElliText.boldBody),
-              Text(_workspaceNr,
+              Text("Workspace " + _workspaceNr,
                 style: ElliText.boldBody)
             ],
           ),
@@ -386,7 +386,7 @@ class _DetailedView extends StatelessWidget {
                 Text(_description == "null" ? "" : _description,
                   style: ElliText.regularBody),
                 const SizedBox(height: 10),
-                Text(_attribute == "null" ? "" : _attribute,
+                Text(_attribute == "" ? "" : "Equipment: " + _attribute,
                   style: ElliText.regularBody),
                 const SizedBox(height: 10),
               ],
