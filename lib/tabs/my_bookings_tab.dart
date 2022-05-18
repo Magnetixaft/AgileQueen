@@ -285,7 +285,7 @@ class _BookingItem extends StatelessWidget {
                 onSurface: Theme.of(context).colorScheme.secondary,
               ),
             ),
-            if (Platform.isIOS) ...[
+            if (Platform.isAndroid) ...[
               IconButton(
                 onPressed: _addToCalendar,
                 icon: const Icon(Icons.share),
