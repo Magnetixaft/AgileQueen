@@ -323,20 +323,25 @@ class _OfficeCard extends StatelessWidget {
                           ))
                     ],
                   ])),
-              if(_contactInfo != 'No contact information')  TextButton(
-                  onPressed: () {
-                    showContactPopup(_contactInfo, context);
-                  },
-                  child: Text('Contact',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: "Poppins",
-                        color: _textColor,
-                      )),
-                ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Transform.rotate(angle: _angle, child: Icon(Icons.arrow_forward_ios, size: 14, color: _iconColor))),
+
+              Row(
+                children: [
+                  if(_contactInfo != 'No contact information')  TextButton(
+                    onPressed: () {
+                      showContactPopup(_contactInfo, context);
+                    },
+                    child: Text('Contact',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: "Poppins",
+                          color: _textColor,
+                        )),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
+                      child: Transform.rotate(angle: _angle, child: Icon(Icons.arrow_forward_ios, size: 14, color: _iconColor))),
+                ],
+              ),
             ])));
   }
 
@@ -347,11 +352,11 @@ class _OfficeCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(contactInfo,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   fontFamily: "Poppins",
-                  color: _textColor,
+                  color: ElliColors.grey,
                 )),
           ),
         );
