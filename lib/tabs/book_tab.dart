@@ -299,30 +299,34 @@ class _OfficeCard extends StatelessWidget {
         },
         child: Container(
             margin: EdgeInsets.all(_padding),
-            height: 60.0,
+            constraints: const BoxConstraints(
+              minHeight: 60,
+            ),
             decoration: BoxDecoration(
                 color: _backgroundColor, //Theme.of(context).primaryColor,
                 borderRadius: const BorderRadius.all(Radius.circular(6))),
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                    Text(_office == 'init' ? "Select an office" : _office,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Poppins",
-                          color: _textColor,
-                        )),
-                    if (_address != "Address not found") ...[
-                      Text(_address,
+              Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                      Text(_office == 'init' ? "Select an office" : _office,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                             fontFamily: "Poppins",
                             color: _textColor,
-                          ))
-                    ],
-                  ])),
+                          )),
+                      if (_address != "Address not found") ...[
+                        Text(_address,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: "Poppins",
+                              color: _textColor,
+                            ))
+                      ],
+                    ])),
+              ),
 
               Row(
                 children: [
