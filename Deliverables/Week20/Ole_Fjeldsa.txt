@@ -1,0 +1,20 @@
+Personal reflections for Ole Fjeldså, week 20, 2022-05-20 
+
+
+- what do I want to learn or understand better?
+
+	What we should include in the final report.
+	
+- how can I help someone else, or the entire team, to learn something new?
+
+	By writing good suggestions for where how we would do the project better if we were to continue it.
+
+- what is my contribution towards the team’s use of Scrum?
+	
+	Participated in sprint planning and planning poker.
+	
+- what is my contribution towards the team’s deliveries?
+
+	Finished up functionality for adding and removing administrators.
+	Polished up the layout for the admin application.
+	Added documentation for the admin application.
