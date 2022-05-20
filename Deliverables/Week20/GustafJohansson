@@ -1,0 +1,22 @@
+Individual reflection for Gustaf Johansson week 20.
+
+- What do I want to learn or understand better?
+  - This has been the last sprint, and so a lot of this sprint has been dedicated to fixing bugs and polishing the project. It has become apparent
+  that I really need/want to learn Flutter better. There are so many weird GUI bugs that could have avoided had I/we known the best way to build
+  certain GUI elements from the start. Since I started this project with zero knowledge about Flutter, the code I wrote in the beginning is much 
+  worse than the code I wrote last sprint, for instance. During this project I have also learned that working with a database is pretty cool, and
+  so I want to learn how to set up a proper MySQL database instead of just using the fairly limited Firebase. 
+  
+- How can I help someone else, or the entire team, to learn something new?
+  - This project my main responsibilites have been to implement the Figma design in code using Flutter. As such, I feel like I have become decent at
+  Flutter. More specifically I have worked quite a bit with a widget in Flutter called FutureBuilder, which is used when communiucating with a database,
+  for instance. I feel like I have a decent understanding of Flutter now, and I have helped my fellow team members with this, and I am certainly open
+  to helping someone with this again.
+
+- What is my contribution towards the team’s use of Scrum?
+  - Wrote user stories with my team, wrote acceptance criteria, had meetings. During the sprint planning we did planning poker to estimate the time
+  requirement for user stories. Since I have worked with Scrum a bit before this course, too, I feel like I have been able to use it effieciently 
+  in this course. 
+
+- What is my contribution towards the team’s deliveries?
+  - For me, this sprint was focused on fixing various GUI bugs. I have also participated in writing the team reflection for this sprint etc. 
