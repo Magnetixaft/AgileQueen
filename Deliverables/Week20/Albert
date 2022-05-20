@@ -1,0 +1,18 @@
+What do I want to learn or understand better?
+I want to hear what the other team members think they could do better when building their parts.
+What would they change completely and what small tweaks could be made?
+
+- how can I help someone else, or the entire team, to learn something new?
+Answer questions how the admin application works, as well as having good ideas regarding how we could
+improve this in the future.
+
+- what is my contribution towards the team’s use of Scrum?
+I have used Jira to see what people are up to and update others about my current status, especially
+those who worked on the admin application.
+
+- what is my contribution towards the team’s deliveries?
+Implemented dynamic textinput fields for adding special equipment that belongs to a workspace.
+Implemented deletion of the fields.
+Added two static timeslot choices with chockboxes.
+Added a dynamic custom timeslot section, built the same way as those for special equipment.
+Fixed some design.
