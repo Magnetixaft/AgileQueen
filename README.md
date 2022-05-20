@@ -5,10 +5,11 @@ DAT257 Agile Software Project Management
 
 ## Repository file structure
 
-* Docs - 
-* Src - 
-* Deliverables - 
-* Tests - 
+* Docs - DartDocs for the entire app
+* Src - Source code
+* Deliverables - Weekly deliverables
+* Tests - Tests for the app
+* Img - Images used in the ReadMe
 
 ## About Elli
 
