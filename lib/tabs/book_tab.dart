@@ -21,13 +21,6 @@ class _BookTabState extends State<BookTab> {
   bool ignorePreviousChoice = false;
   bool isDivisionSelected = false;
 
-  //Widget currentView = const CircularProgressIndicator();
-
-  _BookTabState() {
-    // backend.selectOffice("Göteborgskontoret");
-    //currentView = buildMainView();
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<PreviousChoices>(
@@ -126,14 +119,6 @@ class _BookTabState extends State<BookTab> {
         Container(
           margin: const EdgeInsets.all(25.0),
           decoration: BoxDecoration(
-            boxShadow: [
-              // BoxShadow(
-              //   color: Colors.grey.withOpacity(0.5),
-              //   spreadRadius: 5,
-              //   blurRadius: 7,
-              //   offset: const Offset(0, 3),
-              // ),
-            ],
             border: Border.all(color: ElliColors.darkBlue),
             borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
@@ -710,9 +695,11 @@ class _TimeslotSelectorState extends State<TimeslotSelector> {
     ]));
   }
 
+  ///Returns a [List<Widget>] containing information about timeslots for a 
+  ///given workspace. 
   List<Widget> buildTimeslotList(Map<int, Map<int, String>> bookingData, Date date) {
     List<Widget> result = [];
-    bool wholeDayFree = true; //TODO update this somewhere!!
+    bool wholeDayFree = true;
 
     result.add(const Align(
         alignment: Alignment.topLeft,
