@@ -7,7 +7,7 @@ Personal reflections for Ole Fjeldså, week 20, 2022-05-20
 	
 - how can I help someone else, or the entire team, to learn something new?
 
-	By writing good suggestions for where how we would do the project better if we were to continue it.
+	By writing good suggestions for how we would do the project better if we were to continue it.
 
 - what is my contribution towards the team’s use of Scrum?
 	
