@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/handlers/firebase_handler.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'dart:io' show Platform;
-
 import 'package:flutter_application_1/themes/theme.dart';
 
 /// Class that builds and displays a list of [BookingItem] and [String].
@@ -339,7 +338,8 @@ class _BookingItem extends StatelessWidget {
   }
 }
 
-//This class represents the detailed my bookings view.
+///This class represents the detailed my bookings view. 
+///This view shows up when selecting a [BookingItem]
 class _DetailedView extends StatelessWidget {
   final String _place;
   final String _address;
