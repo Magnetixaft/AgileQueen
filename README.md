@@ -5,11 +5,11 @@ DAT257 Agile Software Project Management
 
 ## Repository file structure
 
-* Docs - DartDocs for the entire app
-* Src - Source code
-* Deliverables - Weekly deliverables
-* Tests - Tests for the app
-* Img - Images used in the ReadMe
+* Docs - DartDocs for the entire app available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/Docs)
+* Source code is available directly in this repo. Classes are located in (lib)[https://github.com/Magnetixaft/AgileQueen/tree/main/lib]
+* Deliverables - Weekly deliverables available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/Deliverables)
+* Test - Tests for the app available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/test)
+* Img - Images used in the ReadMe available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/img)
 
 ## About Elli
 
@@ -35,7 +35,7 @@ To make a booking, simply navigate to the *Book* tab. Green signals an available
 
 To view, delete or add you bookings to your calendar, simply navigate to the *My Bookings* tab.
 
-<img src="https://github.com/Magnetixaft/AgileQueen/blob/main/img/mybookings.gif" width="300" />
+<img src="https://github.com/Magnetixaft/AgileQueen/blob/main/img/mybookings2.gif" width="300" />
 
 ## Compiling and running
 
@@ -54,7 +54,7 @@ Run from source:
 
 ## Documentation
 
-Elli's codebase is documented using [DartDoc](https://dart.dev/guides/language/effective-dart/documentation). To view the compiled docs, kindly download the zipped folder from [here](todo), unzip, and open `index.html` using your favorite browser.
+Elli's codebase is documented using [DartDoc](https://dart.dev/guides/language/effective-dart/documentation). To view the compiled docs, kindly download the files from [here](https://github.com/Magnetixaft/AgileQueen/tree/main/Docs) and open `index.html` using your favorite browser.
 
 
 
