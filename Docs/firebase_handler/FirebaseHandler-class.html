@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the FirebaseHandler class from the firebase_handler library, for the Dart programming language.">
+  <title>FirebaseHandler class - firebase_handler library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">flutter_application_1</a></li>
+    <li><a href="../firebase_handler/firebase_handler-library.html">firebase_handler</a></li>
+    <li class="self-crumb">FirebaseHandler class</li>
+  </ol>
+  <div class="self-name">FirebaseHandler</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-class">FirebaseHandler</span> class 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Singleton class to communicate with Firebase.</p>
+<p>Must be initialized with a username to work. Stores a username and selected office during bookings.</p>
+</section>
+
+
+
+
+    <section class="summary offset-anchor inherited" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object. <a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">[...]</a>
+  <div class="features">read-only, inherited</div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object. 
+  <div class="features">read-only, inherited</div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-methods">
+      <h2>Methods</h2>
+      <dl class="callables">
+        <dt id="addAdmin" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/addAdmin.html">addAdmin</a></span><span class="signature">(<wbr><span class="parameter" id="addAdmin-param-adminHashId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">adminHashId</span>, </span><span class="parameter" id="addAdmin-param-permissions"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">permissions</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
+</dd>
+
+        <dt id="buildStaticModel" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/buildStaticModel.html">buildStaticModel</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Downloads data about rooms and offices from Firebase and builds a model. <a href="../firebase_handler/FirebaseHandler/buildStaticModel.html">[...]</a>
+  
+
+</dd>
+
+        <dt id="generateReportCard" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/generateReportCard.html">generateReportCard</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../firebase_handler/ReportCard-class.html">ReportCard</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
+</dd>
+
+        <dt id="getAllEquipment" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getAllEquipment.html">getAllEquipment</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Set-class.html">Set</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
+</dd>
+
+        <dt id="getAllOffices" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getAllOffices.html">getAllOffices</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="../firebase_handler/Office-class.html">Office</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns all the offices in the model 
+  
+
+</dd>
+
+        <dt id="getAllRooms" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getAllRooms.html">getAllRooms</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>, <span class="type-parameter"><a href="../firebase_handler/Room-class.html">Room</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns all rooms in the model 
+  
+
+</dd>
+
+        <dt id="getCurrentOfficeRooms" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getCurrentOfficeRooms.html">getCurrentOfficeRooms</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>, <span class="type-parameter"><a href="../firebase_handler/Room-class.html">Room</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns all rooms in the selected office 
+  
+
+</dd>
+
+        <dt id="getDivisionOffices" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getDivisionOffices.html">getDivisionOffices</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="../firebase_handler/Office-class.html">Office</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns all the offices in the selected division 
+  
+
+</dd>
+
+        <dt id="getDivisions" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getDivisions.html">getDivisions</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="../firebase_handler/Division-class.html">Division</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns all divisions 
+  
+
+</dd>
+
+        <dt id="getName" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getName.html">getName</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the name of current user. 
+  
+
+</dd>
+
+        <dt id="getRoomBookingInformation" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getRoomBookingInformation.html">getRoomBookingInformation</a></span><span class="signature">(<wbr><span class="parameter" id="getRoomBookingInformation-param-roomNr"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">roomNr</span>, </span><span class="parameter" id="getRoomBookingInformation-param-day"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/DateTime-class.html">DateTime</a></span> <span class="parameter-name">day</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns information about bookings for a room on a certain day. <a href="../firebase_handler/FirebaseHandler/getRoomBookingInformation.html">[...]</a>
+  
+
+</dd>
+
+        <dt id="getSelectedOffice" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getSelectedOffice.html">getSelectedOffice</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the name of the currently selected office. 
+  
+
+</dd>
+
+        <dt id="getUserBookings" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getUserBookings.html">getUserBookings</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../firebase_handler/Booking-class.html">Booking</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns a list of all bookings made by the current user as Booking objects. 
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a non-existent method or property is accessed. <a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+        <dt id="removeAdmin" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/removeAdmin.html">removeAdmin</a></span><span class="signature">(<wbr><span class="parameter" id="removeAdmin-param-adminHashId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">adminHashId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
+</dd>
+
+        <dt id="removeBooking" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/removeBooking.html">removeBooking</a></span><span class="signature">(<wbr><span class="parameter" id="removeBooking-param-booking"><span class="type-annotation"><a href="../firebase_handler/Booking-class.html">Booking</a></span> <span class="parameter-name">booking</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Removes all matching bookings from Firebase. 
+  
+
+</dd>
+
+        <dt id="removeDivision" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/removeDivision.html">removeDivision</a></span><span class="signature">(<wbr><span class="parameter" id="removeDivision-param-divisionName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">divisionName</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
+</dd>
+
+        <dt id="removeOffice" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/removeOffice.html">removeOffice</a></span><span class="signature">(<wbr><span class="parameter" id="removeOffice-param-divisionName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">divisionName</span>, </span><span class="parameter" id="removeOffice-param-officeName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">officeName</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
+</dd>
+
+        <dt id="removeRoom" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/removeRoom.html">removeRoom</a></span><span class="signature">(<wbr><span class="parameter" id="removeRoom-param-roomNr"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">roomNr</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Removes a room from Firebase and deletes all corresponding bookings 
+  
+
+</dd>
+
+        <dt id="saveBooking" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/saveBooking.html">saveBooking</a></span><span class="signature">(<wbr><span class="parameter" id="saveBooking-param-roomNr"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">roomNr</span>, </span><span class="parameter" id="saveBooking-param-day"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/DateTime-class.html">DateTime</a></span> <span class="parameter-name">day</span>, </span><span class="parameter" id="saveBooking-param-timeslot"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">timeslot</span>, </span><span class="parameter" id="saveBooking-param-workspaceNr"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">workspaceNr</span>, </span><span class="parameter" id="saveBooking-param-repeatKey">[<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">repeatKey</span> = <span class="default-value">0</span>]</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Adds a booking to Firebase. <a href="../firebase_handler/FirebaseHandler/saveBooking.html">[...]</a>
+  
+
+</dd>
+
+        <dt id="saveDivision" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/saveDivision.html">saveDivision</a></span><span class="signature">(<wbr><span class="parameter" id="saveDivision-param-divisionName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">divisionName</span>, </span><span class="parameter" id="saveDivision-param-info"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">info</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
+</dd>
+
+        <dt id="saveOffice" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/saveOffice.html">saveOffice</a></span><span class="signature">(<wbr><span class="parameter" id="saveOffice-param-divisionName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">divisionName</span>, </span><span class="parameter" id="saveOffice-param-officeName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">officeName</span>, </span><span class="parameter" id="saveOffice-param-office"><span class="type-annotation"><a href="../firebase_handler/Office-class.html">Office</a></span> <span class="parameter-name">office</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
+</dd>
+
+        <dt id="saveRoom" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/saveRoom.html">saveRoom</a></span><span class="signature">(<wbr><span class="parameter" id="saveRoom-param-roomNr"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">roomNr</span>, </span><span class="parameter" id="saveRoom-param-room"><span class="type-annotation"><a href="../firebase_handler/Room-class.html">Room</a></span> <span class="parameter-name">room</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Adds a room to Firebase. 
+  
+
+</dd>
+
+        <dt id="selectDivision" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/selectDivision.html">selectDivision</a></span><span class="signature">(<wbr><span class="parameter" id="selectDivision-param-division"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">division</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sets <code>_division</code> to the currently selected division. 
+  
+
+</dd>
+
+        <dt id="selectOffice" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/selectOffice.html">selectOffice</a></span><span class="signature">(<wbr><span class="parameter" id="selectOffice-param-office"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">office</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sets <code>_office</code> to the currently selected office. 
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object. <a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor inherited" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator. <a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+      </dl>
+    </section>
+
+
+    <section class="summary offset-anchor" id="static-methods">
+      <h2>Static Methods</h2>
+      <dl class="callables">
+        <dt id="getInstance" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/getInstance.html">getInstance</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="../firebase_handler/FirebaseHandler-class.html">FirebaseHandler</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the singleton instance. <a href="../firebase_handler/FirebaseHandler/getInstance.html">[...]</a>
+  
+
+</dd>
+
+        <dt id="initialize" class="callable">
+  <span class="name"><a href="../firebase_handler/FirebaseHandler/initialize.html">initialize</a></span><span class="signature">(<wbr><span class="parameter" id="initialize-param-username"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">username</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Initializes the singleton with a username 
+  
+
+</dd>
+
+      </dl>
+    </section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../index.html">flutter_application_1</a></li>
+  <li><a href="../firebase_handler/firebase_handler-library.html">firebase_handler</a></li>
+  <li class="self-crumb">FirebaseHandler class</li>
+</ol>
+
+
+    <h5>firebase_handler library</h5>
+    <ol>
+  <li class="section-title"><a href="../firebase_handler/firebase_handler-library.html#classes">Classes</a></li>
+  <li><a href="../firebase_handler/Booking-class.html">Booking</a></li>
+  <li><a href="../firebase_handler/Division-class.html">Division</a></li>
+  <li><a href="../firebase_handler/FirebaseHandler-class.html">FirebaseHandler</a></li>
+  <li><a href="../firebase_handler/Office-class.html">Office</a></li>
+  <li><a href="../firebase_handler/ReportCard-class.html">ReportCard</a></li>
+  <li><a href="../firebase_handler/Room-class.html">Room</a></li>
+
+
+
+
+
+
+
+
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <ol>
+
+
+
+    <li class="section-title inherited">
+      <a href="../firebase_handler/FirebaseHandler-class.html#instance-properties">Properties</a>
+    </li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+
+    <li class="section-title"><a href="../firebase_handler/FirebaseHandler-class.html#instance-methods">Methods</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/addAdmin.html">addAdmin</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/buildStaticModel.html">buildStaticModel</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/generateReportCard.html">generateReportCard</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getAllEquipment.html">getAllEquipment</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getAllOffices.html">getAllOffices</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getAllRooms.html">getAllRooms</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getCurrentOfficeRooms.html">getCurrentOfficeRooms</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getDivisionOffices.html">getDivisionOffices</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getDivisions.html">getDivisions</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getName.html">getName</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getRoomBookingInformation.html">getRoomBookingInformation</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getSelectedOffice.html">getSelectedOffice</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getUserBookings.html">getUserBookings</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/removeAdmin.html">removeAdmin</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/removeBooking.html">removeBooking</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/removeDivision.html">removeDivision</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/removeOffice.html">removeOffice</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/removeRoom.html">removeRoom</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/saveBooking.html">saveBooking</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/saveDivision.html">saveDivision</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/saveOffice.html">saveOffice</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/saveRoom.html">saveRoom</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/selectDivision.html">selectDivision</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/selectOffice.html">selectOffice</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../firebase_handler/FirebaseHandler-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+    <li class="section-title"><a href="../firebase_handler/FirebaseHandler-class.html#static-methods">Static methods</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/getInstance.html">getInstance</a></li>
+    <li><a href="../firebase_handler/FirebaseHandler/initialize.html">initialize</a></li>
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flutter_application_1
+      1.0.0+1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+
