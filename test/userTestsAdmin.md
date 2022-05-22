@@ -11,7 +11,7 @@ Elli_Admin has been extensively tested throughout its development in order comba
 2. The data should be updated dynamiclly from the Firebase database.
 
 *Config*
-1. Adding antother admin should give the new admin access to the app.
+1. Adding another admin should give the new admin access to the app.
 
 *Navigation bar*
 1. All icons should take the user to the right location.
@@ -35,7 +35,7 @@ Confirm the following:
 
 ## Mockup
 
-Confrim the following:
+Confirm the following:
 
 1. View the mockup by navigating to [Figma](https://www.figma.com/file/OH1IiUEHbN5u6XwuJrUJkZ/Admin-mockup?node-id=0%3A1).
 2. Confirm that the steps of adding offices, rooms and workspaces in the admin app matches the intended process visualised in the mockup.
