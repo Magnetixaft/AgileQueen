@@ -6,7 +6,7 @@ DAT257 Agile Software Project Management
 ## Repository file structure
 
 * Docs - DartDocs for the entire app available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/Docs)
-* Source code is available directly in this repo. Classes are located in (lib)[https://github.com/Magnetixaft/AgileQueen/tree/main/lib]
+* Source code is available directly in this repo. Classes are located in [lib](https://github.com/Magnetixaft/AgileQueen/tree/main/lib)
 * Deliverables - Weekly deliverables available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/Deliverables)
 * Test - Tests for the app available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/test)
 * Img - Images used in the ReadMe available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/img)
