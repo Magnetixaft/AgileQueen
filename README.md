@@ -8,7 +8,7 @@ DAT257 Agile Software Project Management
 * Docs - DartDocs for the entire app available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/Docs)
 * Source code is available directly in this repo. Classes are located in [lib](https://github.com/Magnetixaft/AgileQueen/tree/main/lib)
 * Deliverables - Weekly deliverables available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/Deliverables)
-* Mockup - Mpckups for the app and its admin console are available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/Mockup). The original Figma files may be viwed [here](https://www.figma.com/file/MmB2vbpx66CMgE2ZpD2qWt/Mockup) and [here](https://www.figma.com/file/OH1IiUEHbN5u6XwuJrUJkZ/Admin-mockup?node-id=0%3A1)
+* Mockup - Mockups for the app and its admin console are available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/Mockup). The original Figma files may be viwed [here](https://www.figma.com/file/MmB2vbpx66CMgE2ZpD2qWt/Mockup) and [here](https://www.figma.com/file/OH1IiUEHbN5u6XwuJrUJkZ/Admin-mockup?node-id=0%3A1)
 * Test - Tests for the app available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/test)
 * Img - Images used in the ReadMe available [here](https://github.com/Magnetixaft/AgileQueen/tree/main/img)
 
