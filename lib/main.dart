@@ -12,7 +12,7 @@ void main() async {
 
   //REMOVE BELOW COMMENT TO BUILD ON IOS
   // const firebaseConfig = FirebaseOptions(
-  //     apiKey: "AIzaSyD71VJDiqwq5e2y7gpaszs4um91jR6tN1g",
+  //     apiKey: "",
   //     authDomain: "agilequeen-82096.firebaseapp.com",
   //     projectId: "agilequeen-82096",
   //     storageBucket: "agilequeen-82096.appspot.com",
@@ -31,7 +31,7 @@ void main() async {
   await Firebase.initializeApp(
       // Firebase options related to FirebaseDB
       options: const FirebaseOptions(
-          apiKey: "AIzaSyD71VJDiqwq5e2y7gpaszs4um91jR6tN1g",
+          apiKey: "",
           authDomain: "agilequeen-82096.firebaseapp.com",
           projectId: "agilequeen-82096",
           storageBucket: "agilequeen-82096.appspot.com",
